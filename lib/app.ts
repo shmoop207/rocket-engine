@@ -14,16 +14,18 @@ export class App {
     protected _moduleManager: ModuleManager;
 
     constructor(options?: IOptions) {
-        this._options = Launcher.loadOptions(options);
 
-        this._moduleManager = new ModuleManager(this);
+        this._launcher = new Launcher();
 
-        this._env = Launcher.loadEnvironments(this._options);
+        this._options = this._launcher.loadOptions(options);
 
-        this._injector = createContainer();
+        this._env = this._launcher.loadEnvironments();
 
-        this._loadInject()
+        this._injector = this._launcher.loadInject();
 
+        this._injector.addObject("app", this);
+
+        this._moduleManager = this._launcher.createModuleManager();
     }
 
     public static create(options: IOptions): App {
@@ -31,17 +33,7 @@ export class App {
     };
 
 
-    protected _loadInject() {
-        this._injector.addObject("environment", this._env);
-        this._injector.addObject("env", this._env);
-        this._injector.addObject("inject", this._injector);
-        this._injector.addObject("injector", this._injector);
-        this._injector.addObject("app", this);
-    }
-
     public async launch(): Promise<App> {
-
-        this._launcher = new Launcher(this);
 
         await this._launcher.launch();
 
@@ -62,7 +54,7 @@ export class App {
 
     public module(moduleFn: ModuleFn | typeof Module | Module): Promise<any> {
 
-        return this._moduleManager.load(moduleFn, this.injector) as Promise<any>;
+        return this._moduleManager.load(moduleFn) as Promise<any>;
     }
 
 }

@@ -21,7 +21,7 @@ describe('bootstrap', function () {
     });
 
 
-    it('should have  call bootstrap initialize', function () {
+    it.only('should have  call bootstrap initialize', function () {
 
         let bootstrap = app.injector.getObject<Bootstrap>(Bootstrap);
 

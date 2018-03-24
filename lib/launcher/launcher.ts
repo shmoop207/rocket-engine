@@ -12,14 +12,20 @@ import {App} from "../app";
 import {IEnv} from "../IEnv";
 import {FilesLoader} from "../loader/filesLoader";
 import {BootstrapSymbol} from "../decorators";
+import {ModuleManager} from "../modules/modules";
 
 export class Launcher {
 
-    constructor(protected app: App) {
+    protected _options: IOptions;
+    protected _env: IEnv;
+    protected _injector: Injector;
+    protected _moduleManager: ModuleManager;
+
+    constructor() {
 
     }
 
-    protected static Defaults = {
+    protected readonly Defaults = {
         paths: ['config', 'server'],
         root: process.cwd(),
         environment: (process.env.NODE_ENV || 'development'),
@@ -27,15 +33,19 @@ export class Launcher {
     };
 
 
-    public static loadOptions(options: IOptions): IOptions {
+    public loadOptions(options: IOptions): IOptions {
 
-        return _.defaults( options || {},this.Defaults);
+        let opts = _.defaults(options || {}, this.Defaults);
+
+        this._options = opts;
+
+        return opts;
 
     }
 
-    public static loadEnvironments(options: IOptions): IEnv {
-        let allPath = path.join(options.root, 'config/environments/all.js'),
-            environmentPath = path.join(options.root, 'config/environments/', options.environment + '.js'),
+    public loadEnvironments(): IEnv {
+        let allPath = path.join(this._options.root, 'config/environments/all.js'),
+            environmentPath = path.join(this._options.root, 'config/environments/', this._options.environment + '.js'),
             env: IEnv = {};
 
         if (fs.existsSync(allPath)) {
@@ -48,63 +58,61 @@ export class Launcher {
             _.defaultsDeep(env, environment || {}, all);
 
             //save evn name
-            env.type = options.environment;
+            env.type = this._options.environment;
 
-            let pkg = require(path.join(options.root, 'package.json'));
+            let pkg = require(path.join(this._options.root, 'package.json'));
 
             env.version = pkg ? pkg.version : "";
 
             //add root
-            env.rootDir = options.root;
+            env.rootDir = this._options.root;
 
         }
+
+        this._env = env;
 
         return env;
-
     }
 
-    public async launch() :Promise<void>{
+    public loadInject(): Injector {
 
-        await this._loadModules(this.app.options, this.app.injector);
+        this._injector = createContainer();
 
-        this._loadFiles(this.app.options, this.app.env, this.app.injector);
+        this._injector.addObject("environment", this._env);
+        this._injector.addObject("env", this._env);
+        this._injector.addObject("inject", this._injector);
+        this._injector.addObject("injector", this._injector);
 
 
-        await this.app.injector.initialize({
-            root: this.app.options.root
-        });
-
-        await this._loadBootStrap(this.app.options, this.app.injector);
+        return this._injector;
     }
 
-    private async _loadModules(options: IOptions, injector: Injector): Promise<void> {
-        let modulesPath = path.join(options.root, 'config/modules/modules.js');
-
-        if (!fs.existsSync(modulesPath)) {
-            return;
-        }
-        let modulesFunc = require(modulesPath);
-
-        if (!_.isFunction(modulesFunc)) {
-            return;
-        }
-        let args = Util.getFunctionArgs(modulesFunc as any);
-
-        let dependencies = _.map(args, (arg) => injector.getObject(arg));
-
-        let result = modulesFunc.apply(modulesFunc, dependencies);
-
-        //check for promise
-        if (result && result.then) {
-            await result;
-        }
+    public createModuleManager(): ModuleManager {
+        this._moduleManager = new ModuleManager(this._options, this._injector);
+        return this._moduleManager
     }
 
-    private _loadFiles(options: IOptions, env: IEnv, injector: Injector) {
-        let loadPaths = _.union(options.paths, env.paths);
+
+    public async launch(): Promise<void> {
+
+        await this._moduleManager.loadStaticModules();
+
+        this._loadFiles();
+
+        await this._moduleManager.loadDynamicModules();
+
+
+        await this._injector.initialize();
+
+        await this._loadBootStrap();
+    }
+
+
+    private _loadFiles() {
+        let loadPaths = _.union(this._options.paths, this._env.paths);
 
         //load env files
-        for (let filePath of FilesLoader.load(options.root, loadPaths)) {
+        for (let filePath of FilesLoader.load(this._options.root, loadPaths)) {
             try {
                 let exported: any = require(filePath);
 
@@ -130,66 +138,29 @@ export class Launcher {
     }
 
     private _handleKlass(fn: Function) {
-        let define = Reflect.hasMetadata(InjectDefineSymbol, fn)
+        let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
-            this.app.injector.register(fn)
+            this._injector.register(fn)
         }
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
-            this.app.options.bootStrapClassId = Util.getClassName(fn);
+            this._options.bootStrapClassId = Util.getClassName(fn);
         }
-
     }
 
-    private async _loadBootStrap(options: IOptions, injector: Injector): Promise<void> {
+    private async _loadBootStrap(): Promise<void> {
 
-        let bootstrapDef = injector.getDefinition(options.bootStrapClassId);
+        let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 
         if (!bootstrapDef) {
             return Promise.resolve();
         }
 
-        let bootstrap = injector.getObject<IBootstrap>(options.bootStrapClassId);
+        let bootstrap = this._injector.getObject<IBootstrap>(this._options.bootStrapClassId);
 
         await bootstrap.run();
     }
-
-
-    // public reset(isSoftReset?: boolean): void {
-    //
-    //     if (!isSoftReset) {
-    //         _.forEach(this.cachedRequire, function (filePath) {
-    //             delete require.cache[filePath];
-    //         });
-    //
-    //         moduleManager.reset();
-    //     }
-    //
-    //     this.cachedRequire.length = 0;
-    //
-    //     this._options = null;
-    //
-    //     _.forEach(environments, function (value, key) {
-    //         delete environments[key];
-    //     });
-    //
-    //     let definitions = inject.getDefinitions();
-    //
-    //     inject.reset();
-    //
-    //     if (isSoftReset) {
-    //         inject.addDefinitions(definitions);
-    //     }
-    //
-    //     process.removeAllListeners();
-    // }
-    //
-    // public softReset() {
-    //
-    //     this.reset(true);
-    // }
-
 
 }
 

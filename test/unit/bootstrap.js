@@ -16,7 +16,7 @@ describe('bootstrap', function () {
     }));
     afterEach(function () {
     });
-    it('should have  call bootstrap initialize', function () {
+    it.only('should have  call bootstrap initialize', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
         should.exist(bootstrap);
         should.exist(bootstrap.manager);
