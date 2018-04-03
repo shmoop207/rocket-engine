@@ -11,7 +11,6 @@ describe('modules', function () {
 
     beforeEach(async ()=> {
         app = create({
-            paths: ['config', 'server'],
             root: process.cwd() + '/test/mock'
         });
 

@@ -1,5 +1,5 @@
 import chai = require('chai');
-import {Bootstrap} from "../mock/server/bootstrap";
+import {Bootstrap} from "../mock/src/bootstrap";
 import {App, create} from "../../index";
 
 let should = chai.should();
@@ -10,7 +10,6 @@ describe('bootstrap', function () {
 
     beforeEach(async () => {
         app = create({
-            paths: ['config', 'server'],
             root: process.cwd() + '/test/mock'
         });
 
@@ -21,7 +20,7 @@ describe('bootstrap', function () {
     });
 
 
-    it.only('should have  call bootstrap initialize', function () {
+    it('should have  call bootstrap initialize', function () {
 
         let bootstrap = app.injector.getObject<Bootstrap>(Bootstrap);
 

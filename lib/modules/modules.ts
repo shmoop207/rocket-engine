@@ -55,26 +55,9 @@ export class ModuleManager {
     }
 
     public async loadStaticModules(): Promise<void> {
-        let modulesPath = path.join(this._options.root, 'config/modules/modules.js');
+        let modulesPath = path.join(this._options.root, 'modules/modules.js');
 
-        if (!fs.existsSync(modulesPath)) {
-            return;
-        }
-        let modulesFunc = require(modulesPath);
-
-        if (!_.isFunction(modulesFunc)) {
-            return;
-        }
-        let args = Util.getFunctionArgs(modulesFunc as any);
-
-        let dependencies = _.map(args, (arg) => this._injector.getObject(arg));
-
-        let result = modulesFunc.apply(modulesFunc, dependencies);
-
-        //check for promise
-        if (result && result.then) {
-            await result;
-        }
+        await Util.loadPathWithArgs([modulesPath], this._injector)
     }
 
 

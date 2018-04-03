@@ -1,5 +1,5 @@
 
-import appolo = require('../../../../index');
+import appolo = require('../../../index');
 import    Q = require('bluebird');
 
 

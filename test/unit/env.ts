@@ -17,7 +17,6 @@ describe('environments', function () {
     it('should create dev environment ', async () => {
 
         let app = App.create({
-            paths: ['config', 'server'],
             root: process.cwd() + '/test/mock'
         });
         await app.launch();

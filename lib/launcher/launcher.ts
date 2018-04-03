@@ -20,7 +20,7 @@ export class Launcher {
     protected _env: IEnv;
     protected _injector: Injector;
     protected _moduleManager: ModuleManager;
-    protected _plugins:((fn: Function) => void)[] = [];
+    protected _plugins: ((fn: Function) => void)[] = [];
 
 
     constructor() {
@@ -28,7 +28,7 @@ export class Launcher {
     }
 
     protected readonly Defaults = {
-        paths: ['config', 'server'],
+        paths: ['src'],
         root: process.cwd(),
         environment: (process.env.NODE_ENV || 'development'),
         bootStrapClassId: 'appolo-bootstrap'
@@ -46,8 +46,8 @@ export class Launcher {
     }
 
     public loadEnvironments(): IEnv {
-        let allPath = path.join(this._options.root, 'config/environments/all.js'),
-            environmentPath = path.join(this._options.root, 'config/environments/', this._options.environment + '.js'),
+        let allPath = path.join(this._options.root, 'config/env/all.js'),
+            environmentPath = path.join(this._options.root, 'config/env/', this._options.environment + '.js'),
             env: IEnv = {};
 
         if (fs.existsSync(allPath)) {
@@ -152,12 +152,12 @@ export class Launcher {
         }
 
         //run plugins;
-        for(let i=0,len=this._plugins.length;i<len;i++){
+        for (let i = 0, len = this._plugins.length; i < len; i++) {
             this._plugins[i](fn);
         }
     }
 
-    public get plugins():((fn: Function) => void)[]{
+    public get plugins(): ((fn: Function) => void)[] {
         return this._plugins;
     }
 

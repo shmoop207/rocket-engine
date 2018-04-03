@@ -8,7 +8,6 @@ describe('modules', function () {
     let app;
     beforeEach(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
         app = index_1.create({
-            paths: ['config', 'server'],
             root: process.cwd() + '/test/mock'
         });
         yield app.launch();

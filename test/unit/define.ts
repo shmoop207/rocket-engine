@@ -3,8 +3,8 @@
 
 let should = require('chai').should();
 import {App, create, define, singleton, inject, EventDispatcher,mixins} from '../../index';
-import {Manager2} from "../mock/server/manager2";
-import Manager3 from "../mock/server/manager3";
+import {Manager2} from "../mock/src/manager2";
+import Manager3 from "../mock/src/manager3";
 
 
 describe('define', function () {
@@ -12,7 +12,6 @@ describe('define', function () {
 
     beforeEach(async () => {
         app = create({
-            paths: ['config', 'server'],
             root: process.cwd() + '/test/mock'
         })
 

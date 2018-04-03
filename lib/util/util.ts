@@ -1,9 +1,11 @@
 "use strict";
 
 import _ = require('lodash');
+import fs = require('fs');
+import {Injector, createContainer} from "rocket-inject";
 
 export class Util {
-    public static getClassName (fn:Function):string{
+    public static getClassName(fn: Function): string {
         return fn.name.charAt(0).toLowerCase() + fn.name.slice(1)
     }
 
@@ -24,6 +26,35 @@ export class Util {
 
         return args;
     }
+
+
+    public static async loadPathWithArgs(paths: string[], injector: Injector) {
+        //let modulesPath = path.join(this._options.root, 'config/modules/modules.js');
+
+        for (let path of paths) {
+            if (!fs.existsSync(path)) {
+                continue;
+            }
+            let modulesFunc = require(path);
+
+            if (!_.isFunction(modulesFunc)) {
+                continue;
+            }
+            let args = Util.getFunctionArgs(modulesFunc as any);
+
+            let dependencies = _.map(args, (arg) => injector.getObject(arg));
+
+            let result = modulesFunc.apply(modulesFunc, dependencies);
+
+            //check for promise
+            if (result && result.then) {
+                await result;
+            }
+        }
+
+
+    }
+
 
     // public static  namespace(namespace: string, value: any) {
     //     let properties = namespace.split('.');

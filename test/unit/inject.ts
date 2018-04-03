@@ -2,8 +2,8 @@
 import {App, create, define, singleton, inject, EventDispatcher,mixins} from '../../index';
 import chai = require('chai')
 import {IEnv} from "../../lib/IEnv";
-import {Controller} from "../mock/server/controller";
-import {Manager} from "../mock/server/manager";
+import {Controller} from "../mock/src/controller";
+import {Manager} from "../mock/src/manager";
 
 let should = chai.should();
 
@@ -12,7 +12,6 @@ describe('inject', function () {
 
     beforeEach(async()=>{
         app = App.create({
-            paths:['config', 'server'],
             root:process.cwd() +'/test/mock'
         });
 

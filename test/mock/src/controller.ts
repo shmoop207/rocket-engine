@@ -1,7 +1,7 @@
 "use strict";
 import {define, singleton, inject, EventDispatcher} from '../../../index';
 import {Manager} from "./manager";
-import {Logger2} from "../config/modules/logger2";
+import {Logger2} from "../modules/logger2";
 
 @define()
 export class Controller extends EventDispatcher {

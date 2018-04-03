@@ -7,7 +7,7 @@ const logger4_1 = require("./logger4");
 const logger5_1 = require("./logger5");
 const logger6_1 = require("./logger6");
 const logger7_1 = require("./logger7");
-const testModule_1 = require("../../modules/testModule");
+const testModule_1 = require("./testModule");
 module.exports = function (env, app) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         yield app.module(logger_1.default);

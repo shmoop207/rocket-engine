@@ -11,7 +11,6 @@ describe('environments', function () {
     });
     it('should create dev environment ', () => tslib_1.__awaiter(this, void 0, void 0, function* () {
         let app = index_1.App.create({
-            paths: ['config', 'server'],
             root: process.cwd() + '/test/mock'
         });
         yield app.launch();
