@@ -57,4 +57,8 @@ export class App {
         return this._moduleManager.load(moduleFn) as Promise<any>;
     }
 
+    public plugin(fn: (fn: Function) => void) {
+        this._launcher.plugins.push(fn);
+    }
+
 }

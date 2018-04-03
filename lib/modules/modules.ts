@@ -9,7 +9,6 @@ import {ModuleSymbol} from "../decorators";
 import {IOptions} from "../IOptions";
 import   path = require('path');
 import   fs = require('fs');
-import    _ = require('lodash');
 import {AppModule} from "./appModule";
 
 

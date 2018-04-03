@@ -20,6 +20,8 @@ export class Launcher {
     protected _env: IEnv;
     protected _injector: Injector;
     protected _moduleManager: ModuleManager;
+    protected _plugins:((fn: Function) => void)[] = [];
+
 
     constructor() {
 
@@ -101,7 +103,6 @@ export class Launcher {
 
         await this._moduleManager.loadDynamicModules();
 
-
         await this._injector.initialize();
 
         await this._loadBootStrap();
@@ -111,24 +112,12 @@ export class Launcher {
     private _loadFiles() {
         let loadPaths = _.union(this._options.paths, this._env.paths);
 
-        //load env files
         for (let filePath of FilesLoader.load(this._options.root, loadPaths)) {
             try {
                 let exported: any = require(filePath);
 
-                let keys = Object.keys(exported);
+                this._handleExported(exported);
 
-                for (let i = 0, len = keys.length; i < len; i++) {
-                    let key = keys[i];
-                    let fn = exported[key];
-
-                    if (!_.isFunction(fn)) {
-                        continue;
-                    }
-
-                    this._handleKlass(fn);
-
-                }
             } catch (e) {
                 console.error(`failed to require ${filePath}`);
 
@@ -137,7 +126,21 @@ export class Launcher {
         }
     }
 
-    private _handleKlass(fn: Function) {
+    private _handleExported(exported: any) {
+        let keys = Object.keys(exported);
+
+        for (let i = 0, len = keys.length; i < len; i++) {
+            let key = keys[i], fn = exported[key];
+
+            if (!_.isFunction(fn)) {
+                continue;
+            }
+
+            this._handleFn(fn);
+        }
+    }
+
+    private _handleFn(fn: Function) {
         let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
@@ -147,6 +150,15 @@ export class Launcher {
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
             this._options.bootStrapClassId = Util.getClassName(fn);
         }
+
+        //run plugins;
+        for(let i=0,len=this._plugins.length;i<len;i++){
+            this._plugins[i](fn);
+        }
+    }
+
+    public get plugins():((fn: Function) => void)[]{
+        return this._plugins;
     }
 
     private async _loadBootStrap(): Promise<void> {
