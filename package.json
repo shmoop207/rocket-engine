@@ -27,9 +27,9 @@
   "readme": "",
   "readmeFilename": "README.md",
   "dependencies": {
+    "appolo-inject": "github:shmoop207/appolo-inject",
     "bluebird": "^3.5.1",
     "lodash": "^4.17.5",
-    "appolo-inject": "github:shmoop207/appolo-inject",
     "tslib": "^1.9.0"
   },
   "devDependencies": {
