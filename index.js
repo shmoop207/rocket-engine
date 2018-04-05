@@ -27,6 +27,7 @@ exports.injectArray = appolo_inject_1.injectArray;
 exports.injectAlias = appolo_inject_1.injectAlias;
 exports.injectAliasFactory = appolo_inject_1.injectAliasFactory;
 exports.define = appolo_inject_1.define;
+exports.Define = appolo_inject_1.Define;
 var app_2 = require("./lib/app");
 exports.App = app_2.App;
 var module_1 = require("./lib/modules/module");

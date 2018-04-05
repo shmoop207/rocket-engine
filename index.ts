@@ -26,14 +26,14 @@ export {
     injectAlias,
     injectAliasFactory,
     IParamInject,
-    define
+    define, Define
 } from 'appolo-inject'
 export {IOptions} from './lib/IOptions'
 export {IBootstrap} from './lib/IBootstrap'
 export {IEnv} from './lib/IEnv'
 export {App} from './lib/app'
 export {Module} from './lib/modules/module'
-export {mixins, bootstrap,module} from './lib/decorators'
+export {mixins, bootstrap, module} from './lib/decorators'
 
 
 export let create = function (options: IOptions): App {
