@@ -1,5 +1,5 @@
 import {IEnv} from "./IEnv";
-import {Injector, createContainer} from "appolo-inject";
+import {Injector, createContainer, Define} from "appolo-inject";
 import {IOptions} from "./IOptions";
 import {Launcher} from "./launcher/launcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
@@ -52,6 +52,10 @@ export class App {
         return this._injector;
     }
 
+    public register(id: string | Function, type?: Function): Define {
+        return this._injector.register(id, type)
+    }
+
     public module(moduleFn: ModuleFn | typeof Module | Module): Promise<any> {
 
         return this._moduleManager.load(moduleFn) as Promise<any>;
@@ -61,8 +65,9 @@ export class App {
         this._launcher.plugins.push(fn);
     }
 
-    public reset(){
+    public reset() {
         this._injector.reset();
     }
+
 
 }
