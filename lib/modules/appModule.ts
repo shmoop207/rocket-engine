@@ -1,5 +1,5 @@
 import {Module} from "./module";
-import {Injector, createContainer} from "rocket-inject";
+import {Injector, createContainer} from "appolo-inject";
 
 export class AppModule extends Module {
 

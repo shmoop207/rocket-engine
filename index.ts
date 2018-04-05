@@ -27,7 +27,7 @@ export {
     injectAliasFactory,
     IParamInject,
     define
-} from 'rocket-inject'
+} from 'appolo-inject'
 export {IOptions} from './lib/IOptions'
 export {IBootstrap} from './lib/IBootstrap'
 export {IEnv} from './lib/IEnv'

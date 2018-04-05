@@ -3,7 +3,7 @@ import    Q = require('bluebird');
 import   _ = require('lodash');
 import {Util} from "../util/util";
 import {App} from "../app";
-import {Injector, createContainer} from "rocket-inject";
+import {Injector, createContainer} from "appolo-inject";
 import {Module} from "./module";
 import {ModuleSymbol} from "../decorators";
 import {IOptions} from "../IOptions";

@@ -9,7 +9,6 @@ import logger6 from './logger6';
 import logger7 from './logger7';
 import {IEnv} from "../../../lib/IEnv";
 import {App} from "../../../lib/app";
-import {TestModule} from "./testModule";
 
 export = async function (env: IEnv, app: App) {
     await app.module(logger);
@@ -23,5 +22,4 @@ export = async function (env: IEnv, app: App) {
     await app.module(logger6({test: 'test6'}));
     await app.module(logger7({test: 'test7'}));
 
-    await app.module(TestModule)
 }

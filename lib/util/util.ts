@@ -2,7 +2,7 @@
 
 import _ = require('lodash');
 import fs = require('fs');
-import {Injector, createContainer} from "rocket-inject";
+import {Injector, createContainer} from "appolo-inject";
 
 export class Util {
     public static getClassName(fn: Function): string {

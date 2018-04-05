@@ -1,5 +1,5 @@
 "use strict";
-import {Injector, createContainer, InjectDefineSymbol} from "rocket-inject";
+import {Injector, createContainer, InjectDefineSymbol} from "appolo-inject";
 
 import   path = require('path');
 import   fs = require('fs');

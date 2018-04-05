@@ -1,5 +1,5 @@
 import {IEnv} from "./IEnv";
-import {Injector, createContainer} from "rocket-inject";
+import {Injector, createContainer} from "appolo-inject";
 import {IOptions} from "./IOptions";
 import {Launcher} from "./launcher/launcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";

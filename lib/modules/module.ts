@@ -1,7 +1,6 @@
-import {Injector, createContainer} from "rocket-inject";
+import {Injector, createContainer,InjectDefineSymbol, Define} from "appolo-inject";
 import   _ = require('lodash');
 import   Q = require('bluebird');
-import {InjectDefineSymbol, Define} from "rocket-inject/index";
 
 export class Module {
 
