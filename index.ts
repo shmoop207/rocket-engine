@@ -24,6 +24,7 @@ export {
     injectDictionary,
     injectArray,
     injectAlias,
+    lazy,
     injectAliasFactory,
     IParamInject,
     define, Define

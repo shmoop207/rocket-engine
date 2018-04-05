@@ -25,6 +25,7 @@ exports.injectObjectProperty = appolo_inject_1.injectObjectProperty;
 exports.injectDictionary = appolo_inject_1.injectDictionary;
 exports.injectArray = appolo_inject_1.injectArray;
 exports.injectAlias = appolo_inject_1.injectAlias;
+exports.lazy = appolo_inject_1.lazy;
 exports.injectAliasFactory = appolo_inject_1.injectAliasFactory;
 exports.define = appolo_inject_1.define;
 exports.Define = appolo_inject_1.Define;
