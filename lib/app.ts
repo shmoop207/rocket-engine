@@ -61,4 +61,8 @@ export class App {
         this._launcher.plugins.push(fn);
     }
 
+    public reset(){
+        this._injector.reset();
+    }
+
 }
