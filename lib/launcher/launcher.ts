@@ -62,9 +62,9 @@ export class Launcher {
             //save evn name
             env.type = this._options.environment;
 
-            let pkg = require(path.join(this._options.root, 'package.json'));
+            let pkgPath = path.join(this._options.root, 'package.json');
 
-            env.version = pkg ? pkg.version : "";
+            env.version = fs.existsSync(pkgPath) ? require(pkgPath).version : "";
 
             //add root
             env.rootDir = this._options.root;
