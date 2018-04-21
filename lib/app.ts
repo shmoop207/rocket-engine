@@ -58,11 +58,9 @@ export class App {
         return this._injector.register(id, type)
     }
 
-    public async module(moduleFn: ModuleFn | ModuleFn[]): Promise<void> {
+    public async module(...moduleFn: ModuleFn[]): Promise<void> {
 
-        let modules = _.isArray(moduleFn) ? moduleFn : [moduleFn];
-
-        await Q.map(modules, module => this._moduleManager.load(module));
+        await Q.map(moduleFn, module => this._moduleManager.load(module));
     }
 
     public plugin(fn: (fn: Function) => void) {
