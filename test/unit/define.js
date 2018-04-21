@@ -7,12 +7,12 @@ const manager2_1 = require("../mock/src/manager2");
 const manager3_1 = require("../mock/src/manager3");
 describe('define', function () {
     let app;
-    beforeEach(() => tslib_1.__awaiter(this, void 0, void 0, function* () {
-        app = index_1.create({
+    beforeEach(async () => {
+        app = index_1.createApp({
             root: process.cwd() + '/test/mock'
         });
-        yield app.launch();
-    }));
+        await app.launch();
+    });
     afterEach(function () {
     });
     it('should define class static config', function () {

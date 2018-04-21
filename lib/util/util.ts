@@ -2,6 +2,7 @@
 
 import _ = require('lodash');
 import fs = require('fs');
+import CallSite = NodeJS.CallSite;
 import {Injector, Util as InjectUtil} from "appolo-inject";
 
 export class Util extends InjectUtil {
@@ -32,6 +33,26 @@ export class Util extends InjectUtil {
 
     }
 
+
+    public static stack(): CallSite[] {
+
+        let pst = Error.prepareStackTrace;
+        Error.prepareStackTrace = function (_, stack) {
+            Error.prepareStackTrace = pst;
+            return stack;
+        };
+
+        let stack = (new Error()).stack;
+
+        return stack as any;
+    }
+
+    public static callerPath(): string {
+
+        let stack = Util.stack();
+
+        return stack[3] && stack[3].getFileName ? stack[3].getFileName() : "";
+    }
 
     public static mixins(_klass: Function, mixins: Function | Function[]) {
 

@@ -37,7 +37,7 @@ var decorators_1 = require("./lib/decorators");
 exports.mixins = decorators_1.mixins;
 exports.bootstrap = decorators_1.bootstrap;
 exports.module = decorators_1.module;
-exports.create = function (options) {
+exports.createApp = function (options) {
     return new app_1.App(options);
 };
 //# sourceMappingURL=index.js.map

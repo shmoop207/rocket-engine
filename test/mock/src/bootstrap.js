@@ -3,10 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const index_1 = require("../../../index");
 let Bootstrap = class Bootstrap {
-    run() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            this.working = true;
-        });
+    async run() {
+        this.working = true;
     }
 };
 tslib_1.__decorate([

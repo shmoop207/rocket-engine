@@ -1,6 +1,6 @@
 import chai = require('chai');
 import {Bootstrap} from "../mock/src/bootstrap";
-import {App, create} from "../../index";
+import {App, createApp} from "../../index";
 
 let should = chai.should();
 
@@ -9,7 +9,7 @@ describe('bootstrap', function () {
     let app: App;
 
     beforeEach(async () => {
-        app = create({
+        app = createApp({
             root: process.cwd() + '/test/mock'
         });
 

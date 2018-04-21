@@ -1,7 +1,7 @@
 "use strict";
-import {App, create, define, singleton, inject, EventDispatcher,mixins} from '../../index';
+import {App, createApp, define, singleton, inject, EventDispatcher,mixins} from '../../index';
 import chai = require('chai')
-import {IEnv} from "../../lib/IEnv";
+import {IEnv} from "../../lib/interfaces/IEnv";
 import {Controller} from "../mock/src/controller";
 import {Manager} from "../mock/src/manager";
 

@@ -5,11 +5,11 @@ import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
 import    Q = require('bluebird');
-import {IOptions} from "../IOptions";
+import {IOptions} from "../interfaces/IOptions";
 import {Util} from "../util/util";
-import {IBootstrap} from "../IBootstrap";
+import {IBootstrap} from "../interfaces/IBootstrap";
 import {App} from "../app";
-import {IEnv} from "../IEnv";
+import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
 import {BootstrapSymbol} from "../decorators";
 import {ModuleManager} from "../modules/modules";
@@ -101,7 +101,7 @@ export class Launcher {
 
         this._loadFiles();
 
-        await this._moduleManager.loadDynamicModules();
+        await this._moduleManager.loadDynamicModules(this._plugins);
 
         await this._injector.initialize();
 

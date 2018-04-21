@@ -1,4 +1,4 @@
-import {App, create, define, singleton, inject, EventDispatcher, mixins} from '../../index';
+import {App, createApp, define, singleton, inject, EventDispatcher, mixins} from '../../index';
 import chai = require('chai')
 
 let should = chai.should();

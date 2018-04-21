@@ -1,6 +1,6 @@
-import {IEnv} from "./IEnv";
+import {IEnv} from "./interfaces/IEnv";
 import {Injector, createContainer, Define} from "appolo-inject";
-import {IOptions} from "./IOptions";
+import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
 import {Module} from "./modules/module";

@@ -1,4 +1,4 @@
-import {IOptions} from "./lib/IOptions";
+import {IOptions} from "./lib/interfaces/IOptions";
 import {App} from "./lib/app";
 import {Module} from "./lib/modules/module";
 
@@ -29,15 +29,15 @@ export {
     IParamInject,
     define, Define
 } from 'appolo-inject'
-export {IOptions} from './lib/IOptions'
-export {IBootstrap} from './lib/IBootstrap'
-export {IEnv} from './lib/IEnv'
+export {IOptions} from './lib/interfaces/IOptions'
+export {IBootstrap} from './lib/interfaces/IBootstrap'
+export {IEnv} from './lib/interfaces/IEnv'
 export {App} from './lib/app'
 export {Module} from './lib/modules/module'
 export {mixins, bootstrap, module} from './lib/decorators'
 
 
-export let create = function (options: IOptions): App {
+export let createApp = function (options?: IOptions): App {
     return new App(options);
 };
 

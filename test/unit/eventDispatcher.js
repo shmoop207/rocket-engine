@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
 const appolo = require("../../index");
 const chai = require("chai");
 const event_dispatcher_1 = require("../../lib/events/event-dispatcher");
@@ -26,7 +25,7 @@ describe("event dispatcher", function () {
         }).should.not.throw();
         // dispatcher.fireEvent('topic').should.not.throw();
     });
-    it("should fire event with params", () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    it("should fire event with params", async () => {
         let value = 0;
         class EventHandler extends event_dispatcher_1.EventDispatcher {
             constructor() {
@@ -36,10 +35,10 @@ describe("event dispatcher", function () {
         }
         let a = new EventHandler();
         a.on("test", (v) => value = v);
-        yield Q.delay(150);
+        await Q.delay(150);
         value.should.be.eq(5);
-    }));
-    it("should subscribe with fire event with params", () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    });
+    it("should subscribe with fire event with params", async () => {
         let value = 0;
         class EventHandler extends event_dispatcher_1.EventDispatcher {
             constructor() {
@@ -50,12 +49,12 @@ describe("event dispatcher", function () {
         let a = new EventHandler();
         let fn = (v) => value = v;
         a.on("test", fn);
-        yield Q.delay(10);
+        await Q.delay(10);
         a.un("test", fn);
-        yield Q.delay(140);
+        await Q.delay(140);
         value.should.be.eq(0);
-    }));
-    it("should removeAllListeners with fire event with params", () => tslib_1.__awaiter(this, void 0, void 0, function* () {
+    });
+    it("should removeAllListeners with fire event with params", async () => {
         let value = 0;
         class EventHandler extends event_dispatcher_1.EventDispatcher {
             constructor() {
@@ -66,10 +65,10 @@ describe("event dispatcher", function () {
         let a = new EventHandler();
         let fn = ((v) => value = v);
         a.on("test", fn);
-        yield Q.delay(10);
+        await Q.delay(10);
         a.removeAllListeners();
-        yield Q.delay(140);
+        await Q.delay(140);
         value.should.be.eq(0);
-    }));
+    });
 });
 //# sourceMappingURL=eventDispatcher.js.map

@@ -1,32 +1,30 @@
 "use strict";
 import    Q = require('bluebird');
 import   _ = require('lodash');
+import   path = require('path');
 import {Util} from "../util/util";
-import {App} from "../app";
-import {Injector, createContainer} from "appolo-inject";
+import {Injector} from "appolo-inject";
 import {Module} from "./module";
 import {ModuleSymbol} from "../decorators";
-import {IOptions} from "../IOptions";
-import   path = require('path');
-import   fs = require('fs');
-import {AppModule} from "./appModule";
+import {IOptions} from "../interfaces/IOptions";
 
 
 export type ModuleFn = (...args: any[]) => void | Promise<any>
 
 export class ModuleManager {
-    private _modules: (typeof Module | Module)[];
+    private readonly _modules: (typeof Module | Module)[];
 
     constructor(private _options: IOptions, private _injector: Injector) {
         this._modules = [];
 
     }
 
-    public async loadDynamicModules() {
+    public async loadDynamicModules(plugins:((fn: Function) => void)[]) {
 
-        let appModule = new AppModule(this._injector, this._modules as Module[]);
-
-        await appModule.initialize()
+        for (let module of this._modules) {
+            let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
+            await moduleInstance.initialize(this._injector,plugins);
+        }
     }
 
     public load(moduleFn: ModuleFn | typeof Module | Module): PromiseLike<any> {
