@@ -39,11 +39,11 @@ export class Module {
 
         this._app = this._createApp(parent, this._moduleDefinition);
 
-        _.forEach(plugins, plugin => this._app.plugin(plugin));
-
-        await this._loadImports(this._app, this._moduleDefinition,plugins);
+        await this._loadImports(this._app, this._moduleDefinition, plugins);
 
         this._handleExports(this._app);
+
+        this._handlePlugins(this._exports, plugins);
 
         await this._app.launch();
     }
@@ -60,14 +60,14 @@ export class Module {
         return app;
     }
 
-    private async _loadImports(app: App, moduleDefinition: IModuleDefinition,plugins: ((fn: Function) => void)[]) {
+    private async _loadImports(app: App, moduleDefinition: IModuleDefinition, plugins: ((fn: Function) => void)[]) {
 
         if (!moduleDefinition.imports) {
             return;
         }
         for (let module of moduleDefinition.imports) {
             let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
-            await moduleInstance.initialize(app.injector,plugins);
+            await moduleInstance.initialize(app.injector, plugins);
         }
     }
 
@@ -76,6 +76,11 @@ export class Module {
             let id = Util.getClassNameOrId(item);
             app.injector.parent.addDefinition(id, {injector: app.injector})
         });
+    }
+
+    private _handlePlugins(exports: any[], plugins: ((fn: Function) => void)[]) {
+        _.forEach(exports, item =>
+            _.isFunction(item) && _.forEach(plugins, plugin => plugin(item)));
     }
 
 
