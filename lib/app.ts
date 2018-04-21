@@ -1,9 +1,11 @@
 import {IEnv} from "./interfaces/IEnv";
-import {Injector, createContainer, Define} from "appolo-inject";
+import {Define, Injector} from "appolo-inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
-import {Module} from "./modules/module";
+import Q = require("bluebird");
+import _ = require("lodash");
+
 
 export class App {
 
@@ -56,9 +58,11 @@ export class App {
         return this._injector.register(id, type)
     }
 
-    public module(moduleFn: ModuleFn | typeof Module | Module): Promise<any> {
+    public async module(moduleFn: ModuleFn | ModuleFn[]): Promise<void> {
 
-        return this._moduleManager.load(moduleFn) as Promise<any>;
+        let modules = _.isArray(moduleFn) ? moduleFn : [moduleFn];
+
+        await Q.map(modules, module => this._moduleManager.load(module));
     }
 
     public plugin(fn: (fn: Function) => void) {
