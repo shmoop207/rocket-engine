@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const index_1 = require("../../../../../index");
+const index_1 = require("../../../../../../index");
 let DelayManager = class DelayManager {
     get name() {
         return this.env.type;

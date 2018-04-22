@@ -1,4 +1,4 @@
-import {module, Module} from '../../../../index';
+import {module, Module} from '../../../../../index';
 import {Delay} from "./src/delay";
 
 

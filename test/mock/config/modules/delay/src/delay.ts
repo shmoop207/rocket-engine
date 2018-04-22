@@ -1,5 +1,5 @@
-import {define, module, Module, singleton,inject} from '../../../../../index';
-import {IEnv} from "../../../../../lib/interfaces/IEnv";
+import {define, module, Module, singleton,inject} from '../../../../../../index';
+import {IEnv} from "../../../../../../lib/interfaces/IEnv";
 import {DelayManager} from "./delayManager";
 
 @define()

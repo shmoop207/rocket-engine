@@ -1,5 +1,5 @@
 import Q  = require('bluebird');
-import {define, IFactory, inject, singleton,factory} from '../../../../../index';
+import {define, IFactory, inject, singleton,factory} from '../../../../../../index';
 import {Delay} from "./delay";
 
 @define()

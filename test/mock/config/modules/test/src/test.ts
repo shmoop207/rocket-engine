@@ -1,4 +1,4 @@
-import {define, module, Module, singleton} from '../../../../../index';
+import {define, module, Module, singleton} from '../../../../../../index';
 
 @define()
 @singleton()

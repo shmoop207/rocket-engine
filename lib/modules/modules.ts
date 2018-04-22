@@ -55,9 +55,13 @@ export class ModuleManager {
     }
 
     public async loadStaticModules(): Promise<void> {
-        let modulesPath = path.join(this._options.root, 'modules/modules.js');
 
-        await Util.loadPathWithArgs([modulesPath], this._injector)
+
+        let allPath = path.join(this._options.root, 'config/modules/all.js'),
+            environmentPath = path.join(this._options.root, 'config/modules/', this._options.environment + '.js');
+
+
+        await Util.loadPathWithArgs([allPath, environmentPath], this._injector)
     }
 
 

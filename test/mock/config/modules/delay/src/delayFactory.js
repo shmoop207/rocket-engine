@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const Q = require("bluebird");
-const index_1 = require("../../../../../index");
+const index_1 = require("../../../../../../index");
 let DelayFactory = class DelayFactory {
     async get() {
         await Q.delay(this.moduleOptions.delay);
