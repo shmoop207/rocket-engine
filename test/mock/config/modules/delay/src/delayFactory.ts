@@ -5,7 +5,7 @@ import {Delay} from "./delay";
 @define()
 @singleton()
 @factory()
-export class DelayFactory implements IFactory<Promise<Delay>> {
+export class DelayFactory implements IFactory<Delay> {
 
     @inject() test: Delay;
     @inject() moduleOptions: any;
