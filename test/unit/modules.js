@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const chai = require("chai");
 const index_1 = require("../../index");
+const bootstrap_1 = require("../mock/src/bootstrap");
 let should = chai.should();
 describe('modules', function () {
     let app;
@@ -49,10 +50,12 @@ describe('modules', function () {
         test.name.should.be.eq("working");
     });
     it('should inject external async module', function () {
-        let test = app.injector.getObject('delay');
+        let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
         should.not.exist(app.injector.getDefinition('delayManager'));
-        should.exist(test);
-        test.name.should.be.eq("delaydevelopment1");
+        should.exist(bootstrap.delay);
+        should.exist(bootstrap.dbMock);
+        bootstrap.delay.name.should.be.eq("delay1development");
+        bootstrap.dbMock.conn.should.be.eq("working");
     });
 });
 //# sourceMappingURL=modules.js.map

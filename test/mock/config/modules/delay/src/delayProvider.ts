@@ -5,16 +5,16 @@ import {Delay} from "./delay";
 @define()
 @singleton()
 @factory()
-export class DelayFactory implements IFactory<Delay> {
+export class DelayProvider implements IFactory<number> {
 
-    @inject() test: Delay;
+    @inject() delay: Delay;
     @inject() moduleOptions: any;
 
-    async get(): Promise<Delay> {
+    async get(): Promise<number> {
 
         await Q.delay(this.moduleOptions.delay);
 
-        return this.test;
+        return this.moduleOptions.delay
 
     }
 }

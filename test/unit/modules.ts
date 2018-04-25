@@ -1,6 +1,7 @@
 "use strict";
 import chai = require('chai');
 import {App, createApp} from "../../index";
+import {Bootstrap} from "../mock/src/bootstrap";
 
 let should = chai.should();
 
@@ -73,10 +74,12 @@ describe('modules', function () {
 
     it('should inject external async module', function () {
 
-        let test = app.injector.getObject('delay');
+        let bootstrap = app.injector.getObject<Bootstrap>(Bootstrap);
         should.not.exist(app.injector.getDefinition('delayManager'));
-        should.exist(test);
-        (test as any).name.should.be.eq("delaydevelopment1");
+        should.exist(bootstrap.delay);
+        should.exist(bootstrap.dbMock);
+        bootstrap.delay.name.should.be.eq("delay1development");
+        bootstrap.dbMock.conn.should.be.eq("working");
     });
 
 });

@@ -10,6 +10,12 @@ let Bootstrap = class Bootstrap {
 tslib_1.__decorate([
     index_1.inject()
 ], Bootstrap.prototype, "manager", void 0);
+tslib_1.__decorate([
+    index_1.inject()
+], Bootstrap.prototype, "delay", void 0);
+tslib_1.__decorate([
+    index_1.inject()
+], Bootstrap.prototype, "dbMock", void 0);
 Bootstrap = tslib_1.__decorate([
     index_1.define(),
     index_1.singleton(),
