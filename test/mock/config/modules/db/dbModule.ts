@@ -13,5 +13,9 @@ export class DbModule extends Module {
 
         return [{id: this.moduleOptions.id, type: DbFactory}]
     }
+
+    public get imports(){
+        return [{id: "env", type: 'env2'}]
+    }
 }
 

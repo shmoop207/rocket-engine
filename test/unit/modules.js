@@ -57,5 +57,9 @@ describe('modules', function () {
         bootstrap.delay.name.should.be.eq("delay1development");
         bootstrap.dbMock.conn.should.be.eq("working");
     });
+    it('should inject external async module with imports name ref', function () {
+        let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
+        bootstrap.dbMock.env.should.be.eq("development");
+    });
 });
 //# sourceMappingURL=modules.js.map

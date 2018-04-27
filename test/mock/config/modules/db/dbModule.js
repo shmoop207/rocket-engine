@@ -10,6 +10,9 @@ let DbModule = class DbModule extends index_1.Module {
     get exports() {
         return [{ id: this.moduleOptions.id, type: dbFactory_1.DbFactory }];
     }
+    get imports() {
+        return [{ id: "env", type: 'env2' }];
+    }
 };
 DbModule = tslib_1.__decorate([
     index_1.module()

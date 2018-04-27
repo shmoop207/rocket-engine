@@ -1,10 +1,13 @@
 import {Module} from "../modules/module";
 
 export type Class = { new(...args: any[]): any; };
+export type ModuleTypes =  (Class | { id: string, type: Class | string })[]
+
 
 export interface IModuleDefinition {
     options?: any
-    imports?: (typeof Module | Module)[]
-    exports?: (Class | { id: string, type: Class })[]
+    modules?: (typeof Module | Module)[]
+    exports?: ModuleTypes
+    imports?: ModuleTypes
     root?: string
 }

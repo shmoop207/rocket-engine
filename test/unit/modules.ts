@@ -2,6 +2,7 @@
 import chai = require('chai');
 import {App, createApp} from "../../index";
 import {Bootstrap} from "../mock/src/bootstrap";
+import {IEnv} from "../../lib/interfaces/IEnv";
 
 let should = chai.should();
 
@@ -80,6 +81,14 @@ describe('modules', function () {
         should.exist(bootstrap.dbMock);
         bootstrap.delay.name.should.be.eq("delay1development");
         bootstrap.dbMock.conn.should.be.eq("working");
+    });
+
+    it('should inject external async module with imports name ref', function () {
+
+
+        let bootstrap = app.injector.getObject<Bootstrap>(Bootstrap);
+        bootstrap.dbMock.env.should.be.eq("development");
+
     });
 
 });
