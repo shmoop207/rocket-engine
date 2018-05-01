@@ -67,7 +67,7 @@ export class Module {
         let app = createApp({root: moduleDefinition.root});
 
 
-        app.injector.addObject("env", parent.getObject("env"), true);
+        app.injector.addObject("env", _.extend({}, parent.getObject("env"), app.env), true);
         app.injector.addObject("moduleOptions", this._moduleOptions, true);
 
         app.injector.parent = parent;
