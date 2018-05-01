@@ -12,7 +12,7 @@ export class Bootstrap implements IBootstrap {
 
     @inject() manager: Manager
     @inject() delay: Delay;
-    @inject() dbMock: { conn: string,env:string };
+    @inject() dbMock: { conn: string,env:string,name:string };
 
 
     async run() {

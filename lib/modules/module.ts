@@ -48,7 +48,7 @@ export class Module {
         }
 
         if (this._moduleDefinition.imports) {
-            this._exports = this._moduleDefinition.imports;
+            this._imports = this._moduleDefinition.imports;
         }
 
         this._app = this._createApp(parent, this._moduleDefinition);
