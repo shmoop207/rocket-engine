@@ -55,18 +55,17 @@ export class Launcher {
 
             //add current env config to appolo env
             _.defaultsDeep(env, environment || {}, all);
-
-            //save evn name
-            env.type = this._options.environment;
-
-            let pkgPath = path.join(this._options.root, 'package.json');
-
-            env.version = fs.existsSync(pkgPath) ? require(pkgPath).version : "";
-
-            //add root
-            env.rootDir = this._options.root;
-
         }
+
+        //save evn name
+        env.type = this._options.environment;
+
+        let pkgPath = path.join(this._options.root, 'package.json');
+
+        env.version = fs.existsSync(pkgPath) ? require(pkgPath).version : "";
+
+        //add root
+        env.rootDir = this._options.root;
 
         this._env = env;
 
