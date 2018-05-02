@@ -7,7 +7,7 @@ import {App} from "../app";
 import   _ = require('lodash');
 
 
-export class Module {
+export class Module<T = any> {
 
     protected _exports: ModuleTypes;
     protected _imports: ModuleTypes;
@@ -15,7 +15,7 @@ export class Module {
     protected _app: App;
     protected _moduleDefinition: IModuleDefinition;
 
-    constructor(options?: any) {
+    constructor(options?: T) {
         this._moduleOptions = options || {};
     }
 

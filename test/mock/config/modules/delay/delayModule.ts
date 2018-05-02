@@ -6,10 +6,7 @@ import {DelayProvider} from "./src/delayProvider";
 @module({
     exports: [Delay]
 })
-export class DelayModule extends Module {
-
-    constructor(opts: { delay: number }) {
-        super(opts);
-    }
+export class DelayModule extends Module<{ delay: number }> {
+    
 }
 
