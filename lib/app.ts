@@ -4,10 +4,11 @@ import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
 import {Class} from "./interfaces/IModuleDefinition";
+import {IApp} from "./interfaces/IApp";
 import Q = require("bluebird");
 
 
-export class App {
+export class App implements IApp {
 
     protected _env: IEnv;
     protected _injector: Injector;
@@ -42,7 +43,7 @@ export class App {
 
         await this._launcher.launch();
 
-        if(this.parent){
+        if (this.parent) {
             return;
         }
 
