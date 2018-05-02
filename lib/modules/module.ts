@@ -52,7 +52,7 @@ export class Module<T = any> {
         }
 
         this._app = this._createApp(parent, this._moduleDefinition);
-        this._app.parent = parent.get<App>('app')
+        this._app.parent = parent.get<App>('app');
 
         await this._loadInnerModules(this._app, this._moduleDefinition, plugins);
 
@@ -67,8 +67,10 @@ export class Module<T = any> {
     private _createApp(parent: Injector, moduleDefinition: IModuleDefinition): App {
         let app = createApp({root: moduleDefinition.root});
 
+        let rootEnv = parent.getObject("env");
 
-        app.injector.addObject("env", _.extend({}, parent.getObject("env"), app.env), true);
+        app.injector.addObject("rootEnv", rootEnv, true);
+        app.injector.addObject("env", _.extend({}, rootEnv, app.env), true);
         app.injector.addObject("moduleOptions", this._moduleOptions, true);
 
         app.injector.parent = parent;
