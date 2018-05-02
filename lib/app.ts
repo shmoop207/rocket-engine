@@ -15,6 +15,7 @@ export class App {
     protected _launcher: Launcher;
     protected _moduleManager: ModuleManager;
     protected _parent: App;
+    protected _children: App[] = [];
 
 
     constructor(options?: IOptions) {
@@ -40,6 +41,23 @@ export class App {
     public async launch(): Promise<App> {
 
         await this._launcher.launch();
+
+        if(this.parent){
+            return;
+        }
+
+        for (let app of this._children) {
+            await app._launcher.initInjector()
+        }
+
+        await this._launcher.initInjector();
+
+
+        for (let app of this._children) {
+            await app._launcher.loadBootStrap()
+        }
+
+        await this._launcher.loadBootStrap();
 
         return this;
     }
@@ -77,16 +95,15 @@ export class App {
         return this._parent;
     }
 
+    public get children(): App[] {
+        return this._children;
+    }
+
     public set parent(value: App) {
         this._parent = value;
+        value.children.push(this);
+
     }
 
-    public get rootApp(): App {
-        if (!this._parent) {
-            return this;
-        }
-
-        return this._parent.rootApp;
-    }
 
 }

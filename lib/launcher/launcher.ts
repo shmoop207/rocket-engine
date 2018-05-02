@@ -92,8 +92,6 @@ export class Launcher {
     }
 
 
-
-
     public async launch(): Promise<void> {
 
         await this._moduleManager.loadStaticModules();
@@ -102,9 +100,11 @@ export class Launcher {
 
         await this._moduleManager.loadDynamicModules(this._plugins);
 
-        await this._injector.initialize();
 
-        await this._loadBootStrap();
+    }
+
+    public async initInjector() {
+        await this._injector.initialize();
     }
 
 
@@ -160,7 +160,7 @@ export class Launcher {
         return this._plugins;
     }
 
-    private async _loadBootStrap(): Promise<void> {
+    public async loadBootStrap(): Promise<void> {
 
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 
