@@ -52,6 +52,7 @@ export class Module {
         }
 
         this._app = this._createApp(parent, this._moduleDefinition);
+        this._app.parent = parent.get<App>('app')
 
         await this._loadInnerModules(this._app, this._moduleDefinition, plugins);
 

@@ -3,8 +3,8 @@ import {Define, Injector} from "appolo-inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
+import {Class} from "./interfaces/IModuleDefinition";
 import Q = require("bluebird");
-import _ = require("lodash");
 
 
 export class App {
@@ -14,6 +14,8 @@ export class App {
     protected _options: IOptions;
     protected _launcher: Launcher;
     protected _moduleManager: ModuleManager;
+    protected _parent: App;
+
 
     constructor(options?: IOptions) {
 
@@ -54,7 +56,7 @@ export class App {
         return this._injector;
     }
 
-    public register(id: string | Function, type?: Function): Define {
+    public register(id: string | Class, type?: Class): Define {
         return this._injector.register(id, type)
     }
 
@@ -71,5 +73,20 @@ export class App {
         this._injector.reset();
     }
 
+    public get parent(): App {
+        return this._parent;
+    }
+
+    public set parent(value: App) {
+        this._parent = value;
+    }
+
+    public get rootApp(): App {
+        if (!this._parent) {
+            return this;
+        }
+
+        return this._parent.rootApp;
+    }
 
 }

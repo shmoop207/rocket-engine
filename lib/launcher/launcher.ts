@@ -1,18 +1,16 @@
 "use strict";
-import {Injector, createContainer, InjectDefineSymbol} from "appolo-inject";
-
-import   path = require('path');
-import   fs = require('fs');
-import    _ = require('lodash');
-import    Q = require('bluebird');
+import {createContainer, InjectDefineSymbol, Injector} from "appolo-inject";
 import {IOptions} from "../interfaces/IOptions";
 import {Util} from "../util/util";
 import {IBootstrap} from "../interfaces/IBootstrap";
-import {App} from "../app";
 import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
 import {BootstrapSymbol} from "../decorators";
 import {ModuleManager} from "../modules/modules";
+import {Class} from "../interfaces/IModuleDefinition";
+import   path = require('path');
+import   fs = require('fs');
+import    _ = require('lodash');
 
 export class Launcher {
 
@@ -21,7 +19,6 @@ export class Launcher {
     protected _injector: Injector;
     protected _moduleManager: ModuleManager;
     protected _plugins: ((fn: Function) => void)[] = [];
-
 
     constructor() {
 
@@ -95,6 +92,8 @@ export class Launcher {
     }
 
 
+
+
     public async launch(): Promise<void> {
 
         await this._moduleManager.loadStaticModules();
@@ -144,7 +143,7 @@ export class Launcher {
         let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
-            this._injector.register(fn)
+            this._injector.register(fn as Class)
         }
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
