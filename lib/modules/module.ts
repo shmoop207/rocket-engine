@@ -4,6 +4,7 @@ import {ModuleSymbol} from "../decorators";
 import {Util} from "../util/util";
 import {Class, IModuleDefinition, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
+import {IEnv} from "../interfaces/IEnv";
 import   _ = require('lodash');
 
 
@@ -53,7 +54,7 @@ export class Module<T = any> {
         await this._app.launch();
     }
 
-    private _setDefinitions(){
+    private _setDefinitions() {
         if (this._moduleDefinition.options) {
             _.extend(this._moduleOptions, this._moduleDefinition.options)
         }
@@ -68,9 +69,16 @@ export class Module<T = any> {
     }
 
     private _createApp(parent: Injector, moduleDefinition: IModuleDefinition): App {
-        let app = createApp({root: moduleDefinition.root, immediate:moduleDefinition.immediate});
 
-        let rootEnv = parent.getObject("env");
+
+        let rootEnv = parent.getObject<IEnv>("env");
+
+        let app = createApp({
+            root: moduleDefinition.root,
+            immediate: moduleDefinition.immediate,
+            environment: rootEnv.type
+        });
+
 
         app.injector.addObject("rootEnv", rootEnv, true);
         app.injector.addObject("env", _.extend({}, rootEnv, app.env), true);
