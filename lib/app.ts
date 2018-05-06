@@ -3,7 +3,7 @@ import {Define, Injector} from "appolo-inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
-import {Class} from "./interfaces/IModuleDefinition";
+import {IClass} from "./interfaces/IModuleDefinition";
 import {IApp} from "./interfaces/IApp";
 import Q = require("bluebird");
 
@@ -61,7 +61,7 @@ export class App implements IApp {
         return this._injector;
     }
 
-    public register(id: string | Class, type?: Class): Define {
+    public register(id: string | IClass, type?: IClass): Define {
         return this._injector.register(id, type)
     }
 

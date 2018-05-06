@@ -2,7 +2,7 @@ import {Injector} from "appolo-inject";
 import {createApp} from "../../index"
 import {ModuleSymbol} from "../decorators";
 import {Util} from "../util/util";
-import {Class, IModuleDefinition, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
+import {IClass, IModuleDefinition, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import {IEnv} from "../interfaces/IEnv";
 import   _ = require('lodash');
@@ -112,7 +112,7 @@ export class Module<T = any> {
         _.forEach(this.exports, item => {
 
             if (typeof item == "function") {
-                app.injector.parent.addDefinition(Util.getClassNameOrId(item as Class), {injector: app.injector})
+                app.injector.parent.addDefinition(Util.getClassNameOrId(item as IClass), {injector: app.injector})
             } else {
 
                 app.injector.parent.addDefinition(item.id, {

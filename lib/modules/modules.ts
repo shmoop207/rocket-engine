@@ -9,10 +9,13 @@ import {ModuleSymbol} from "../decorators";
 import {IOptions} from "../interfaces/IOptions";
 import {IModuleDefinition, IPlugin} from "../interfaces/IModuleDefinition";
 
+export interface IModuleCrt {
+    new(...args: any[]): Module
+}
 
 export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
 
-export type ModuleFn = ModuleFunction | typeof Module | Module
+export type ModuleFn = ModuleFunction | IModuleCrt | Module<any>
 
 export class ModuleManager {
     private readonly _modules: Module[];

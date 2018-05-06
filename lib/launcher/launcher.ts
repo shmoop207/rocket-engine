@@ -7,7 +7,7 @@ import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
 import {BootstrapSymbol} from "../decorators";
 import {ModuleManager} from "../modules/modules";
-import {Class} from "../interfaces/IModuleDefinition";
+import {IClass} from "../interfaces/IModuleDefinition";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
@@ -217,7 +217,7 @@ export class Launcher {
         let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
-            this._injector.register(fn as Class)
+            this._injector.register(fn as IClass)
         }
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {

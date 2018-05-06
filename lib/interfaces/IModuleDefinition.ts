@@ -1,7 +1,10 @@
 import {Module} from "../modules/module";
 
-export type Class = { new(...args: any[]): any; };
-export type ModuleTypes =  (Class | { id: string, type: Class | string })[]
+export interface IClass {
+    new(...args: any[]): any
+}
+
+export type ModuleTypes =  (IClass | { id: string, type: IClass | string })[]
 
 export type IPlugin = (fn: Function) => void;
 

@@ -3,10 +3,11 @@ import {Test} from "./src/test";
 
 
 @module({immediate:true})
-export class TestModule extends Module {
+export class TestModule extends Module<any> {
 
     get exports(){
         return [Test]
+
     }
 
 }

@@ -35,7 +35,7 @@ export {IEnv} from './lib/interfaces/IEnv'
 export {App} from './lib/app'
 export {IApp} from './lib/interfaces/IApp'
 export {Module} from './lib/modules/module'
-export {Class} from './lib/interfaces/IModuleDefinition'
+export {IClass} from './lib/interfaces/IModuleDefinition'
 export {mixins, bootstrap, module} from './lib/decorators'
 
 
