@@ -54,7 +54,7 @@ describe('modules', function () {
         should.not.exist(app.injector.getDefinition('delayManager'));
         should.exist(bootstrap.delay);
         should.exist(bootstrap.dbMock);
-        bootstrap.delay.name.should.be.eq("delay1development");
+        bootstrap.delay.name.should.be.eq("delay1developmenttestModule");
         bootstrap.dbMock.conn.should.be.eq("working");
         bootstrap.dbMock.name.should.be.eq("working");
     });

@@ -21,7 +21,7 @@ export class App implements IApp {
 
     constructor(options?: IOptions) {
 
-        this._launcher = new Launcher();
+        this._launcher = new Launcher(this);
 
         this._options = this._launcher.loadOptions(options);
 
@@ -38,27 +38,13 @@ export class App implements IApp {
         return new App(options);
     };
 
+    public get launcher():Launcher{
+        return this._launcher
+    }
 
     public async launch(): Promise<App> {
 
         await this._launcher.launch();
-
-        if (this.parent) {
-            return;
-        }
-
-        for (let app of this._children) {
-            await app._launcher.initInjector()
-        }
-
-        await this._launcher.initInjector();
-
-
-        for (let app of this._children) {
-            await app._launcher.loadBootStrap()
-        }
-
-        await this._launcher.loadBootStrap();
 
         return this;
     }

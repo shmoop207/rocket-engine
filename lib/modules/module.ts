@@ -2,7 +2,7 @@ import {Injector} from "appolo-inject";
 import {createApp} from "../../index"
 import {ModuleSymbol} from "../decorators";
 import {Util} from "../util/util";
-import {Class, IModuleDefinition, ModuleTypes} from "../interfaces/IModuleDefinition";
+import {Class, IModuleDefinition, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import   _ = require('lodash');
 
@@ -31,7 +31,7 @@ export class Module<T = any> {
         return this._moduleOptions;
     }
 
-    public async initialize(parent: Injector, plugins: ((fn: Function) => void)[]) {
+    public async initialize(parent: Injector, plugins: IPlugin[]) {
 
         this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, this.constructor);
 
@@ -39,20 +39,9 @@ export class Module<T = any> {
             return;
         }
 
-        if (this._moduleDefinition.options) {
-            _.extend(this._moduleOptions, this._moduleDefinition.options)
-        }
-
-        if (this._moduleDefinition.exports) {
-            this._exports = this._moduleDefinition.exports;
-        }
-
-        if (this._moduleDefinition.imports) {
-            this._imports = this._moduleDefinition.imports;
-        }
+        this._setDefinitions();
 
         this._app = this._createApp(parent, this._moduleDefinition);
-        this._app.parent = parent.get<App>('app');
 
         await this._loadInnerModules(this._app, this._moduleDefinition, plugins);
 
@@ -64,8 +53,22 @@ export class Module<T = any> {
         await this._app.launch();
     }
 
+    private _setDefinitions(){
+        if (this._moduleDefinition.options) {
+            _.extend(this._moduleOptions, this._moduleDefinition.options)
+        }
+
+        if (this._moduleDefinition.exports) {
+            this._exports = this._moduleDefinition.exports;
+        }
+
+        if (this._moduleDefinition.imports) {
+            this._imports = this._moduleDefinition.imports;
+        }
+    }
+
     private _createApp(parent: Injector, moduleDefinition: IModuleDefinition): App {
-        let app = createApp({root: moduleDefinition.root});
+        let app = createApp({root: moduleDefinition.root, immediate:moduleDefinition.immediate});
 
         let rootEnv = parent.getObject("env");
 
@@ -75,14 +78,18 @@ export class Module<T = any> {
 
         app.injector.parent = parent;
 
+        app.parent = parent.get<App>('app');
+
+
         return app;
     }
 
-    private async _loadInnerModules(app: App, moduleDefinition: IModuleDefinition, plugins: ((fn: Function) => void)[]) {
+    private async _loadInnerModules(app: App, moduleDefinition: IModuleDefinition, plugins: IPlugin[]) {
 
         if (!moduleDefinition.modules) {
             return;
         }
+
         for (let module of moduleDefinition.modules) {
             let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
             await moduleInstance.initialize(app.injector, plugins);
@@ -123,7 +130,7 @@ export class Module<T = any> {
         });
     }
 
-    private _handlePlugins(exports: any[], plugins: ((fn: Function) => void)[]) {
+    private _handlePlugins(exports: any[], plugins: IPlugin[]) {
         _.forEach(exports, item =>
             _.isFunction(item) && _.forEach(plugins, plugin => plugin(item)));
     }

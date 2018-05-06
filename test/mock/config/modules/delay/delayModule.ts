@@ -6,7 +6,7 @@ import {DelayProvider} from "./src/delayProvider";
 @module({
     exports: [Delay]
 })
-export class DelayModule extends Module<{ delay: number }> {
+export class DelayModule extends Module<{ delay: number,testModule:string }> {
     
 }
 

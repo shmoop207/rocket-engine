@@ -3,8 +3,8 @@ import "reflect-metadata";
 import {Util} from "./util/util";
 import {IModuleDefinition} from "./interfaces/IModuleDefinition";
 
-export const BootstrapSymbol = Symbol("__bootstrap__");
-export const ModuleSymbol = Symbol("__module__");
+export const BootstrapSymbol = "__bootstrap__";
+export const ModuleSymbol = "__module__";
 
 
 export function mixins(mixins: Function | Function[]): (fn: Function) => void {

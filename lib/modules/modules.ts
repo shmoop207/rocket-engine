@@ -7,6 +7,7 @@ import {Injector} from "appolo-inject";
 import {Module} from "./module";
 import {ModuleSymbol} from "../decorators";
 import {IOptions} from "../interfaces/IOptions";
+import {IModuleDefinition, IPlugin} from "../interfaces/IModuleDefinition";
 
 
 export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
@@ -14,27 +15,51 @@ export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
 export type ModuleFn = ModuleFunction | typeof Module | Module
 
 export class ModuleManager {
-    private readonly _modules: (typeof Module | Module)[];
+    private readonly _modules: Module[];
 
-    constructor(private _options: IOptions, private _injector: Injector) {
+    constructor(private _options: IOptions, private _injector: Injector, private plugins: IPlugin[]) {
         this._modules = [];
 
     }
 
-    public async loadDynamicModules(plugins: ((fn: Function) => void)[]) {
+    public async loadDynamicModules() {
 
         for (let module of this._modules) {
-            let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
-            await moduleInstance.initialize(this._injector, plugins);
+            await this._loadModule(module)
         }
     }
 
-    public load(moduleFn: ModuleFn): PromiseLike<any> {
-        if (moduleFn instanceof Module || Reflect.hasMetadata(ModuleSymbol, moduleFn)) {
-            this._modules.push(moduleFn as Module);
-            return;
-        }
+    private async _loadModule(module: Module) {
 
+        await module.initialize(this._injector, this.plugins);
+    }
+
+    public async _loadDynamicModule(moduleFn: typeof Module | Module) {
+
+
+        let module = Module.isPrototypeOf(moduleFn) ? new (moduleFn as typeof Module)() : moduleFn as Module;
+
+        let def: IModuleDefinition = Reflect.getMetadata(ModuleSymbol, module.constructor);
+
+        if (def.immediate) {
+            await this._loadModule(module);
+        } else {
+            this._modules.push(module);
+        }
+    }
+
+
+    public async load(moduleFn: ModuleFn): Promise<any> {
+
+        if (Reflect.hasMetadata(ModuleSymbol, moduleFn) || Reflect.hasMetadata(ModuleSymbol, moduleFn.constructor)) {
+            await this._loadDynamicModule(moduleFn as (typeof Module | Module));
+
+        } else {
+            await this._loadStaticModule(moduleFn as ModuleFunction)
+        }
+    }
+
+    private _loadStaticModule(moduleFn: ModuleFunction): PromiseLike<any> {
         //remove the callback arg
         let args = Util.getFunctionArgs(moduleFn as ModuleFunction),
             lastArg = _.last(args),

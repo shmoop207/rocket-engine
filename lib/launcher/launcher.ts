@@ -11,6 +11,7 @@ import {Class} from "../interfaces/IModuleDefinition";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
+import {App} from "../app";
 
 export class Launcher {
 
@@ -19,9 +20,11 @@ export class Launcher {
     protected _injector: Injector;
     protected _moduleManager: ModuleManager;
     protected _plugins: ((fn: Function) => void)[] = [];
+    protected _app:App;
+    private _isInitialized:boolean = false;
 
-    constructor() {
-
+    constructor(app:App) {
+        this._app = app;
     }
 
     protected readonly Defaults = {
@@ -86,28 +89,96 @@ export class Launcher {
     }
 
     public createModuleManager(): ModuleManager {
-        this._moduleManager = new ModuleManager(this._options, this._injector);
+        this._moduleManager = new ModuleManager(this._options, this._injector,this._plugins);
         return this._moduleManager
     }
 
 
     public async launch(): Promise<void> {
 
+        if (this._isInitialized) {
+            return;
+        }
+
+        this._initFiles();
+
+        await this.initStaticModules();
+
+        await this.initDynamicModules();
+
+        if (this._app.parent && !this._options.immediate) {
+            return;
+        }
+
+        await this.initInjector();
+
+        await this.initBootStrap();
+
+        this._isInitialized = true;
+    }
+
+    protected async initStaticModules() {
+        if (this._isInitialized) {
+            return;
+        }
+        for (let app of this._app.children) {
+            await app.launcher.initStaticModules()
+        }
+
         await this._moduleManager.loadStaticModules();
-
-        this._loadFiles();
-
-        await this._moduleManager.loadDynamicModules(this._plugins);
-
-
     }
 
-    public async initInjector() {
-        await this._injector.initialize();
+    protected async initDynamicModules() {
+        if (this._isInitialized) {
+            return;
+        }
+        for (let app of this._app.children) {
+            await app.launcher.initDynamicModules()
+        }
+
+        await this._moduleManager.loadDynamicModules();
     }
 
 
-    private _loadFiles() {
+    protected async initInjector() {
+        if (this._isInitialized) {
+            return;
+        }
+        for (let app of this._app.children) {
+            await app.launcher.initInjector()
+        }
+        await this._injector.initialize({immediate:this._options.immediate});
+    }
+
+    protected async initBootStrap(): Promise<void> {
+        if (this._isInitialized) {
+            return;
+        }
+        for (let app of this._app.children) {
+            await app.launcher.initInjector()
+        }
+
+        let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
+
+        if (!bootstrapDef) {
+            return Promise.resolve();
+        }
+
+        let bootstrap = this._injector.getObject<IBootstrap>(this._options.bootStrapClassId);
+
+        await bootstrap.run();
+
+        this._isInitialized = true;
+    }
+
+
+    private _initFiles() {
+
+        for (let app of this._app.children) {
+            app.launcher._initFiles()
+        }
+
+
         let loadPaths = _.union(this._options.paths, this._env.paths);
 
         for (let filePath of FilesLoader.load(this._options.root, loadPaths)) {
@@ -159,18 +230,7 @@ export class Launcher {
         return this._plugins;
     }
 
-    public async loadBootStrap(): Promise<void> {
 
-        let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
-
-        if (!bootstrapDef) {
-            return Promise.resolve();
-        }
-
-        let bootstrap = this._injector.getObject<IBootstrap>(this._options.bootStrapClassId);
-
-        await bootstrap.run();
-    }
 
 }
 

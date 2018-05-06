@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const index_1 = require("../../../../../../index");
 let Delay = class Delay {
     get name() {
-        return "delay" + this.delayManager.name;
+        return "delay" + this.delayManager.name + this.moduleOptions.testModule;
     }
 };
 tslib_1.__decorate([

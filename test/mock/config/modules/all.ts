@@ -22,6 +22,6 @@ export = async function (env: IEnv, app: App) {
     await app.module(logger7({test: 'test7'}));
 
     await app.module(TestModule);
-    await app.module(new DelayModule({delay: 1}),new DbModule({id: "dbMock"}));
+    await app.module(new DelayModule({delay: 1,testModule:env.testModule}),new DbModule({id: "dbMock"}));
 
 }

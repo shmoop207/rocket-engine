@@ -9,6 +9,6 @@ export class Delay {
     @inject() moduleOptions: any;
 
     get name(): string {
-        return "delay" + this.delayManager.name;
+        return "delay" + this.delayManager.name+ this.moduleOptions.testModule;
     }
 }
