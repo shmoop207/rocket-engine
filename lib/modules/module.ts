@@ -16,8 +16,12 @@ export class Module<T = any> {
     protected _app: App;
     protected _moduleDefinition: IModuleDefinition;
 
+    protected get defaults(): Partial<T> {
+        return {}
+    }
+
     constructor(options?: T) {
-        this._moduleOptions = options || {};
+        this._moduleOptions = _.defaultsDeep({}, options || {}, this.defaults);
     }
 
     public get exports(): ModuleTypes {
@@ -28,7 +32,7 @@ export class Module<T = any> {
         return this._imports;
     }
 
-    public get moduleOptions(): any {
+    public get moduleOptions(): T {
         return this._moduleOptions;
     }
 
