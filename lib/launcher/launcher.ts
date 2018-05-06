@@ -174,6 +174,10 @@ export class Launcher {
 
     private _initFiles() {
 
+        if (this._isInitialized) {
+            return;
+        }
+
         for (let app of this._app.children) {
             app.launcher._initFiles()
         }
