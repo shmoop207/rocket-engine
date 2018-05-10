@@ -155,7 +155,7 @@ export class Launcher {
             return;
         }
         for (let app of this._app.children) {
-            await app.launcher.initInjector()
+            await app.launcher.initBootStrap()
         }
 
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);

@@ -57,6 +57,7 @@ describe('modules', function () {
         bootstrap.delay.name.should.be.eq("delay1developmenttestModule");
         bootstrap.dbMock.conn.should.be.eq("working");
         bootstrap.dbMock.name.should.be.eq("working");
+        bootstrap.dbMock.bootstrap.should.be.ok;
     });
     it('should inject external async module with imports name ref', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
