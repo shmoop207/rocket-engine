@@ -4,6 +4,7 @@ import _ = require('lodash');
 import fs = require('fs');
 import CallSite = NodeJS.CallSite;
 import {Injector, Util as InjectUtil} from "appolo-inject";
+import {ILogger} from "../interfaces/ILogger";
 
 export class Util extends InjectUtil {
 
@@ -63,6 +64,17 @@ export class Util extends InjectUtil {
 
         });
 
+    }
+
+    public static logger(injector: Injector): ILogger {
+
+        if (injector.getDefinition("logger")) {
+            let logger = injector.get<ILogger>("logger");
+
+            return logger.info && logger.error ? logger : console
+        }
+
+        return console
     }
 
 

@@ -189,7 +189,7 @@ export class Launcher {
             try {
                 let exported: any = require(filePath);
 
-                this._handleExported(exported);
+                this._handleExported(exported,filePath);
 
             } catch (e) {
                 console.error(`failed to require ${filePath}`);
@@ -199,7 +199,7 @@ export class Launcher {
         }
     }
 
-    private _handleExported(exported: any) {
+    private _handleExported(exported: any,filePath:string) {
         let keys = Object.keys(exported);
 
         for (let i = 0, len = keys.length; i < len; i++) {
@@ -209,15 +209,15 @@ export class Launcher {
                 continue;
             }
 
-            this._handleFn(fn);
+            this._handleFn(fn,filePath);
         }
     }
 
-    private _handleFn(fn: Function) {
+    private _handleFn(fn: Function,filePath:string) {
         let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
-            this._injector.register(fn as IClass)
+            this._injector.register(fn as IClass,null,filePath)
         }
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {

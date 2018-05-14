@@ -16,12 +16,14 @@ export class Module<T = any> {
     protected _app: App;
     protected _moduleDefinition: IModuleDefinition;
 
+    protected readonly Defaults: Partial<T> = {};
+
     protected get defaults(): Partial<T> {
-        return {}
+        return this.Defaults
     }
 
     constructor(options?: T) {
-        this._moduleOptions = _.defaultsDeep({}, options || {}, this.defaults);
+        this._moduleOptions = options
     }
 
     public get exports(): ModuleTypes {
@@ -38,24 +40,31 @@ export class Module<T = any> {
 
     public async initialize(parent: Injector, plugins: IPlugin[]) {
 
-        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, this.constructor);
+        try {
+            this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, this.constructor);
 
-        if (!this._moduleDefinition) {
-            return;
+            if (!this._moduleDefinition) {
+                return;
+            }
+
+            this._setDefinitions();
+
+            this._app = this._createApp(parent, this._moduleDefinition);
+
+            await this._loadInnerModules(this._app, this._moduleDefinition, plugins);
+
+            this._handleExports(this._app);
+            this._handleImports(this._app);
+
+            this._handlePlugins(this._exports, plugins);
+
+            this._moduleOptions = _.defaultsDeep({}, this._moduleOptions || {}, this.defaults);
+
+
+            await this._app.launch();
+        } catch (e) {
+            Util.logger(parent).error(`failed to initialize module ${this.constructor.name}`, {e: e.stack})
         }
-
-        this._setDefinitions();
-
-        this._app = this._createApp(parent, this._moduleDefinition);
-
-        await this._loadInnerModules(this._app, this._moduleDefinition, plugins);
-
-        this._handleExports(this._app);
-        this._handleImports(this._app);
-
-        this._handlePlugins(this._exports, plugins);
-
-        await this._app.launch();
     }
 
     private _setDefinitions() {
