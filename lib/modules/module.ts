@@ -23,7 +23,7 @@ export class Module<T = any> {
     }
 
     constructor(options?: T) {
-        this._moduleOptions = options
+        this._moduleOptions = options || {};
     }
 
     public get exports(): ModuleTypes {
@@ -51,14 +51,16 @@ export class Module<T = any> {
 
             this._app = this._createApp(parent, this._moduleDefinition);
 
+            this._moduleOptions = _.defaultsDeep({}, this._moduleOptions || {}, this.defaults);
+
+            this._app.injector.addObject("moduleOptions", this._moduleOptions, true);
+
             await this._loadInnerModules(this._app, this._moduleDefinition, plugins);
 
             this._handleExports(this._app);
             this._handleImports(this._app);
 
             this._handlePlugins(this._exports, plugins);
-
-            this._moduleOptions = _.defaultsDeep({}, this._moduleOptions || {}, this.defaults);
 
 
             await this._app.launch();
@@ -95,7 +97,7 @@ export class Module<T = any> {
 
         app.injector.addObject("rootEnv", rootEnv, true);
         app.injector.addObject("env", _.extend({}, rootEnv, app.env), true);
-        app.injector.addObject("moduleOptions", this._moduleOptions, true);
+
 
         app.injector.parent = parent;
 
