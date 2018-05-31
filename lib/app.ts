@@ -6,6 +6,7 @@ import {ModuleFn, ModuleManager} from "./modules/modules";
 import {IClass} from "./interfaces/IModuleDefinition";
 import {IApp} from "./interfaces/IApp";
 import Q = require("bluebird");
+import _ = require("lodash");
 
 
 export class App implements IApp {
@@ -38,7 +39,7 @@ export class App implements IApp {
         return new App(options);
     };
 
-    public get launcher():Launcher{
+    public get launcher(): Launcher {
         return this._launcher
     }
 
@@ -74,9 +75,6 @@ export class App implements IApp {
         this._launcher.plugins.push(fn);
     }
 
-    public reset() {
-        this._injector.reset();
-    }
 
     public get parent(): App {
         return this._parent;
@@ -90,6 +88,20 @@ export class App implements IApp {
         this._parent = value;
         value.children.push(this);
 
+    }
+
+    public reset() {
+        _.forEach(this._children, app => app.reset());
+
+        this._injector.reset();
+
+        this._children.length = 0;
+
+        this._parent = null;
+
+        this._injector = null;
+
+        this._launcher.reset();
     }
 
 

@@ -18,6 +18,8 @@ describe('modules', function () {
     });
 
     afterEach(function () {
+
+        app.reset()
     })
 
     it('should initialize module', function () {

@@ -8,10 +8,10 @@ import {FilesLoader} from "../loader/filesLoader";
 import {BootstrapSymbol} from "../decorators";
 import {ModuleManager} from "../modules/modules";
 import {IClass} from "../interfaces/IModuleDefinition";
+import {App} from "../app";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
-import {App} from "../app";
 
 export class Launcher {
 
@@ -20,10 +20,11 @@ export class Launcher {
     protected _injector: Injector;
     protected _moduleManager: ModuleManager;
     protected _plugins: ((fn: Function) => void)[] = [];
-    protected _app:App;
-    private _isInitialized:boolean = false;
+    protected _app: App;
+    private _isInitialized: boolean = false;
+    private _files: string[] = [];
 
-    constructor(app:App) {
+    constructor(app: App) {
         this._app = app;
     }
 
@@ -89,7 +90,7 @@ export class Launcher {
     }
 
     public createModuleManager(): ModuleManager {
-        this._moduleManager = new ModuleManager(this._options, this._injector,this._plugins);
+        this._moduleManager = new ModuleManager(this._options, this._injector, this._plugins);
         return this._moduleManager
     }
 
@@ -147,7 +148,7 @@ export class Launcher {
         for (let app of this._app.children) {
             await app.launcher.initInjector()
         }
-        await this._injector.initialize({immediate:this._options.immediate});
+        await this._injector.initialize({immediate: this._options.immediate});
     }
 
     protected async initBootStrap(): Promise<void> {
@@ -189,7 +190,7 @@ export class Launcher {
             try {
                 let exported: any = require(filePath);
 
-                this._handleExported(exported,filePath);
+                this._handleExported(exported, filePath);
 
             } catch (e) {
                 console.error(`failed to require ${filePath}`);
@@ -199,7 +200,7 @@ export class Launcher {
         }
     }
 
-    private _handleExported(exported: any,filePath:string) {
+    private _handleExported(exported: any, filePath: string) {
         let keys = Object.keys(exported);
 
         for (let i = 0, len = keys.length; i < len; i++) {
@@ -209,15 +210,16 @@ export class Launcher {
                 continue;
             }
 
-            this._handleFn(fn,filePath);
+            this._handleFn(fn, filePath);
         }
     }
 
-    private _handleFn(fn: Function,filePath:string) {
+    private _handleFn(fn: Function, filePath: string) {
         let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
-            this._injector.register(fn as IClass,null,filePath)
+            this._injector.register(fn as IClass, null, filePath)
+            this._files.push(filePath);
         }
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
@@ -234,7 +236,9 @@ export class Launcher {
         return this._plugins;
     }
 
-
+    public reset() {
+        _.forEach(this._files, file => delete require.cache[file]);
+    }
 
 }
 
