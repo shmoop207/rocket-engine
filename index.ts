@@ -27,7 +27,7 @@ export {
     lazy,
     injectAliasFactory,
     IParamInject,
-    define, Define
+    define, Define,override
 } from 'appolo-inject'
 export {IOptions} from './lib/interfaces/IOptions'
 export {IBootstrap} from './lib/interfaces/IBootstrap'

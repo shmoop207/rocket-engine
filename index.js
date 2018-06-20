@@ -29,6 +29,7 @@ exports.lazy = appolo_inject_1.lazy;
 exports.injectAliasFactory = appolo_inject_1.injectAliasFactory;
 exports.define = appolo_inject_1.define;
 exports.Define = appolo_inject_1.Define;
+exports.override = appolo_inject_1.override;
 var app_2 = require("./lib/app");
 exports.App = app_2.App;
 var module_1 = require("./lib/modules/module");
