@@ -66,6 +66,8 @@ export class Module<T = any> {
             await this._app.launch();
         } catch (e) {
             Util.logger(parent).error(`failed to initialize module ${this.constructor.name}`, {e: e.stack})
+
+            throw e;
         }
     }
 
