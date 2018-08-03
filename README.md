@@ -133,7 +133,7 @@ You can always access the injector via `app.injector`.
  - `injectParam` - inject object by parameter
 ```javascript
 //dataRemoteManager.ts
-import {define,singleton,initMethod,inject,IFactory,factory} from 'appolo';
+import {define,singleton,initMethod,inject,IFactory,factory} from 'appolo-engine';
 @define()
 @singleton()
 export class DataRemoteManager {
@@ -197,7 +197,7 @@ Inherited injections are supported as well.
 Anything you inject on a base class will be available to child classes.
 Remember not to use `@define` on the parent class.
 ```javascript
-import {define,singleton,injectParam,initMethod,inject} from 'appolo';
+import {define,singleton,injectParam,initMethod,inject} from 'appolo-engine';
 
 export class BaseManager {
     @inject() protected env:any
@@ -218,7 +218,7 @@ Appolo has a built-in event dispatcher to enable classes to listen to and fire e
 Event Dispatcher has the following methods:
 
 ```javascript
-import {define,singleton,injectParam,initMethod,inject,EventDispatcher} from 'appolo';
+import {define,singleton,injectParam,initMethod,inject,EventDispatcher} from 'appolo-engine';
 @define()
 @singleton()
 export class FooManager extends EventDispatcher{
@@ -253,7 +253,7 @@ By default, each module can inject:
 
 Module example:
 ```javascript
-import {App} from 'appolo';
+import {App} from 'appolo-engine';
 export = async function(app:App){
     await app.module(async function(env:any,inject:appolo.Injector){
         let myModuleObject = {data:'test'};
@@ -280,7 +280,7 @@ A logger module example with [winston][19]
 loggerModule.js file:
 ```javascript
 import winston = require('winston');
-import {App} from 'appolo';
+import {App} from 'appolo-engine';
 export = async function(app:App){
     await appolo.module(async function(env:any,inject:appolo.Injector){
         transports = [];
@@ -294,7 +294,7 @@ export = async function(app:App){
 ```
 Now we you inject logger anywhere we need it:
 ```javascript
-import {define,singleton,initMethod,inject} from 'appolo';
+import {define,singleton,initMethod,inject} from 'appolo-engine';
 @define()
 export class DataManager{
     @inject() logger:Logger
@@ -308,7 +308,7 @@ export class DataManager{
 
 Once it launched, appolo will try to find an appolo `bootstrap` class and call it's `run` method. Only when the bootstrap is finished, the server will start
 ```javascript
-import {define,singleton,injectParam,initMethod,inject,bootstrap,IBootstrap} from 'appolo';
+import {define,singleton,injectParam,initMethod,inject,bootstrap,IBootstrap} from 'appolo-engine';
 @define()
 @bootstrap()
 export class Bootstrap implements IBootstrap{
