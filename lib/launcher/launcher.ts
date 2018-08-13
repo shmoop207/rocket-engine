@@ -5,13 +5,13 @@ import {Util} from "../util/util";
 import {IBootstrap} from "../interfaces/IBootstrap";
 import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
-import {BootstrapSymbol} from "../decorators";
 import {ModuleManager} from "../modules/modules";
 import {IClass} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
+import {BootstrapSymbol} from "../decoretors/bootstrap";
 
 export class Launcher {
 

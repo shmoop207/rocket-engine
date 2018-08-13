@@ -5,9 +5,9 @@ import   path = require('path');
 import {Util} from "../util/util";
 import {Injector} from "appolo-inject";
 import {Module} from "./module";
-import {ModuleSymbol} from "../decorators";
 import {IOptions} from "../interfaces/IOptions";
 import {IModuleDefinition, IPlugin} from "../interfaces/IModuleDefinition";
+import {ModuleSymbol} from "../decoretors/module";
 
 export interface IModuleCrt {
     new(...args: any[]): Module

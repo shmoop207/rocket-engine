@@ -1,11 +1,37 @@
 import {IOptions} from "./lib/interfaces/IOptions";
 import {App} from "./lib/app";
 import {Module} from "./lib/modules/module";
+import {
+    alias,
+    aliasFactory,
+    define,
+    Define,
+    factory,
+    IDefinition,
+    IFactory,
+    initMethod,
+    inject,
+    injectAlias,
+    injectAliasFactory,
+    injectArray,
+    injectDictionary,
+    injectFactory,
+    injectFactoryMethod,
+    injectObjectProperty,
+    Injector,
+    injectParam,
+    injectValue,
+    IParamInject,
+    lazy,
+    override,
+    singleton
+} from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
-export {EventDispatcher} from './lib/events/event-dispatcher';
+export {EventDispatcher} from 'appolo-event-dispatcher';
 export {Launcher} from './lib/launcher/launcher';
 export {FilesLoader} from './lib/loader/filesLoader';
+
 export {
     Injector,
     singleton,
@@ -27,8 +53,9 @@ export {
     lazy,
     injectAliasFactory,
     IParamInject,
-    define, Define,override
-} from 'appolo-inject'
+    define, Define, override
+}
+
 export {IOptions} from './lib/interfaces/IOptions'
 export {IBootstrap} from './lib/interfaces/IBootstrap'
 export {IEnv} from './lib/interfaces/IEnv'
@@ -36,7 +63,9 @@ export {App} from './lib/app'
 export {IApp} from './lib/interfaces/IApp'
 export {Module} from './lib/modules/module'
 export {IClass} from './lib/interfaces/IModuleDefinition'
-export {mixins, bootstrap, module} from './lib/decorators'
+export {
+    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval
+}from './lib/decoretors/decorators'
 
 
 export let createApp = function (options?: IOptions): App {

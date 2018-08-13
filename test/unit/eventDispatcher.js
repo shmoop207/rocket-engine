@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const appolo = require("../../index");
 const chai = require("chai");
-const event_dispatcher_1 = require("../../lib/events/event-dispatcher");
+const index_1 = require("../../index");
 const Q = require("bluebird");
 let should = chai.should();
 describe("event dispatcher", function () {
@@ -27,7 +27,7 @@ describe("event dispatcher", function () {
     });
     it("should fire event with params", async () => {
         let value = 0;
-        class EventHandler extends event_dispatcher_1.EventDispatcher {
+        class EventHandler extends index_1.EventDispatcher {
             constructor() {
                 super();
                 setTimeout(() => this.fireEvent("test", 5), 100);
@@ -40,7 +40,7 @@ describe("event dispatcher", function () {
     });
     it("should subscribe with fire event with params", async () => {
         let value = 0;
-        class EventHandler extends event_dispatcher_1.EventDispatcher {
+        class EventHandler extends index_1.EventDispatcher {
             constructor() {
                 super();
                 setTimeout(() => this.fireEvent("test", 5), 100);
@@ -56,7 +56,7 @@ describe("event dispatcher", function () {
     });
     it("should removeAllListeners with fire event with params", async () => {
         let value = 0;
-        class EventHandler extends event_dispatcher_1.EventDispatcher {
+        class EventHandler extends index_1.EventDispatcher {
             constructor() {
                 super();
                 setTimeout(() => this.fireEvent("test", 5), 100);

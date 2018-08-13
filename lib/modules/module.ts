@@ -1,11 +1,11 @@
 import {Injector} from "appolo-inject";
 import {createApp} from "../../index"
-import {ModuleSymbol} from "../decorators";
 import {Util} from "../util/util";
 import {IClass, IModuleDefinition, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import {IEnv} from "../interfaces/IEnv";
 import   _ = require('lodash');
+import {ModuleSymbol} from "../decoretors/module";
 
 
 export class Module<T = any> {

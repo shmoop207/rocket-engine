@@ -1,7 +1,7 @@
 "use strict";
 import appolo  = require('../../index');
 import chai = require('chai')
-import {EventDispatcher} from "../../lib/events/event-dispatcher";
+import {EventDispatcher} from "../../index";
 import Q = require("bluebird");
 
 let should = chai.should();
