@@ -21,7 +21,7 @@
     "npm": ">=3.0.0"
   },
   "main": "./index.js",
-  "version": "6.0.25",
+  "version": "6.0.26",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -31,11 +31,12 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "appolo-cache": "^6.0.3",
+    "appolo-decorators": "^6.0.4",
     "appolo-event-dispatcher": "^6.0.3",
-    "appolo-inject": "^6.0.5",
+    "appolo-inject": "^6.0.11",
     "bluebird": "^3.5.1",
     "lodash": "^4.17.10",
-    "tslib": "^1.9.0"
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.20",

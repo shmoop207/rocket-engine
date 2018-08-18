@@ -4,7 +4,6 @@ const tslib_1 = require("tslib");
 const chai = require("chai");
 const Q = require("bluebird");
 const index_1 = require("../../index");
-const once_1 = require("../../lib/decoretors/once");
 let should = chai.should();
 describe("decorator", function () {
     it('should call throttle', async () => {
@@ -150,10 +149,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            once_1.once()
+            index_1.once()
         ], Test.prototype, "handle", null);
         tslib_1.__decorate([
-            once_1.once(2)
+            index_1.once(2)
         ], Test.prototype, "handle2", null);
         let test = new Test();
         test.handle();

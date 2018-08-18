@@ -1,8 +1,7 @@
 "use strict";
 import chai = require('chai');
 import Q = require('bluebird');
-import {bind, cache, debounce, delay, throttle} from "../../index";
-import {once} from "../../lib/decoretors/once";
+import {bind, cache, debounce, delay, once, throttle} from "../../index";
 
 let should = chai.should();
 
