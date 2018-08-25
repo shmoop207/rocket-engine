@@ -1,4 +1,7 @@
 # Appolo-Engine
+[![Build Status](https://travis-ci.org/shmoop207/appolo-engine.svg?branch=master)](https://travis-ci.org/shmoop207/appolo-engine) [![Dependencies status](https://david-dm.org/shmoop207/appolo-engine.svg)](https://david-dm.org/shmoop207/appolo-engine) [![NPM version](https://badge.fury.io/js/appolo-engine.svg)](https://badge.fury.io/js/appolo-engine)  [![npm Downloads](https://img.shields.io/npm/dm/appolo-engine.svg?style=flat)](https://www.npmjs.com/package/appolo-engine)
+[![Known Vulnerabilities](https://snyk.io/test/github/shmoop207/appolo-engine/badge.svg)](https://snyk.io/test/github/shmoop207/appolo-engine)
+  
   ![appolo](https://www.dropbox.com/s/pwdvd6ohb74t7r7/appollo.png?raw=1)
 
 Appolo  is an light web server MVC Framework for Node.js written in Typescript<br>
