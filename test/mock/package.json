@@ -25,14 +25,10 @@
   "readme": "",
   "readmeFilename": "README.md",
     "dependencies": {
-        "appolo-class":"^0.2.15",
-        "appolo-inject":"^0.3.13",
-        "lodash": "2.4.1",
-        "async":"0.9.0"
+        "appolo-inject": "^6.0.11",
+        "lodash": "4.17.10"
     },
     "devDependencies": {
-        "chai":"1.8.1",
-        "grunt":"*",
-        "grunt-mocha-test":"0.8.1"
+        "chai": "4.1.2"
     }
 }
