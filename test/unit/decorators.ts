@@ -156,7 +156,7 @@ describe("decorator", function () {
 
             test = 0;
 
-            @cache({getMethod: "getByExpire", maxAge: 20})
+            @cache({refresh:true, maxAge: 20})
             async handle() {
                 return ++this.test;
             }

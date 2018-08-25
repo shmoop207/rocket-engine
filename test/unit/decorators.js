@@ -126,7 +126,7 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.cache({ getMethod: "getByExpire", maxAge: 20 })
+            index_1.cache({ refresh: true, maxAge: 20 })
         ], Test.prototype, "handle", null);
         let test = new Test();
         await test.handle();
