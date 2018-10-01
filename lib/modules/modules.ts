@@ -8,6 +8,8 @@ import {Module} from "./module";
 import {IOptions} from "../interfaces/IOptions";
 import {IModuleDefinition, IPlugin} from "../interfaces/IModuleDefinition";
 import {ModuleSymbol} from "../decoretors/module";
+import {App} from "../app";
+import {Events} from "../interfaces/events";
 
 export interface IModuleCrt {
     new(...args: any[]): Module
@@ -33,8 +35,12 @@ export class ModuleManager {
     }
 
     private async _loadModule(module: Module) {
+        this._injector.get<App>(App).fireEvent(Events.BeforeModuleInit, module);
 
         await module.initialize(this._injector, this.plugins);
+
+        this._injector.get<App>(App).fireEvent(Events.ModuleInit, module);
+
     }
 
     public async _loadDynamicModule(moduleFn: typeof Module | Module) {

@@ -8,10 +8,11 @@ import {FilesLoader} from "../loader/filesLoader";
 import {ModuleManager} from "../modules/modules";
 import {IClass} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
+import {BootstrapSymbol} from "../decoretors/bootstrap";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
-import {BootstrapSymbol} from "../decoretors/bootstrap";
+import {Events} from "../interfaces/events";
 
 export class Launcher {
 
@@ -125,7 +126,6 @@ export class Launcher {
         for (let app of this._app.children) {
             await app.launcher.initStaticModules()
         }
-
         await this._moduleManager.loadStaticModules();
     }
 
@@ -137,9 +137,12 @@ export class Launcher {
             await app.launcher.initDynamicModules()
         }
 
-        await this._moduleManager.loadDynamicModules();
-    }
+        this._app.fireEvent(Events.BeforeModulesLoad);
 
+        await this._moduleManager.loadDynamicModules();
+
+        this._app.fireEvent(Events.ModulesLoaded);
+    }
 
     protected async initInjector() {
         if (this._isInitialized) {
@@ -148,7 +151,13 @@ export class Launcher {
         for (let app of this._app.children) {
             await app.launcher.initInjector()
         }
+
+        this._app.fireEvent(Events.BeforeInjectorInit);
+
         await this._injector.initialize({immediate: this._options.immediate});
+
+        this._app.fireEvent(Events.InjectorInit);
+
     }
 
     protected async initBootStrap(): Promise<void> {
@@ -167,7 +176,11 @@ export class Launcher {
 
         let bootstrap = this._injector.getObject<IBootstrap>(this._options.bootStrapClassId);
 
+        this._app.fireEvent(Events.BeforeBootstrap);
+
         await bootstrap.run();
+
+        this._app.fireEvent(Events.Bootstrap);
 
         this._isInitialized = true;
     }
@@ -218,8 +231,11 @@ export class Launcher {
         let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
-            this._injector.register(fn as IClass, null, filePath)
+            this._app.fireEvent(Events.BeforeInjectRegister, define);
+            this._injector.register(fn as IClass, null, filePath);
             this._files.push(filePath);
+            this._app.fireEvent(Events.InjectRegister, define)
+
         }
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {

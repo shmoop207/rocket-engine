@@ -2,14 +2,16 @@ import {IEnv} from "./interfaces/IEnv";
 import {Define, Injector} from "appolo-inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
+import {EventDispatcher} from "appolo-event-dispatcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
 import {IClass} from "./interfaces/IModuleDefinition";
 import {IApp} from "./interfaces/IApp";
+import * as Events from "events";
 import Q = require("bluebird");
 import _ = require("lodash");
 
 
-export class App implements IApp {
+export class App extends EventDispatcher implements IApp {
 
     protected _env: IEnv;
     protected _injector: Injector;
@@ -21,6 +23,7 @@ export class App implements IApp {
 
 
     constructor(options?: IOptions) {
+        super();
 
         this._launcher = new Launcher(this);
 
@@ -104,5 +107,19 @@ export class App implements IApp {
         this._launcher.reset();
     }
 
+    public on(event: Events | string, fn: (...args: any[]) => any, scope?: any, once?: boolean): void {
+        return super.on(event.toString(), fn, scope, once)
+    }
 
+    public once(event: Events | string, fn?: (...args: any[]) => any, scope?: any): Promise<any> | void {
+        return super.once(event.toString(), fn, scope);
+    }
 }
+
+
+
+
+
+
+
+

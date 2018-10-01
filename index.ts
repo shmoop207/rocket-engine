@@ -62,6 +62,7 @@ export {IEnv} from './lib/interfaces/IEnv'
 export {App} from './lib/app'
 export {IApp} from './lib/interfaces/IApp'
 export {Module} from './lib/modules/module'
+export {Events} from './lib/interfaces/events'
 export {IClass} from './lib/interfaces/IModuleDefinition'
 export {
     mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval
