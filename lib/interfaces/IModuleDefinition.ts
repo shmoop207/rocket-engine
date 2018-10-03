@@ -22,7 +22,5 @@ export interface IModuleDefinition {
 export interface IModuleOptions {
     immediate?: boolean
     parallel?: boolean
-
-    [index: string]: any
 }
 
