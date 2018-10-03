@@ -55,10 +55,13 @@ describe('modules', function () {
         should.not.exist(app.injector.getDefinition('delayManager'));
         should.exist(bootstrap.delay);
         should.exist(bootstrap.dbMock);
-        bootstrap.delay.name.should.be.eq("delay1developmenttestModule");
+        bootstrap.delay.data.msg.should.be.eq("testDev");
+        bootstrap.delay2.data.msg.should.be.eq("testDev");
+        bootstrap.delay2.data.time.should.be.lessThan(bootstrap.delay.data.time);
         bootstrap.dbMock.conn.should.be.eq("working");
         bootstrap.dbMock.name.should.be.eq("working");
         bootstrap.dbMock.bootstrap.should.be.ok;
+        bootstrap.dbMock.time.should.be.greaterThan(bootstrap.delay.data.time);
     });
     it('should inject external async module with imports name ref', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);

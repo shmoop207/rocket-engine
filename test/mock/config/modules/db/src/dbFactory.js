@@ -6,7 +6,7 @@ const index_1 = require("../../../../../../index");
 let DbFactory = class DbFactory {
     async get() {
         await Q.delay(1);
-        return { conn: "working", env: this.env2.type, name: this.test.name };
+        return { conn: "working", env: this.env2.type, name: this.test.name, time: Date.now() };
     }
 };
 tslib_1.__decorate([

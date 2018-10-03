@@ -8,7 +8,7 @@ export class Delay {
     @inject() delayManager: DelayManager;
     @inject() moduleOptions: any;
 
-    get name(): string {
-        return "delay" + this.delayManager.name+ this.moduleOptions.testModule;
+    get data(): {time:number,msg:string} {
+        return  {time:this.delayManager.time,msg:this.moduleOptions.testModule};
     }
 }

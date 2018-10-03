@@ -6,7 +6,7 @@ const index_1 = require("../../../../../../index");
 let DelayProvider = class DelayProvider {
     async get() {
         await Q.delay(this.moduleOptions.delay);
-        return this.moduleOptions.delay;
+        return { delay: this.moduleOptions.delay, time: Date.now() };
     }
 };
 tslib_1.__decorate([

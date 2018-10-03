@@ -6,13 +6,14 @@ import {IBootstrap} from "../interfaces/IBootstrap";
 import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
 import {ModuleManager} from "../modules/modules";
-import {IClass} from "../interfaces/IModuleDefinition";
+import {IClass, IModuleOptions} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import {BootstrapSymbol} from "../decoretors/bootstrap";
+import {Events} from "../interfaces/events";
+import {AppModuleOptionsSymbol} from "../decoretors/module";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
-import {Events} from "../interfaces/events";
 
 export class Launcher {
 
@@ -24,6 +25,7 @@ export class Launcher {
     protected _app: App;
     private _isInitialized: boolean = false;
     private _files: string[] = [];
+    private _moduleOptions: IModuleOptions;
 
     constructor(app: App) {
         this._app = app;
@@ -42,7 +44,6 @@ export class Launcher {
         let opts = _.defaults(options || {}, this.Defaults);
 
         this._options = opts;
-
         return opts;
 
     }
@@ -98,6 +99,9 @@ export class Launcher {
 
     public async launch(): Promise<void> {
 
+        this._moduleOptions = Reflect.getMetadata(AppModuleOptionsSymbol, this._app) || {};
+
+
         if (this._isInitialized) {
             return;
         }
@@ -108,7 +112,7 @@ export class Launcher {
 
         await this.initDynamicModules();
 
-        if (this._app.parent && !this._options.immediate) {
+        if (this._app.parent && !this._moduleOptions.immediate) {
             return;
         }
 
@@ -148,13 +152,16 @@ export class Launcher {
         if (this._isInitialized) {
             return;
         }
-        for (let app of this._app.children) {
-            await app.launcher.initInjector()
-        }
+
+        await Util.runRegroupByParallel<App>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => app.launcher.initInjector())
 
         this._app.fireEvent(Events.BeforeInjectorInit);
 
-        await this._injector.initialize({immediate: this._options.immediate});
+
+        await this._injector.initialize({
+            immediate: this._moduleOptions.immediate,
+            parallel: this._moduleOptions.parallel
+        });
 
         this._app.fireEvent(Events.InjectorInit);
 
@@ -164,9 +171,8 @@ export class Launcher {
         if (this._isInitialized) {
             return;
         }
-        for (let app of this._app.children) {
-            await app.launcher.initBootStrap()
-        }
+
+        await Util.runRegroupByParallel<App>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => app.launcher.initBootStrap());
 
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 

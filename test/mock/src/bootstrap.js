@@ -15,6 +15,9 @@ tslib_1.__decorate([
 ], Bootstrap.prototype, "delay", void 0);
 tslib_1.__decorate([
     index_1.inject()
+], Bootstrap.prototype, "delay2", void 0);
+tslib_1.__decorate([
+    index_1.inject()
 ], Bootstrap.prototype, "dbMock", void 0);
 Bootstrap = tslib_1.__decorate([
     index_1.define(),

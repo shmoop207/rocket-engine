@@ -3,6 +3,6 @@ export interface IOptions {
     root?: string
     environment?: string
     bootStrapClassId?: string
-    immediate?:boolean
+
 }
 

@@ -1,20 +1,23 @@
 import {Injector} from "appolo-inject";
 import {createApp} from "../../index"
 import {Util} from "../util/util";
-import {IClass, IModuleDefinition, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
+import {IClass, IModuleDefinition, IModuleOptions, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import {IEnv} from "../interfaces/IEnv";
+import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/module";
 import   _ = require('lodash');
-import {ModuleSymbol} from "../decoretors/module";
 
 
-export class Module<T = any> {
+export class Module<T extends IModuleOptions = any> {
 
     protected _exports: ModuleTypes;
     protected _imports: ModuleTypes;
-    protected _moduleOptions: any;
+    protected _moduleOptions: T;
     protected _app: App;
     protected _moduleDefinition: IModuleDefinition;
+    protected _parallel: boolean;
+    protected _immediate: boolean;
+
 
     protected readonly Defaults: Partial<T> = {};
 
@@ -22,8 +25,13 @@ export class Module<T = any> {
         return this.Defaults
     }
 
-    constructor(options?: T) {
-        this._moduleOptions = options || {};
+    constructor(options: T = {} as T) {
+        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, this.constructor);
+
+        this._moduleOptions = _.defaults({}, options, {
+            immediate: this._moduleDefinition.immediate,
+            parallel: this._moduleDefinition.parallel
+        }, {immediate: false, parallel: false});
     }
 
     public get exports(): ModuleTypes {
@@ -34,6 +42,10 @@ export class Module<T = any> {
         return this._imports;
     }
 
+    // public set parallel(value: boolean) {
+    //     this._moduleOptions.parallel = value;
+    // }
+
     public get moduleOptions(): T {
         return this._moduleOptions;
     }
@@ -41,7 +53,6 @@ export class Module<T = any> {
     public async initialize(parent: Injector, plugins: IPlugin[]) {
 
         try {
-            this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, this.constructor);
 
             if (!this._moduleDefinition) {
                 return;
@@ -92,13 +103,15 @@ export class Module<T = any> {
 
         let app = createApp({
             root: moduleDefinition.root,
-            immediate: moduleDefinition.immediate,
             environment: rootEnv.type
         });
 
 
         app.injector.addObject("rootEnv", rootEnv, true);
         app.injector.addObject("env", _.extend({}, rootEnv, app.env), true);
+
+
+        Reflect.defineMetadata(AppModuleOptionsSymbol, this._moduleOptions, app);
 
 
         app.injector.parent = parent;

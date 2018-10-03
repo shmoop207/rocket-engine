@@ -6,7 +6,7 @@ import {Util} from "../util/util";
 import {Injector} from "appolo-inject";
 import {Module} from "./module";
 import {IOptions} from "../interfaces/IOptions";
-import {IModuleDefinition, IPlugin} from "../interfaces/IModuleDefinition";
+import {IPlugin} from "../interfaces/IModuleDefinition";
 import {ModuleSymbol} from "../decoretors/module";
 import {App} from "../app";
 import {Events} from "../interfaces/events";
@@ -24,14 +24,11 @@ export class ModuleManager {
 
     constructor(private _options: IOptions, private _injector: Injector, private plugins: IPlugin[]) {
         this._modules = [];
-
     }
 
     public async loadDynamicModules() {
 
-        for (let module of this._modules) {
-            await this._loadModule(module)
-        }
+        await Util.runRegroupByParallel<Module>(this._modules, module => module.moduleOptions.parallel, module => this._loadModule(module));
     }
 
     private async _loadModule(module: Module) {
@@ -43,14 +40,14 @@ export class ModuleManager {
 
     }
 
-    public async _loadDynamicModule(moduleFn: typeof Module | Module) {
+    public async _loadDynamicModule(moduleFn: typeof Module | Module, isParallel: boolean) {
 
 
         let module = Module.isPrototypeOf(moduleFn) ? new (moduleFn as typeof Module)() : moduleFn as Module;
 
-        let def: IModuleDefinition = Reflect.getMetadata(ModuleSymbol, module.constructor);
+        module.moduleOptions.parallel = isParallel;
 
-        if (def.immediate) {
+        if (module.moduleOptions.immediate) {
             await this._loadModule(module);
         } else {
             this._modules.push(module);
@@ -58,14 +55,16 @@ export class ModuleManager {
     }
 
 
-    public async load(moduleFn: ModuleFn): Promise<any> {
+    public async load(modules: ModuleFn[]): Promise<any> {
 
-        if (Reflect.hasMetadata(ModuleSymbol, moduleFn) || Reflect.hasMetadata(ModuleSymbol, moduleFn.constructor)) {
-            await this._loadDynamicModule(moduleFn as (typeof Module | Module));
+        let [dynamicModules, staticModules] = _.partition(modules, module => Reflect.hasMetadata(ModuleSymbol, module) || Reflect.hasMetadata(ModuleSymbol, module.constructor))
 
-        } else {
-            await this._loadStaticModule(moduleFn as ModuleFunction)
-        }
+        await Q.map(dynamicModules, item => this._loadDynamicModule(item as typeof Module | Module, dynamicModules.length > 1));
+
+
+        await Q.map(staticModules, item => this._loadStaticModule(item as ModuleFunction));
+
+
     }
 
     private _loadStaticModule(moduleFn: ModuleFunction): PromiseLike<any> {

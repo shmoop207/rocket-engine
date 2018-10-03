@@ -69,9 +69,9 @@ export class App extends EventDispatcher implements IApp {
         return this._injector.register(id, type)
     }
 
-    public async module(...moduleFn: ModuleFn[]): Promise<void> {
+    public async module(...modules: ModuleFn[]): Promise<void> {
 
-        await Q.map(moduleFn, module => this._moduleManager.load(module));
+        await  this._moduleManager.load(modules);
     }
 
     public plugin(fn: (fn: Function) => void) {

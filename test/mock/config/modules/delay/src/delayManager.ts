@@ -5,9 +5,9 @@ import {IEnv} from "../../../../../../lib/interfaces/IEnv";
 @singleton()
 export class DelayManager {
     @inject() env: IEnv;
-    @inject() delayProvider: number;
+    @inject() delayProvider: {delay:number,time:number};
 
-    get name(): string {
-        return this.delayProvider + this.env.type
+    get time(): number {
+        return this.delayProvider.time
     }
 }

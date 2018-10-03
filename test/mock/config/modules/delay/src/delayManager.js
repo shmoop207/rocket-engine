@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const index_1 = require("../../../../../../index");
 let DelayManager = class DelayManager {
-    get name() {
-        return this.delayProvider + this.env.type;
+    get time() {
+        return this.delayProvider.time;
     }
 };
 tslib_1.__decorate([

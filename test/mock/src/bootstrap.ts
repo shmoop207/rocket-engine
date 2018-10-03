@@ -12,7 +12,8 @@ export class Bootstrap implements IBootstrap {
 
     @inject() manager: Manager
     @inject() delay: Delay;
-    @inject() dbMock: { conn: string,env:string,name:string };
+    @inject() delay2: Delay;
+    @inject() dbMock: { conn: string,env:string,name:string,time:number };
 
 
     async run() {

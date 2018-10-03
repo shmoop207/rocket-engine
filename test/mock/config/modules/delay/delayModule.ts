@@ -1,12 +1,13 @@
-import {module, Module} from '../../../../../index';
+import {Module, module} from '../../../../../index';
 import {Delay} from "./src/delay";
-import {DelayProvider} from "./src/delayProvider";
 
+@module()
+export class DelayModule extends Module<{ delay: number, testModule: string, id?: string }> {
 
-@module({
-    exports: [Delay]
-})
-export class DelayModule extends Module<{ delay: number,testModule:string }> {
-    
+    public get exports() {
+        return [{id: this.moduleOptions.id || "delay", type: Delay}];
+
+    }
+
 }
 
