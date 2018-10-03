@@ -237,10 +237,10 @@ export class Launcher {
         let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
 
         if (define) {
-            this._app.fireEvent(Events.BeforeInjectRegister, define);
+            this._app.fireEvent(Events.BeforeInjectRegister, fn, filePath, define);
             this._injector.register(fn as IClass, null, filePath);
             this._files.push(filePath);
-            this._app.fireEvent(Events.InjectRegister, define)
+            this._app.fireEvent(Events.InjectRegister, fn, filePath, define)
 
         }
 
