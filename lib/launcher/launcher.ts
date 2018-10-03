@@ -21,7 +21,6 @@ export class Launcher {
     protected _env: IEnv;
     protected _injector: Injector;
     protected _moduleManager: ModuleManager;
-    protected _plugins: ((fn: Function) => void)[] = [];
     protected _app: App;
     private _isInitialized: boolean = false;
     private _files: string[] = [];
@@ -92,7 +91,7 @@ export class Launcher {
     }
 
     public createModuleManager(): ModuleManager {
-        this._moduleManager = new ModuleManager(this._options, this._injector, this._plugins);
+        this._moduleManager = new ModuleManager(this._options, this._injector);
         return this._moduleManager
     }
 
@@ -138,7 +137,8 @@ export class Launcher {
             return;
         }
         for (let app of this._app.children) {
-            await app.launcher.initDynamicModules()
+            await app.launcher.initDynamicModules();
+
         }
 
         this._app.fireEvent(Events.BeforeModulesLoad);
@@ -248,18 +248,12 @@ export class Launcher {
             this._options.bootStrapClassId = Util.getClassName(fn);
         }
 
-        //run plugins;
-        for (let i = 0, len = this._plugins.length; i < len; i++) {
-            this._plugins[i](fn);
-        }
     }
 
-    public get plugins(): ((fn: Function) => void)[] {
-        return this._plugins;
-    }
 
     public reset() {
         _.forEach(this._files, file => delete require.cache[file]);
+        this._app = null;
     }
 
 }

@@ -8,5 +8,6 @@ export enum Events {
     BeforeInjectRegister = "beforeInjectRegister",
     InjectRegister = "injectRegister",
     BeforeModuleInit = "beforeModuleInit",
-    ModuleInit = "moduleInit"
+    ModuleInit = "moduleInit",
+    ModuleExport = "moduleExport"
 }

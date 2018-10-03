@@ -5,6 +5,7 @@ import {IClass, IModuleDefinition, IModuleOptions, IPlugin, ModuleTypes} from ".
 import {App} from "../app";
 import {IEnv} from "../interfaces/IEnv";
 import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/module";
+import {Events} from "../interfaces/events";
 import   _ = require('lodash');
 
 
@@ -42,15 +43,11 @@ export class Module<T extends IModuleOptions = any> {
         return this._imports;
     }
 
-    // public set parallel(value: boolean) {
-    //     this._moduleOptions.parallel = value;
-    // }
-
     public get moduleOptions(): T {
         return this._moduleOptions;
     }
 
-    public async initialize(parent: Injector, plugins: IPlugin[]) {
+    public async initialize(parent: Injector) {
 
         try {
 
@@ -66,15 +63,17 @@ export class Module<T extends IModuleOptions = any> {
 
             this._app.injector.addObject("moduleOptions", this._moduleOptions, true);
 
-            await this._loadInnerModules(this._app, this._moduleDefinition, plugins);
+            await this._loadInnerModules(this._app, this._moduleDefinition);
 
             this._handleExports(this._app);
             this._handleImports(this._app);
 
-            this._handlePlugins(this._exports, plugins);
+            //this._handlePlugins(this.exports, plugins);
 
 
             await this._app.launch();
+
+            return this._app;
         } catch (e) {
             Util.logger(parent).error(`failed to initialize module ${this.constructor.name}`, {e: e.stack})
 
@@ -122,7 +121,7 @@ export class Module<T extends IModuleOptions = any> {
         return app;
     }
 
-    private async _loadInnerModules(app: App, moduleDefinition: IModuleDefinition, plugins: IPlugin[]) {
+    private async _loadInnerModules(app: App, moduleDefinition: IModuleDefinition) {
 
         if (!moduleDefinition.modules) {
             return;
@@ -130,22 +129,31 @@ export class Module<T extends IModuleOptions = any> {
 
         for (let module of moduleDefinition.modules) {
             let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
-            await moduleInstance.initialize(app.injector, plugins);
+            await moduleInstance.initialize(app.injector);
         }
     }
 
     private _handleExports(app: App) {
         _.forEach(this.exports, item => {
 
-            if (typeof item == "function") {
-                app.injector.parent.addDefinition(Util.getClassNameOrId(item as IClass), {injector: app.injector})
-            } else {
 
+            let id, type;
+
+            if (typeof item == "function") {
+                id = Util.getClassNameOrId(item as IClass);
+                type = item;
+                app.injector.parent.addDefinition(id, {injector: app.injector})
+            } else {
+                id = item.id;
+                type = item.type;
                 app.injector.parent.addDefinition(item.id, {
                     injector: app.injector,
                     refName: Util.getClassNameOrId(item.type)
                 })
             }
+            this._app.fireEvent(Events.ModuleExport, type, id);
+            this._app.parent && (this._app.parent.fireEvent(Events.ModuleExport, type, id));
+
 
 
         });
@@ -168,10 +176,14 @@ export class Module<T extends IModuleOptions = any> {
         });
     }
 
-    private _handlePlugins(exports: any[], plugins: IPlugin[]) {
-        _.forEach(exports, item =>
-            _.isFunction(item) && _.forEach(plugins, plugin => plugin(item)));
-    }
+    // private _handlePlugins(exports: any[], plugins: IPlugin[]) {
+    //
+    //     _.forEach(exports, item => {
+    //
+    //         _.isFunction(item) && _.forEach(plugins, plugin => plugin(item));
+    //
+    //     })
+    // }
 
 
 }

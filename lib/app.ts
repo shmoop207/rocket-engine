@@ -74,11 +74,6 @@ export class App extends EventDispatcher implements IApp {
         await  this._moduleManager.load(modules);
     }
 
-    public plugin(fn: (fn: Function) => void) {
-        this._launcher.plugins.push(fn);
-    }
-
-
     public get parent(): App {
         return this._parent;
     }

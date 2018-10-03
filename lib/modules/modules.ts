@@ -22,7 +22,7 @@ export type ModuleFn = ModuleFunction | IModuleCrt | Module<any>
 export class ModuleManager {
     private readonly _modules: Module[];
 
-    constructor(private _options: IOptions, private _injector: Injector, private plugins: IPlugin[]) {
+    constructor(private _options: IOptions, private _injector: Injector) {
         this._modules = [];
     }
 
@@ -34,7 +34,7 @@ export class ModuleManager {
     private async _loadModule(module: Module) {
         this._injector.get<App>(App).fireEvent(Events.BeforeModuleInit, module);
 
-        await module.initialize(this._injector, this.plugins);
+        await module.initialize(this._injector);
 
         this._injector.get<App>(App).fireEvent(Events.ModuleInit, module);
 
