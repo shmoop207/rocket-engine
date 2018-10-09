@@ -24,7 +24,7 @@ import {
     IParamInject,
     lazy,
     override,
-    singleton
+    singleton,injectLazy
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
@@ -53,7 +53,7 @@ export {
     lazy,
     injectAliasFactory,
     IParamInject,
-    define, Define, override
+    define, Define, override,injectLazy
 }
 
 export {IOptions} from './lib/interfaces/IOptions'
