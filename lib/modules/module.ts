@@ -1,7 +1,7 @@
 import {Injector} from "appolo-inject";
 import {createApp} from "../../index"
 import {Util} from "../util/util";
-import {IClass, IModuleDefinition, IModuleOptions, IPlugin, ModuleTypes} from "../interfaces/IModuleDefinition";
+import {IClass, IModuleDefinition, IModuleOptions, ModuleTypes} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import {IEnv} from "../interfaces/IEnv";
 import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/module";
@@ -47,13 +47,27 @@ export class Module<T extends IModuleOptions = any> {
         return this._moduleOptions;
     }
 
-    public async initialize(parent: Injector) {
+    protected beforeInitialize() {
+
+    }
+
+    protected beforelaunch() {
+
+    }
+
+    protected afterInitialize() {
+
+    }
+
+
+    public async initialize(parent: Injector): Promise<void> {
 
         try {
 
             if (!this._moduleDefinition) {
                 return;
             }
+
 
             this._setDefinitions();
 
@@ -63,17 +77,20 @@ export class Module<T extends IModuleOptions = any> {
 
             this._app.injector.addObject("moduleOptions", this._moduleOptions, true);
 
+            this.beforeInitialize();
+
             await this._loadInnerModules(this._app, this._moduleDefinition);
 
             this._handleExports(this._app);
             this._handleImports(this._app);
 
-            //this._handlePlugins(this.exports, plugins);
-
+            this.beforelaunch();
 
             await this._app.launch();
 
-            return this._app;
+            this.afterInitialize();
+
+
         } catch (e) {
             Util.logger(parent).error(`failed to initialize module ${this.constructor.name}`, {e: e.stack})
 
@@ -153,7 +170,6 @@ export class Module<T extends IModuleOptions = any> {
             }
             this._app.fireEvent(Events.ModuleExport, type, id);
             this._app.parent && (this._app.parent.fireEvent(Events.ModuleExport, type, id));
-
 
 
         });
