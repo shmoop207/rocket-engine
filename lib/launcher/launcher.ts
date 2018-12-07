@@ -244,6 +244,9 @@ export class Launcher {
 
         }
 
+        this._app.fireEvent(Events.ClassExport, fn, filePath);
+
+
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
             this._options.bootStrapClassId = Util.getClassName(fn);
         }

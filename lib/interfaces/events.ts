@@ -7,6 +7,7 @@ export enum Events {
     Bootstrap = "bootstrap",
     BeforeInjectRegister = "beforeInjectRegister",
     InjectRegister = "injectRegister",
+    ClassExport = "classExport",
     BeforeModuleInit = "beforeModuleInit",
     ModuleInit = "moduleInit",
     ModuleExport = "moduleExport"
