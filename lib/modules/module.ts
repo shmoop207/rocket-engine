@@ -51,7 +51,7 @@ export class Module<T extends IModuleOptions = any> {
 
     }
 
-    protected beforelaunch() {
+    protected beforeLaunch() {
 
     }
 
@@ -84,7 +84,7 @@ export class Module<T extends IModuleOptions = any> {
             this._handleExports(this._app);
             this._handleImports(this._app);
 
-            this.beforelaunch();
+            this.beforeLaunch();
 
             await this._app.launch();
 
