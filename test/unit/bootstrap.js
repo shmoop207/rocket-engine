@@ -16,10 +16,12 @@ describe('bootstrap', function () {
     });
     it('should have  call bootstrap initialize', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
+        let exportedClassEvent = app.injector.getObject("exportedClassEvent");
         should.exist(bootstrap);
         should.exist(bootstrap.manager);
         bootstrap.manager.run().should.be.ok;
         bootstrap.working.should.be.ok;
+        exportedClassEvent.should.be.ok;
     });
 });
 //# sourceMappingURL=bootstrap.js.map

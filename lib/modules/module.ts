@@ -6,6 +6,7 @@ import {App} from "../app";
 import {IEnv} from "../interfaces/IEnv";
 import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/module";
 import {Events} from "../interfaces/events";
+import {InjectDefineSymbol} from "appolo-inject/index";
 import   _ = require('lodash');
 
 
@@ -86,6 +87,8 @@ export class Module<T extends IModuleOptions = any> {
 
             this.beforeLaunch();
 
+            this._fireClassExportEvents();
+
             await this._app.launch();
 
             this.afterInitialize();
@@ -96,6 +99,19 @@ export class Module<T extends IModuleOptions = any> {
 
             throw e;
         }
+    }
+
+    private _fireClassExportEvents() {
+        if (!this._app.hasListener(Events.ClassExport) && !this._app.hasListener(Events.InjectRegister)) {
+            return;
+        }
+
+        _.forEach(this._app.parent.exportedClasses, item => {
+            if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
+                this._app.fireEvent(Events.InjectRegister, item.fn, item.path);
+            }
+            this._app.fireEvent(Events.ClassExport, item.fn, item.path);
+        })
     }
 
     private _setDefinitions() {

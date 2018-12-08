@@ -24,10 +24,12 @@ export class Launcher {
     protected _app: App;
     private _isInitialized: boolean = false;
     private _files: string[] = [];
+    private _exportedClasses: { fn: Function, path: string }[];
     private _moduleOptions: IModuleOptions;
 
     constructor(app: App) {
         this._app = app;
+        this._exportedClasses = [];
     }
 
     protected readonly Defaults = {
@@ -244,6 +246,11 @@ export class Launcher {
 
         }
 
+        this._exportedClasses.push({
+            path: filePath,
+            fn: fn
+        });
+
         this._app.fireEvent(Events.ClassExport, fn, filePath);
 
 
@@ -253,8 +260,12 @@ export class Launcher {
 
     }
 
+    public get exportedClasses() {
+        return this._exportedClasses;
+    }
 
     public reset() {
+        this._exportedClasses = [];
         _.forEach(this._files, file => delete require.cache[file]);
         this._app = null;
     }

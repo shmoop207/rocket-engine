@@ -7,7 +7,7 @@ import {ModuleFn, ModuleManager} from "./modules/modules";
 import {IClass} from "./interfaces/IModuleDefinition";
 import {IApp} from "./interfaces/IApp";
 import * as Events from "events";
-import Q = require("bluebird");
+import {IEventOptions} from "appolo-event-dispatcher/lib/IEventOptions";
 import _ = require("lodash");
 
 
@@ -71,7 +71,7 @@ export class App extends EventDispatcher implements IApp {
 
     public async module(...modules: ModuleFn[]): Promise<void> {
 
-        await  this._moduleManager.load(modules);
+        await this._moduleManager.load(modules);
     }
 
     public get parent(): App {
@@ -88,6 +88,10 @@ export class App extends EventDispatcher implements IApp {
 
     }
 
+    public get exportedClasses(): { fn: Function, path: string }[] {
+        return this._launcher.exportedClasses
+    }
+
     public reset() {
         _.forEach(this._children, app => app.reset());
 
@@ -102,8 +106,8 @@ export class App extends EventDispatcher implements IApp {
         this._launcher.reset();
     }
 
-    public on(event: Events | string, fn: (...args: any[]) => any, scope?: any, once?: boolean): void {
-        return super.on(event.toString(), fn, scope, once)
+    public on(event: Events | string, fn: (...args: any[]) => any, scope?: any, options?: IEventOptions): void {
+        return super.on(event.toString(), fn, scope, options)
     }
 
     public once(event: Events | string, fn?: (...args: any[]) => any, scope?: any): Promise<any> | void {
