@@ -40,6 +40,21 @@ export class Module<T extends IModuleOptions = any> {
         return this._app;
     }
 
+    public get parent(): IApp {
+        return this._app.parent;
+    }
+
+    public get rootParent(): IApp {
+
+        let parent = this.app.parent;
+
+        while (parent.parent != null) {
+            parent = parent.parent;
+        }
+
+        return parent;
+    }
+
     public get exports(): ModuleTypes {
         return this._exports;
     }
@@ -105,6 +120,7 @@ export class Module<T extends IModuleOptions = any> {
             throw e;
         }
     }
+
 
     private _fireClassExportEvents() {
         if (!this._app.hasListener(Events.ClassExport) && !this._app.hasListener(Events.InjectRegister)) {
