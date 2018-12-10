@@ -14,6 +14,7 @@ import {AppModuleOptionsSymbol} from "../decoretors/module";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
+import {IApp} from "../interfaces/IApp";
 
 export class Launcher {
 
@@ -129,7 +130,7 @@ export class Launcher {
             return;
         }
         for (let app of this._app.children) {
-            await app.launcher.initStaticModules()
+            await (app as App).launcher.initStaticModules()
         }
         await this._moduleManager.loadStaticModules();
     }
@@ -139,7 +140,7 @@ export class Launcher {
             return;
         }
         for (let app of this._app.children) {
-            await app.launcher.initDynamicModules();
+            await (app as App).launcher.initDynamicModules();
 
         }
 
@@ -155,7 +156,7 @@ export class Launcher {
             return;
         }
 
-        await Util.runRegroupByParallel<App>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => app.launcher.initInjector())
+        await Util.runRegroupByParallel<IApp>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initInjector())
 
         this._app.fireEvent(Events.BeforeInjectorInit);
 
@@ -174,7 +175,7 @@ export class Launcher {
             return;
         }
 
-        await Util.runRegroupByParallel<App>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => app.launcher.initBootStrap());
+        await Util.runRegroupByParallel<IApp>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initBootStrap());
 
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 
@@ -201,7 +202,7 @@ export class Launcher {
         }
 
         for (let app of this._app.children) {
-            app.launcher._initFiles()
+            (app as App).launcher._initFiles()
         }
 
 

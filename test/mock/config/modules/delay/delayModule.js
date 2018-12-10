@@ -10,7 +10,7 @@ let DelayModule = class DelayModule extends index_1.Module {
     }
     beforeLaunch() {
         this._app.on(index_1.Events.ClassExport, (fn, path) => {
-            if (fn === bootstrap_1.Bootstrap) {
+            if (fn === bootstrap_1.Bootstrap && !this._app.parent.injector.getInstance("exportedClassEvent")) {
                 this._app.parent.injector.addInstance("exportedClassEvent", true);
             }
         });

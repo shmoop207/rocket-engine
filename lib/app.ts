@@ -6,9 +6,9 @@ import {EventDispatcher} from "appolo-event-dispatcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
 import {IClass} from "./interfaces/IModuleDefinition";
 import {IApp} from "./interfaces/IApp";
-import * as Events from "events";
 import {IEventOptions} from "appolo-event-dispatcher/lib/IEventOptions";
 import _ = require("lodash");
+import {Events} from "./interfaces/events";
 
 
 export class App extends EventDispatcher implements IApp {
@@ -18,8 +18,8 @@ export class App extends EventDispatcher implements IApp {
     protected _options: IOptions;
     protected _launcher: Launcher;
     protected _moduleManager: ModuleManager;
-    protected _parent: App;
-    protected _children: App[] = [];
+    protected _parent: IApp;
+    protected _children: IApp[] = [];
 
 
     constructor(options?: IOptions) {
@@ -74,15 +74,15 @@ export class App extends EventDispatcher implements IApp {
         await this._moduleManager.load(modules);
     }
 
-    public get parent(): App {
+    public get parent(): IApp {
         return this._parent;
     }
 
-    public get children(): App[] {
+    public get children(): IApp[] {
         return this._children;
     }
 
-    public set parent(value: App) {
+    public set parent(value: IApp) {
         this._parent = value;
         value.children.push(this);
 

@@ -1,5 +1,5 @@
 import {Injector} from "appolo-inject";
-import {createApp} from "../../index"
+import {createApp, IApp} from "../../index"
 import {Util} from "../util/util";
 import {IClass, IModuleDefinition, IModuleOptions, ModuleTypes} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
@@ -34,6 +34,10 @@ export class Module<T extends IModuleOptions = any> {
             immediate: this._moduleDefinition.immediate,
             parallel: this._moduleDefinition.parallel
         }, {immediate: false, parallel: false});
+    }
+
+    public get app(): IApp {
+        return this._app;
     }
 
     public get exports(): ModuleTypes {
@@ -83,6 +87,7 @@ export class Module<T extends IModuleOptions = any> {
             await this._loadInnerModules(this._app, this._moduleDefinition);
 
             this._handleExports(this._app);
+
             this._handleImports(this._app);
 
             this.beforeLaunch();
@@ -107,9 +112,12 @@ export class Module<T extends IModuleOptions = any> {
         }
 
         _.forEach(this._app.parent.exportedClasses, item => {
+
             if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
+
                 this._app.fireEvent(Events.InjectRegister, item.fn, item.path);
             }
+
             this._app.fireEvent(Events.ClassExport, item.fn, item.path);
         })
     }
@@ -138,18 +146,15 @@ export class Module<T extends IModuleOptions = any> {
             environment: rootEnv.type
         });
 
-
         app.injector.addObject("rootEnv", rootEnv, true);
         app.injector.addObject("env", _.extend({}, rootEnv, app.env), true);
 
 
         Reflect.defineMetadata(AppModuleOptionsSymbol, this._moduleOptions, app);
 
-
         app.injector.parent = parent;
 
         app.parent = parent.get<App>('app');
-
 
         return app;
     }
@@ -186,8 +191,6 @@ export class Module<T extends IModuleOptions = any> {
             }
             this._app.fireEvent(Events.ModuleExport, type, id);
             this._app.parent && (this._app.parent.fireEvent(Events.ModuleExport, type, id));
-
-
         });
     }
 
@@ -195,27 +198,13 @@ export class Module<T extends IModuleOptions = any> {
         _.forEach(this.imports, item => {
 
             if (typeof item == "function") {
-                //app.injector.addDefinition(Util.getClassNameOrId(item as Class), {injector: app.injector})
-            } else {
-
-                app.injector.addDefinition(Util.getClassNameOrId(item.type), {
-                    injector: app.injector.parent,
-                    refName: item.id
-                })
+                return;
             }
 
-
+            app.injector.addDefinition(Util.getClassNameOrId(item.type), {
+                injector: app.injector.parent,
+                refName: item.id
+            })
         });
     }
-
-    // private _handlePlugins(exports: any[], plugins: IPlugin[]) {
-    //
-    //     _.forEach(exports, item => {
-    //
-    //         _.isFunction(item) && _.forEach(plugins, plugin => plugin(item));
-    //
-    //     })
-    // }
-
-
 }
