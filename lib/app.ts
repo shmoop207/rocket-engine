@@ -7,8 +7,8 @@ import {ModuleFn, ModuleManager} from "./modules/modules";
 import {IClass} from "./interfaces/IModuleDefinition";
 import {IApp} from "./interfaces/IApp";
 import {IEventOptions} from "appolo-event-dispatcher/lib/IEventOptions";
-import _ = require("lodash");
 import {Events} from "./interfaces/events";
+import _ = require("lodash");
 
 
 export class App extends EventDispatcher implements IApp {
@@ -93,6 +93,7 @@ export class App extends EventDispatcher implements IApp {
     }
 
     public reset() {
+        this.fireEvent(Events.BeforeReset);
         _.forEach(this._children, app => app.reset());
 
         this._injector.reset();
@@ -104,6 +105,8 @@ export class App extends EventDispatcher implements IApp {
         this._injector = null;
 
         this._launcher.reset();
+
+        this.fireEvent(Events.Reset);
     }
 
     public on(event: Events | string, fn: (...args: any[]) => any, scope?: any, options?: IEventOptions): void {

@@ -34,6 +34,8 @@ describe('events', function () {
 
         await app.launch();
 
+        app.reset();
+
 
         spy.should.callCount(Object.keys(Events).length)
     });

@@ -21,6 +21,7 @@ describe('events', function () {
             app.once(index_1.Events[key], spy);
         }
         await app.launch();
+        app.reset();
         spy.should.callCount(Object.keys(index_1.Events).length);
     });
 });

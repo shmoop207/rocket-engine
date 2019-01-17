@@ -175,17 +175,21 @@ export class Launcher {
             return;
         }
 
+        this._app.fireEvent(Events.BeforeBootstrap);
+
         await Util.runRegroupByParallel<IApp>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initBootStrap());
 
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 
         if (!bootstrapDef) {
+            this._app.fireEvent(Events.Bootstrap);
+
             return Promise.resolve();
         }
 
         let bootstrap = this._injector.getObject<IBootstrap>(this._options.bootStrapClassId);
 
-        this._app.fireEvent(Events.BeforeBootstrap);
+       
 
         await bootstrap.run();
 

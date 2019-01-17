@@ -10,5 +10,7 @@ export enum Events {
     ClassExport = "classExport",
     BeforeModuleInit = "beforeModuleInit",
     ModuleInit = "moduleInit",
-    ModuleExport = "moduleExport"
+    ModuleExport = "moduleExport",
+    Reset = "reset",
+    BeforeReset = "reset"
 }
