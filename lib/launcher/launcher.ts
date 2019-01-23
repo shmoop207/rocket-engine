@@ -1,5 +1,5 @@
 "use strict";
-import {createContainer, InjectDefineSymbol, Injector} from "appolo-inject";
+import {createContainer, Define, InjectDefineSymbol, Injector} from "appolo-inject";
 import {IOptions} from "../interfaces/IOptions";
 import {Util} from "../util/util";
 import {IBootstrap} from "../interfaces/IBootstrap";
@@ -11,10 +11,10 @@ import {App} from "../app";
 import {BootstrapSymbol} from "../decoretors/bootstrap";
 import {Events} from "../interfaces/events";
 import {AppModuleOptionsSymbol} from "../decoretors/module";
+import {IApp} from "../interfaces/IApp";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
-import {IApp} from "../interfaces/IApp";
 
 export class Launcher {
 
@@ -25,12 +25,12 @@ export class Launcher {
     protected _app: App;
     private _isInitialized: boolean = false;
     private _files: string[] = [];
-    private _exportedClasses: { fn: Function, path: string }[];
+    private _exported: { fn: Function, path: string, define: Define }[];
     private _moduleOptions: IModuleOptions;
 
     constructor(app: App) {
         this._app = app;
-        this._exportedClasses = [];
+        this._exported = [];
     }
 
     protected readonly Defaults = {
@@ -189,7 +189,6 @@ export class Launcher {
 
         let bootstrap = this._injector.getObject<IBootstrap>(this._options.bootStrapClassId);
 
-       
 
         await bootstrap.run();
 
@@ -241,19 +240,21 @@ export class Launcher {
     }
 
     private _handleFn(fn: Function, filePath: string) {
-        let define = Reflect.hasMetadata(InjectDefineSymbol, fn);
+        let hasDefine = Reflect.hasMetadata(InjectDefineSymbol, fn);
+        let define: Define = null;
 
-        if (define) {
-            this._app.fireEvent(Events.BeforeInjectRegister, fn, filePath, define);
-            this._injector.register(fn as IClass, null, filePath);
+        if (hasDefine) {
+            this._app.fireEvent(Events.BeforeInjectRegister, fn, filePath);
+            define = this._injector.register(fn as IClass, null, filePath);
             this._files.push(filePath);
             this._app.fireEvent(Events.InjectRegister, fn, filePath, define)
 
         }
 
-        this._exportedClasses.push({
+        this._exported.push({
             path: filePath,
-            fn: fn
+            fn: fn,
+            define
         });
 
         this._app.fireEvent(Events.ClassExport, fn, filePath);
@@ -265,12 +266,12 @@ export class Launcher {
 
     }
 
-    public get exportedClasses() {
-        return this._exportedClasses;
+    public get exported() {
+        return this._exported;
     }
 
     public reset() {
-        this._exportedClasses = [];
+        this._exported = [];
         _.forEach(this._files, file => delete require.cache[file]);
         this._app = null;
     }

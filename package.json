@@ -21,7 +21,7 @@
     "npm": ">=3.0.0"
   },
   "main": "./index.js",
-  "version": "6.0.52",
+  "version": "6.0.53",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   "readmeFilename": "README.md",
   "dependencies": {
     "appolo-cache": "^6.0.6",
+    "appolo-context": "^6.0.7",
     "appolo-decorators": "^6.0.11",
     "appolo-event-dispatcher": "^6.0.8",
     "appolo-inject": "^6.0.18",

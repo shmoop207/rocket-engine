@@ -88,8 +88,12 @@ export class App extends EventDispatcher implements IApp {
 
     }
 
-    public get exportedClasses(): { fn: Function, path: string }[] {
-        return this._launcher.exportedClasses
+    public get exportedClasses(): { fn: Function, path: string, define: Define }[] {
+        return this.exported
+    }
+
+    public get exported(): { fn: Function, path: string, define: Define }[] {
+        return this._launcher.exported
     }
 
     public reset() {
