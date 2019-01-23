@@ -127,7 +127,7 @@ export class Module<T extends IModuleOptions = any> {
             return;
         }
 
-        _.forEach(this._app.parent.exportedClasses, item => {
+        _.forEach(this._app.parent.exported, item => {
 
             if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
 

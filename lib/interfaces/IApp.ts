@@ -1,5 +1,5 @@
 import {IEnv} from "./IEnv";
-import {Injector} from "appolo-inject/index";
+import {Define, Injector} from "appolo-inject/index";
 import {IEventDispatcher} from "appolo-event-dispatcher/";
 
 export interface IApp extends IEventDispatcher {
@@ -13,6 +13,6 @@ export interface IApp extends IEventDispatcher {
 
     launch(): Promise<IApp>
 
-    exportedClasses: { fn: Function, path: string }[]
+    exported: { fn: Function, path: string, define: Define }[]
 
 }
