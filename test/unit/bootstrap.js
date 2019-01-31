@@ -13,15 +13,18 @@ describe('bootstrap', function () {
         await app.launch();
     });
     afterEach(function () {
+        app.reset();
     });
     it('should have  call bootstrap initialize', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
         let exportedClassEvent = app.injector.getObject("exportedClassEvent");
+        let nestedProvider = app.injector.getObject("nestedProvider");
         should.exist(bootstrap);
         should.exist(bootstrap.manager);
         bootstrap.manager.run().should.be.ok;
         bootstrap.working.should.be.ok;
         exportedClassEvent.should.be.ok;
+        nestedProvider.dbMock2.db.conn.should.be.eq("working");
     });
 });
 //# sourceMappingURL=bootstrap.js.map

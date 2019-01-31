@@ -3,7 +3,7 @@ import {DelayManager} from "./delayManager";
 
 @define()
 @singleton()
-export class Delay {
+    export class Delay {
 
     @inject() delayManager: DelayManager;
     @inject() moduleOptions: any;

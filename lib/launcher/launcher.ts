@@ -6,7 +6,7 @@ import {IBootstrap} from "../interfaces/IBootstrap";
 import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
 import {ModuleManager} from "../modules/modules";
-import {IClass, IModuleOptions} from "../interfaces/IModuleDefinition";
+import {IClass, IExported, IModuleOptions} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import {BootstrapSymbol} from "../decoretors/bootstrap";
 import {Events} from "../interfaces/events";
@@ -25,7 +25,7 @@ export class Launcher {
     protected _app: App;
     private _isInitialized: boolean = false;
     private _files: string[] = [];
-    private _exported: { fn: Function, path: string, define: Define }[];
+    private _exported: IExported[];
     private _moduleOptions: IModuleOptions;
 
     constructor(app: App) {

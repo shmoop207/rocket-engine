@@ -9,6 +9,7 @@ const logger7_1 = require("./logger7");
 const testModule_1 = require("./test/testModule");
 const delayModule_1 = require("./delay/delayModule");
 const dbModule_1 = require("./db/dbModule");
+const nestedModule_1 = require("./nested/nestedModule");
 module.exports = async function (env, app) {
     await app.module(logger_1.default);
     await app.module(logger2_1.default({ test: 'test2' }));
@@ -23,5 +24,9 @@ module.exports = async function (env, app) {
         id: "delay2"
     }));
     await app.module(new dbModule_1.DbModule({ id: "dbMock" }));
+    await app.module(new nestedModule_1.NestedModule({
+        delay: 1,
+        testModule: env.test,
+    }));
 };
 //# sourceMappingURL=all.js.map

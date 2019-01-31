@@ -5,6 +5,7 @@ import fs = require('fs');
 import CallSite = NodeJS.CallSite;
 import {Injector, Util as InjectUtil} from "appolo-inject";
 import {ILogger} from "../interfaces/ILogger";
+import {IExported} from "../interfaces/IModuleDefinition";
 
 export class Util extends InjectUtil {
 
@@ -77,8 +78,33 @@ export class Util extends InjectUtil {
         return console
     }
 
+    public static findReflectData<T>(symbol: Symbol | string, exported: IExported[]): T {
 
+        for (let i = 0, len = (exported ? exported.length : 0); i < len; i++) {
+            let result = Reflect.getOwnMetadata(symbol, exported[i].fn);
 
+            if (result != undefined) {
+                return result
+            }
+        }
+
+        return null;
+    }
+
+    public static findAllReflectData<T>(symbol: Symbol | string, exported: IExported[]): (IExported & { metaData: T })[] {
+
+        let results = [];
+
+        for (let i = 0, len = (exported ? exported.length : 0); i < len; i++) {
+            let result = Reflect.getOwnMetadata(symbol, exported[i].fn);
+
+            if (result != undefined) {
+                results.push({...exported[i], metaData: result})
+            }
+        }
+
+        return results;
+    }
 
 
 }

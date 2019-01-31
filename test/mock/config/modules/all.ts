@@ -10,6 +10,7 @@ import {IEnv} from "../../../../lib/interfaces/IEnv";
 import {App} from "../../../../lib/app";
 import {DelayModule} from "./delay/delayModule";
 import {DbModule} from "./db/dbModule";
+import {NestedModule} from "./nested/nestedModule";
 
 export = async function (env: IEnv, app: App) {
     await app.module(logger);
@@ -30,4 +31,9 @@ export = async function (env: IEnv, app: App) {
             id: "delay2"
         }));
     await app.module(new DbModule({id: "dbMock"}));
+
+    await app.module(new NestedModule({
+        delay: 1,
+        testModule: env.test,
+    }));
 }

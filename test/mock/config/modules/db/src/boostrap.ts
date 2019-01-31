@@ -3,7 +3,7 @@ import {DbFactory} from "./dbFactory";
 @define()
 @singleton()
 @bootstrap()
-export class Boostrap {
+export class Bootstrap {
 
     @inject() moduleOptions: any;
     @inject() dbFactory: any;

@@ -11,10 +11,10 @@ let DelayProvider = class DelayProvider {
 };
 tslib_1.__decorate([
     index_1.inject()
-], DelayProvider.prototype, "delay", void 0);
+], DelayProvider.prototype, "moduleOptions", void 0);
 tslib_1.__decorate([
     index_1.inject()
-], DelayProvider.prototype, "moduleOptions", void 0);
+], DelayProvider.prototype, "delay", void 0);
 DelayProvider = tslib_1.__decorate([
     index_1.define(),
     index_1.singleton(),

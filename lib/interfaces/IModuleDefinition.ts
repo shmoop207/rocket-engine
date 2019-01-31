@@ -1,4 +1,5 @@
 import {Module} from "../modules/module";
+import {Define} from "appolo-inject/index";
 
 export interface IClass {
     new(...args: any[]): any
@@ -22,5 +23,11 @@ export interface IModuleDefinition {
 export interface IModuleOptions {
     immediate?: boolean
     parallel?: boolean
+}
+
+export interface IExported {
+    fn: Function,
+    path: string,
+    define: Define
 }
 

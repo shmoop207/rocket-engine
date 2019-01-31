@@ -17,6 +17,8 @@ describe('bootstrap', function () {
     });
 
     afterEach(function () {
+
+        app.reset();
     });
 
 
@@ -24,12 +26,14 @@ describe('bootstrap', function () {
 
         let bootstrap = app.injector.getObject<Bootstrap>(Bootstrap);
         let exportedClassEvent = app.injector.getObject<boolean>("exportedClassEvent");
+        let nestedProvider = app.injector.getObject<any>("nestedProvider");
 
         should.exist(bootstrap);
         should.exist(bootstrap.manager);
         bootstrap.manager.run().should.be.ok;
         bootstrap.working.should.be.ok;
         exportedClassEvent.should.be.ok;
+        nestedProvider.dbMock2.db.conn.should.be.eq("working");
     });
 
 

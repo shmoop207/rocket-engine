@@ -4,7 +4,7 @@ import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {EventDispatcher} from "appolo-event-dispatcher";
 import {ModuleFn, ModuleManager} from "./modules/modules";
-import {IClass} from "./interfaces/IModuleDefinition";
+import {IClass, IExported} from "./interfaces/IModuleDefinition";
 import {IApp} from "./interfaces/IApp";
 import {IEventOptions} from "appolo-event-dispatcher/lib/IEventOptions";
 import {Events} from "./interfaces/events";
@@ -92,7 +92,7 @@ export class App extends EventDispatcher implements IApp {
         return this.exported
     }
 
-    public get exported(): { fn: Function, path: string, define: Define }[] {
+    public get exported(): IExported[] {
         return this._launcher.exported
     }
 
