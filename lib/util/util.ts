@@ -78,13 +78,13 @@ export class Util extends InjectUtil {
         return console
     }
 
-    public static findReflectData<T>(symbol: Symbol | string, exported: IExported[]): T {
+    public static findReflectData<T>(symbol: Symbol | string, exported: IExported[]): IExported & { metaData: T } {
 
         for (let i = 0, len = (exported ? exported.length : 0); i < len; i++) {
             let result = Reflect.getOwnMetadata(symbol, exported[i].fn);
 
-            if (result != undefined) {
-                return result
+            if (result !== undefined) {
+                return {...exported[i], metaData: result}
             }
         }
 
@@ -98,7 +98,7 @@ export class Util extends InjectUtil {
         for (let i = 0, len = (exported ? exported.length : 0); i < len; i++) {
             let result = Reflect.getOwnMetadata(symbol, exported[i].fn);
 
-            if (result != undefined) {
+            if (result !== undefined) {
                 results.push({...exported[i], metaData: result})
             }
         }
