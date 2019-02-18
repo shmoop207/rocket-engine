@@ -33,23 +33,23 @@
   "dependencies": {
     "appolo-decorators": "^6.0.11",
     "appolo-event-dispatcher": "^6.0.8",
-    "appolo-inject": "^6.0.24",
+    "appolo-inject": "^6.0.28",
     "bluebird": "^3.5.3",
     "lodash": "^4.17.11",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.24",
-    "@types/chai": "^4.1.6",
-    "@types/lodash": "^4.14.116",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.11.3",
-    "@types/sinon": "^5.0.2",
-    "@types/sinon-chai": "^3.2.0",
+    "@types/bluebird": "^3.5.25",
+    "@types/chai": "^4.1.7",
+    "@types/lodash": "^4.14.121",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^11.9.4",
+    "@types/sinon": "^7.0.6",
+    "@types/sinon-chai": "^3.2.2",
     "chai": "4.2.0",
     "mocha": "^5.2.0",
-    "sinon": "^6.3.4",
-    "sinon-chai": "^3.2.0",
-    "typescript": "^3.1.1"
+    "sinon": "^7.2.4",
+    "sinon-chai": "^3.3.0",
+    "typescript": "^3.3.3"
   }
 }

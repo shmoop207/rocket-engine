@@ -8,13 +8,14 @@ import {Delay} from "./delay";
 export class DelayProvider implements IFactory<{delay:number,time:number}> {
 
     @inject() moduleOptions: any;
-    @inject() delay: Delay;
 
     async get(): Promise<{delay:number,time:number}> {
 
+        let time = Date.now();
+
         await Q.delay(this.moduleOptions.delay);
 
-        return {delay:this.moduleOptions.delay,time:Date.now()}
+        return {delay:this.moduleOptions.delay,time: Date.now() - time}
 
     }
 }

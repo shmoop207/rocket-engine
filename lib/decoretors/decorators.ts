@@ -1,6 +1,7 @@
 import "reflect-metadata";
-import {bootstrap} from "./bootstrap"
+import {bootstrap} from "./bootstrapDecorator"
+import {before,after} from "./beforeDecorator"
 import {module} from "./module"
 import {bind,cache,debounce,once,throttle,delay,mixins,interval} from "appolo-decorators"
 
-export {bootstrap,  module,bind,cache,debounce,once,throttle,delay,mixins,interval}
+export {bootstrap,  module,bind,cache,debounce,once,throttle,delay,mixins,interval,before,after}

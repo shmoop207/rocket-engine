@@ -8,13 +8,14 @@ import {FilesLoader} from "../loader/filesLoader";
 import {ModuleManager} from "../modules/modules";
 import {IClass, IExported, IModuleOptions} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
-import {BootstrapSymbol} from "../decoretors/bootstrap";
+import {BootstrapSymbol} from "../decoretors/bootstrapDecorator";
 import {Events} from "../interfaces/events";
 import {AppModuleOptionsSymbol} from "../decoretors/module";
 import {IApp} from "../interfaces/IApp";
 import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
+import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/beforeDecorator";
 
 export class Launcher {
 
@@ -263,6 +264,9 @@ export class Launcher {
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
             this._options.bootStrapClassId = Util.getClassName(fn);
         }
+
+        handleBeforeDecorator(fn,this._app);
+        handleAfterDecorator(fn,this._app);
 
     }
 

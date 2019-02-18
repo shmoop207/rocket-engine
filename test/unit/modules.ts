@@ -90,7 +90,7 @@ describe('modules', function () {
 
         bootstrap.dbMock.conn.should.be.eq("working");
         bootstrap.dbMock.name.should.be.eq("working");
-        (bootstrap.dbMock as any).bootstrap.should.be.ok;
+        (bootstrap.dbMock as any).bootstrapDecorator.should.be.ok;
 
         bootstrap.dbMock.time.should.be.greaterThan(bootstrap.delay.data.time);
     });

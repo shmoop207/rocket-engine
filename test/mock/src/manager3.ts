@@ -1,5 +1,5 @@
 "use strict";
-import {define, singleton, inject, EventDispatcher} from '../../../index';
+import {define, singleton, inject, EventDispatcher,before} from '../../../index';
 import {Manager} from "./manager";
 
 @define()

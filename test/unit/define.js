@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+const controller_1 = require("../mock/src/controller");
 let should = require('chai').should();
 const index_1 = require("../../index");
 const manager2_1 = require("../mock/src/manager2");
@@ -26,6 +27,13 @@ describe('define', function () {
         should.exist(manager3);
         should.exist(manager3.manager);
         manager3.manager.run().should.be.ok;
+    });
+    it('should call before decorator', async function () {
+        let controller = app.injector.getObject(controller_1.Controller);
+        let result = await controller.testBefore(2);
+        let result2 = await controller.testAfter(2);
+        result.should.be.eq(8);
+        result2.should.be.eq(8);
     });
     it('should define mixsins', function () {
         class Test {

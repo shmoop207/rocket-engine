@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const index_1 = require("../../../../../../index");
 let Bootstrap = class Bootstrap {
     async run() {
-        this.dbFactory.bootstrap = true;
+        this.dbFactory.bootstrapDecorator = true;
     }
 };
 tslib_1.__decorate([

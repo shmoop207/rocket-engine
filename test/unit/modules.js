@@ -60,7 +60,7 @@ describe('modules', function () {
         bootstrap.delay2.data.time.should.be.lessThan(bootstrap.delay.data.time);
         bootstrap.dbMock.conn.should.be.eq("working");
         bootstrap.dbMock.name.should.be.eq("working");
-        bootstrap.dbMock.bootstrap.should.be.ok;
+        bootstrap.dbMock.bootstrapDecorator.should.be.ok;
         bootstrap.dbMock.time.should.be.greaterThan(bootstrap.delay.data.time);
     });
     it('should inject external async module with imports name ref', function () {

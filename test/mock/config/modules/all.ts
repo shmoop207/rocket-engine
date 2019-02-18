@@ -24,7 +24,7 @@ export = async function (env: IEnv, app: App) {
 
     await app.module(TestModule);
     await app.module(
-        new DelayModule({delay: 4, testModule: env.test}),
+        new DelayModule({delay: 10, testModule: env.test}),
         new DelayModule({
             delay: 1,
             testModule: env.test,

@@ -10,6 +10,6 @@ export class Bootstrap {
 
 
     async run(){
-        this.dbFactory.bootstrap = true
+        this.dbFactory.bootstrapDecorator = true
     }
 }

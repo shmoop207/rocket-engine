@@ -17,6 +17,7 @@ import {
     injectDictionary,
     injectFactory,
     injectFactoryMethod,
+    injectLazy,
     injectObjectProperty,
     Injector,
     injectParam,
@@ -24,7 +25,7 @@ import {
     IParamInject,
     lazy,
     override,
-    singleton,injectLazy
+    singleton
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
@@ -53,7 +54,7 @@ export {
     lazy,
     injectAliasFactory,
     IParamInject,
-    define, Define, override,injectLazy
+    define, Define, override, injectLazy
 }
 
 export {IOptions} from './lib/interfaces/IOptions'
@@ -65,7 +66,7 @@ export {Module} from './lib/modules/module'
 export {Events} from './lib/interfaces/events'
 export {IClass, IModuleOptions} from './lib/interfaces/IModuleDefinition'
 export {
-    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval
+    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval, before, after
 }from './lib/decoretors/decorators'
 
 

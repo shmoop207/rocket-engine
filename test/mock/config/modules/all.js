@@ -18,7 +18,7 @@ module.exports = async function (env, app) {
     await app.module(logger6_1.default({ test: 'test6' }));
     await app.module(logger7_1.default({ test: 'test7' }));
     await app.module(testModule_1.TestModule);
-    await app.module(new delayModule_1.DelayModule({ delay: 4, testModule: env.test }), new delayModule_1.DelayModule({
+    await app.module(new delayModule_1.DelayModule({ delay: 10, testModule: env.test }), new delayModule_1.DelayModule({
         delay: 1,
         testModule: env.test,
         id: "delay2"

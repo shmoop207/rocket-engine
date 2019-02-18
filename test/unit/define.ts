@@ -1,6 +1,8 @@
 "use strict";
 
 
+import {Controller} from "../mock/src/controller";
+
 let should = require('chai').should();
 import {App, createApp, define, singleton, inject, EventDispatcher,mixins} from '../../index';
 import {Manager2} from "../mock/src/manager2";
@@ -40,6 +42,16 @@ describe('define', function () {
 
     });
 
+
+    it('should call before decorator', async function  () {
+        let controller = app.injector.getObject<Controller>(Controller);
+
+        let result = await controller.testBefore(2);
+        let result2 = await controller.testAfter(2);
+
+        result.should.be.eq(8)
+        result2.should.be.eq(8)
+    });
 
     it('should define mixsins', function () {
 
