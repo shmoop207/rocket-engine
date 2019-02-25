@@ -67,6 +67,10 @@ export class Util extends InjectUtil {
 
     }
 
+    public delay(delay: number): Promise<void> {
+        return new Promise((resolve) => setTimeout(resolve, delay))
+    }
+
     public static logger(injector: Injector): ILogger {
 
         if (injector.getDefinition("logger")) {
