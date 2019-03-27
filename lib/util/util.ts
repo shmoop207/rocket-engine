@@ -67,7 +67,7 @@ export class Util extends InjectUtil {
 
     }
 
-    public delay(delay: number): Promise<void> {
+    public static delay(delay: number): Promise<void> {
         return new Promise((resolve) => setTimeout(resolve, delay))
     }
 

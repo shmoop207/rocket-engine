@@ -60,10 +60,14 @@ export class Launcher {
 
             let all = require(allPath);
 
-            let environment = fs.existsSync(environmentPath) ? require(environmentPath) : {};
+            this._files.push(allPath);
 
-            //add current env config to appolo env
-            _.defaultsDeep(env, environment || {}, all);
+            if (fs.existsSync(environmentPath)) {
+                //add current env config to appolo env
+                this._files.push(environmentPath);
+                let environment = require(environmentPath)
+                _.defaultsDeep(env, environment || {}, all);
+            }
         }
 
         //save evn name
@@ -265,8 +269,8 @@ export class Launcher {
             this._options.bootStrapClassId = Util.getClassName(fn);
         }
 
-        handleBeforeDecorator(fn,this._app);
-        handleAfterDecorator(fn,this._app);
+        handleBeforeDecorator(fn, this._app);
+        handleAfterDecorator(fn, this._app);
 
     }
 
@@ -276,7 +280,14 @@ export class Launcher {
 
     public reset() {
         this._exported = [];
+
         _.forEach(this._files, file => delete require.cache[file]);
+
+        for (let filePath of FilesLoader.load(this._options.root, ["config"])){
+            delete require.cache[filePath]
+        }
+
+        this._files.length = 0;
         this._app = null;
     }
 
