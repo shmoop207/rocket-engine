@@ -60,14 +60,10 @@ export class Launcher {
 
             let all = require(allPath);
 
-            this._files.push(allPath);
+            let environment = fs.existsSync(environmentPath) ? require(environmentPath) : {};
 
-            if (fs.existsSync(environmentPath)) {
-                //add current env config to appolo env
-                this._files.push(environmentPath);
-                let environment = require(environmentPath)
-                _.defaultsDeep(env, environment || {}, all);
-            }
+            //add current env config to appolo env
+            _.defaultsDeep(env, environment || {}, all);
         }
 
         //save evn name
@@ -283,7 +279,7 @@ export class Launcher {
 
         _.forEach(this._files, file => delete require.cache[file]);
 
-        for (let filePath of FilesLoader.load(this._options.root, ["config"])){
+        for (let filePath of FilesLoader.load(this._options.root, ["config"])) {
             delete require.cache[filePath]
         }
 
