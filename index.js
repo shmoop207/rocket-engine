@@ -23,6 +23,7 @@ exports.injectValue = appolo_inject_1.injectValue;
 exports.lazy = appolo_inject_1.lazy;
 exports.override = appolo_inject_1.override;
 exports.singleton = appolo_inject_1.singleton;
+exports.dynamicFactory = appolo_inject_1.dynamicFactory;
 var util_1 = require("./lib/util/util");
 exports.Util = util_1.Util;
 var appolo_event_dispatcher_1 = require("appolo-event-dispatcher");

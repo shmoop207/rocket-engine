@@ -25,7 +25,7 @@ import {
     IParamInject,
     lazy,
     override,
-    singleton
+    singleton,dynamicFactory
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
@@ -34,6 +34,7 @@ export {Launcher} from './lib/launcher/launcher';
 export {FilesLoader} from './lib/loader/filesLoader';
 
 export {
+    dynamicFactory,
     Injector,
     singleton,
     factory,
