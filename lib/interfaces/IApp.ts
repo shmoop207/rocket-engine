@@ -9,6 +9,7 @@ export interface IApp extends IEventDispatcher {
     reset()
 
     parent: IApp
+    root: IApp
     children: IApp[]
 
     launch(): Promise<IApp>

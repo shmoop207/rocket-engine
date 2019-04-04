@@ -20,6 +20,7 @@ export class App extends EventDispatcher implements IApp {
     protected _moduleManager: ModuleManager;
     protected _parent: IApp;
     protected _children: IApp[] = [];
+    private _root: IApp;
 
 
     constructor(options?: IOptions) {
@@ -76,6 +77,23 @@ export class App extends EventDispatcher implements IApp {
 
     public get parent(): IApp {
         return this._parent;
+    }
+
+    public get root(): IApp {
+
+        if (this._root) {
+            return this._root;
+        }
+
+        let parent = this.parent;
+
+        while (parent.parent != null) {
+            parent = parent.parent;
+        }
+
+        this._root = parent;
+
+        return parent;
     }
 
     public get children(): IApp[] {

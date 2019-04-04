@@ -2,6 +2,7 @@
 import {bootstrap, define, IBootstrap, inject, singleton} from '../../../index';
 import {Manager} from "./manager";
 import {Delay} from "../config/modules/delay/src/delay";
+import {DbManager} from "../config/modules/db/src/dbManager";
 
 @define()
 @singleton()
@@ -14,6 +15,7 @@ export class Bootstrap implements IBootstrap {
     @inject() delay: Delay;
     @inject() delay2: Delay;
     @inject() dbMock: { conn: string,env:string,name:string,time:number };
+    @inject() dbManagerNested: DbManager;
 
 
     async run() {

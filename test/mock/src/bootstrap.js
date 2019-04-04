@@ -19,6 +19,9 @@ tslib_1.__decorate([
 tslib_1.__decorate([
     index_1.inject()
 ], Bootstrap.prototype, "dbMock", void 0);
+tslib_1.__decorate([
+    index_1.inject()
+], Bootstrap.prototype, "dbManagerNested", void 0);
 Bootstrap = tslib_1.__decorate([
     index_1.define(),
     index_1.singleton(),
