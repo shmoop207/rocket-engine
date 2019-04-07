@@ -114,6 +114,19 @@ export class App extends EventDispatcher implements IApp {
         return this._launcher.exported
     }
 
+    public get exportedRoot():IExported[] {
+        let parent: IApp = this;
+
+        let exported = [];
+
+        while (parent != null) {
+            exported.push(...parent.exported)
+            parent = parent.parent;
+        }
+
+        return exported;
+    }
+
     public reset() {
         this.fireEvent(Events.BeforeReset);
         _.forEach(this._children, app => app.reset());
