@@ -31,7 +31,7 @@
   "readme": "",
   "readmeFilename": "README.md",
   "dependencies": {
-    "appolo-decorators": "^6.0.11",
+    "appolo-decorators": "^6.0.12",
     "appolo-event-dispatcher": "^6.0.8",
     "appolo-inject": "^6.0.37",
     "bluebird": "^3.5.3",
