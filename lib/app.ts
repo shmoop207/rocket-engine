@@ -9,6 +9,7 @@ import {IApp} from "./interfaces/IApp";
 import {IEventOptions} from "appolo-event-dispatcher/lib/IEventOptions";
 import {Events} from "./interfaces/events";
 import _ = require("lodash");
+import {PipelineManager} from "./pipelines/pipelineManager";
 
 
 export class App extends EventDispatcher implements IApp {
@@ -18,6 +19,7 @@ export class App extends EventDispatcher implements IApp {
     protected _options: IOptions;
     protected _launcher: Launcher;
     protected _moduleManager: ModuleManager;
+    protected _pipelineManager: PipelineManager;
     protected _parent: IApp;
     protected _children: IApp[] = [];
     private _root: IApp;
@@ -37,6 +39,7 @@ export class App extends EventDispatcher implements IApp {
         this._injector.addObject("app", this);
 
         this._moduleManager = this._launcher.createModuleManager();
+        this._pipelineManager = this._launcher.createPipelineManager();
     }
 
     public static create(options: IOptions): App {

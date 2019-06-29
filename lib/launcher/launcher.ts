@@ -16,6 +16,7 @@ import   path = require('path');
 import   fs = require('fs');
 import    _ = require('lodash');
 import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/beforeDecorator";
+import {PipelineManager} from "../pipelines/pipelineManager";
 
 export class Launcher {
 
@@ -23,6 +24,7 @@ export class Launcher {
     protected _env: IEnv;
     protected _injector: Injector;
     protected _moduleManager: ModuleManager;
+    protected _pipelineManager: PipelineManager;
     protected _app: App;
     private _isInitialized: boolean = false;
     private _files: string[] = [];
@@ -99,6 +101,14 @@ export class Launcher {
         return this._moduleManager
     }
 
+    public createPipelineManager(): PipelineManager {
+        this._pipelineManager = new PipelineManager(this._injector, this._app);
+
+        this._pipelineManager.initialize();
+
+        return this._pipelineManager
+    }
+
 
     public async launch(): Promise<void> {
 
@@ -114,6 +124,8 @@ export class Launcher {
         await this.initStaticModules();
 
         await this.initDynamicModules();
+
+        this._handlePipeLines();
 
         if (this._app.parent && !this._moduleOptions.immediate) {
             return;
@@ -265,9 +277,16 @@ export class Launcher {
             this._options.bootStrapClassId = Util.getClassName(fn);
         }
 
-        handleBeforeDecorator(fn, this._app);
-        handleAfterDecorator(fn, this._app);
 
+    }
+
+    private _handlePipeLines() {
+        _.forEach(this.exported, item => {
+            handleBeforeDecorator(item.fn, this._app);
+            handleAfterDecorator(item.fn, this._app);
+
+            this._pipelineManager.handleExport(item.fn)
+        })
     }
 
     public get exported() {

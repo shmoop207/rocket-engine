@@ -16,7 +16,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.throttle(10, { leading: false })
+            index_1.throttle(10, { leading: false }),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", void 0)
         ], Test.prototype, "handle", null);
         let test = new Test();
         test.handle();
@@ -35,7 +38,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.debounce(10)
+            index_1.debounce(10),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", void 0)
         ], Test.prototype, "handle", null);
         let test = new Test();
         test.handle();
@@ -56,7 +62,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.bind
+            index_1.bind,
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", void 0)
         ], Test.prototype, "handle", null);
         let test = new Test();
         test.handle.call(null).should.be.eq("test");
@@ -71,7 +80,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.delay(10)
+            index_1.delay(10),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", void 0)
         ], Test.prototype, "handle", null);
         let test = new Test();
         test.handle();
@@ -90,7 +102,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.cache()
+            index_1.cache(),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", void 0)
         ], Test.prototype, "handle", null);
         let test = new Test();
         test.handle();
@@ -108,7 +123,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.cache()
+            index_1.cache(),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", Promise)
         ], Test.prototype, "handle", null);
         let test = new Test();
         await test.handle();
@@ -126,7 +144,10 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.cache({ refresh: true, maxAge: 20 })
+            index_1.cache({ refresh: true, maxAge: 20 }),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", Promise)
         ], Test.prototype, "handle", null);
         let test = new Test();
         await test.handle();
@@ -149,10 +170,16 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.once()
+            index_1.once(),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", void 0)
         ], Test.prototype, "handle", null);
         tslib_1.__decorate([
-            index_1.once(2)
+            index_1.once(2),
+            tslib_1.__metadata("design:type", Function),
+            tslib_1.__metadata("design:paramtypes", []),
+            tslib_1.__metadata("design:returntype", void 0)
         ], Test.prototype, "handle2", null);
         let test = new Test();
         test.handle();

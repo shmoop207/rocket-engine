@@ -6,6 +6,7 @@ import CallSite = NodeJS.CallSite;
 import {Injector, Util as InjectUtil} from "appolo-inject";
 import {ILogger} from "../interfaces/ILogger";
 import {IExported} from "../interfaces/IModuleDefinition";
+import {ReflectUtils} from "./reflectUtils";
 
 export class Util extends InjectUtil {
 
@@ -83,30 +84,25 @@ export class Util extends InjectUtil {
 
     public static findReflectData<T>(symbol: Symbol | string, exported: IExported[]): IExported & { metaData: T } {
 
-        for (let i = 0, len = (exported ? exported.length : 0); i < len; i++) {
-            let result = Reflect.getOwnMetadata(symbol, exported[i].fn);
-
-            if (result !== undefined) {
-                return {...exported[i], metaData: result}
-            }
-        }
-
-        return null;
+        return ReflectUtils.findReflectData(symbol,exported)
     }
 
     public static findAllReflectData<T>(symbol: Symbol | string, exported: IExported[]): (IExported & { metaData: T })[] {
 
-        let results = [];
+        return ReflectUtils.findAllReflectData(symbol,exported)
+    }
 
-        for (let i = 0, len = (exported ? exported.length : 0); i < len; i++) {
-            let result = Reflect.getOwnMetadata(symbol, exported[i].fn);
+    public static setReflectMetadata(key: string | Symbol, value: any, target: any, propertyKey?: string) {
+        return ReflectUtils.setReflectMetadata(key,value,target,propertyKey)
+    }
 
-            if (result !== undefined) {
-                results.push({...exported[i], metaData: result})
-            }
-        }
+    public static getReflectMetadata<T>(symbol: Symbol | string, klass: any, propertyName?: string, defaultValue?: T): T {
 
-        return results;
+        return ReflectUtils.getReflectMetadata(symbol,klass,propertyName,defaultValue)
+    }
+
+    public static decorateReflectMetadata(key: string | Symbol, value: any) {
+        return ReflectUtils.decorateReflectMetadata(key,value)
     }
 
 

@@ -29,6 +29,7 @@ import {
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
+export {ReflectUtils} from "./lib/util/reflectUtils"
 export {EventDispatcher} from 'appolo-event-dispatcher';
 export {Launcher} from './lib/launcher/launcher';
 export {FilesLoader} from './lib/loader/filesLoader';
@@ -66,8 +67,9 @@ export {IApp} from './lib/interfaces/IApp'
 export {Module} from './lib/modules/module'
 export {Events} from './lib/interfaces/events'
 export {IClass, IModuleOptions} from './lib/interfaces/IModuleDefinition'
+export {IPipelineContext,IPipeline} from './lib/pipelines/IPipeline'
 export {
-    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval, before, after
+    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval, before, after,pipeline
 }from './lib/decoretors/decorators'
 
 

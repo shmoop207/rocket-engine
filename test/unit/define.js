@@ -52,5 +52,26 @@ describe('define', function () {
         let test = new Test2();
         test.on().should.be.ok;
     });
+    it('should call pipeline decorator', async function () {
+        let controller = app.injector.getObject(controller_1.Controller);
+        let result = await controller.pipelineTest([]);
+        result.should.be.deep.equals([2, 3, 1]);
+    });
+    it('should call pipeline validate', async function () {
+        let controller = app.injector.getObject(controller_1.Controller);
+        let result = await controller.validateTest(6);
+        result.should.be.eq(0);
+        result = await controller.validateTest(5);
+        result.should.be.eq(5);
+    });
+    it('should call pipeline validate arguments', async function () {
+        let controller = app.injector.getObject(controller_1.Controller);
+        let result = await controller.validateTest2(5, 5);
+        result.should.be.eq(10);
+        result = await controller.validateTest2(6, 7);
+        result.should.be.eq(0);
+        result = await controller.validateTest2(5, 7);
+        result.should.be.eq(5);
+    });
 });
 //# sourceMappingURL=define.js.map

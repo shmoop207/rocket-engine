@@ -19,7 +19,8 @@ let DbModule = class DbModule extends index_1.Module {
     }
 };
 DbModule = tslib_1.__decorate([
-    index_1.module()
+    index_1.module(),
+    tslib_1.__metadata("design:paramtypes", [Object])
 ], DbModule);
 exports.DbModule = DbModule;
 //# sourceMappingURL=dbModule.js.map

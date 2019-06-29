@@ -1,6 +1,6 @@
 "use strict";
 module.exports = {
-    test: 'test',
+    test: 'validate.ts',
     deep: {
         test: 'working',
         test2: 'working2',

@@ -11,7 +11,8 @@ let DelayProvider = class DelayProvider {
     }
 };
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], DelayProvider.prototype, "moduleOptions", void 0);
 DelayProvider = tslib_1.__decorate([
     index_1.define(),

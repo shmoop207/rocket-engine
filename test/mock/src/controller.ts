@@ -1,8 +1,10 @@
 "use strict";
-import {before, define, EventDispatcher, inject,after} from '../../../index';
+import {before, define, EventDispatcher, inject, after, pipeline} from '../../../index';
 import {Manager} from "./manager";
 import {Logger2} from "../config/modules/logger2";
 import {BeforeTest} from "./beforeTest";
+import {PipelineTest, PipelineTest2} from "./pipelineTest";
+import {validate} from "../config/modules/validate/validateModule";
 
 @define()
 export class Controller extends EventDispatcher {
@@ -30,6 +32,24 @@ export class Controller extends EventDispatcher {
 
         return num + 1
     }
+
+    @pipeline(PipelineTest)
+    @pipeline(PipelineTest2)
+    async pipelineTest(arr: number[]) {
+        arr.push(1);
+        return arr;
+    }
+
+    @validate(5)
+    async validateTest(value: number) {
+        return value
+    }
+
+    async validateTest2(@validate(5) value: number,@validate(6)value2:number) {
+        return value + value2;
+
+    }
 }
+
 
 

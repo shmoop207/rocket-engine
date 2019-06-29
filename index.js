@@ -26,6 +26,8 @@ exports.singleton = appolo_inject_1.singleton;
 exports.dynamicFactory = appolo_inject_1.dynamicFactory;
 var util_1 = require("./lib/util/util");
 exports.Util = util_1.Util;
+var reflectUtils_1 = require("./lib/util/reflectUtils");
+exports.ReflectUtils = reflectUtils_1.ReflectUtils;
 var appolo_event_dispatcher_1 = require("appolo-event-dispatcher");
 exports.EventDispatcher = appolo_event_dispatcher_1.EventDispatcher;
 var launcher_1 = require("./lib/launcher/launcher");
@@ -51,6 +53,7 @@ exports.once = decorators_1.once;
 exports.interval = decorators_1.interval;
 exports.before = decorators_1.before;
 exports.after = decorators_1.after;
+exports.pipeline = decorators_1.pipeline;
 exports.createApp = function (options) {
     return new app_1.App(options);
 };

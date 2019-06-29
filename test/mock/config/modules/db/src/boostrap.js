@@ -8,10 +8,12 @@ let Bootstrap = class Bootstrap {
     }
 };
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], Bootstrap.prototype, "moduleOptions", void 0);
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], Bootstrap.prototype, "dbFactory", void 0);
 Bootstrap = tslib_1.__decorate([
     index_1.define(),

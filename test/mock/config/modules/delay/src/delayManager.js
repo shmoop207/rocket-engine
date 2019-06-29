@@ -8,10 +8,12 @@ let DelayManager = class DelayManager {
     }
 };
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], DelayManager.prototype, "env", void 0);
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], DelayManager.prototype, "delayProvider", void 0);
 DelayManager = tslib_1.__decorate([
     index_1.define(),

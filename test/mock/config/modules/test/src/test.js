@@ -11,10 +11,14 @@ let Test = class Test {
     }
 };
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], Test.prototype, "rootEnv", void 0);
 tslib_1.__decorate([
-    index_1.initMethod()
+    index_1.initMethod(),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", []),
+    tslib_1.__metadata("design:returntype", void 0)
 ], Test.prototype, "initialize", null);
 Test = tslib_1.__decorate([
     index_1.define(),

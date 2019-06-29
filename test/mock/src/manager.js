@@ -13,7 +13,8 @@ let Manager = class Manager extends index_1.EventDispatcher {
 };
 Manager = tslib_1.__decorate([
     index_1.define(),
-    index_1.singleton()
+    index_1.singleton(),
+    tslib_1.__metadata("design:paramtypes", [])
 ], Manager);
 exports.Manager = Manager;
 //# sourceMappingURL=manager.js.map

@@ -11,6 +11,7 @@ import {App} from "../../../../lib/app";
 import {DelayModule} from "./delay/delayModule";
 import {DbModule} from "./db/dbModule";
 import {NestedModule} from "./nested/nestedModule";
+import {ValidateModule} from "./validate/validateModule";
 
 export = async function (env: IEnv, app: App) {
     await app.module(logger);
@@ -23,6 +24,7 @@ export = async function (env: IEnv, app: App) {
     await app.module(logger7({test: 'test7'}));
 
     await app.module(TestModule);
+    await app.module(ValidateModule);
     await app.module(
         new DelayModule({delay: 10, testModule: env.test}),
         new DelayModule({

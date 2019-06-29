@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const Q = require("bluebird");
 const index_1 = require("../../../../../../index");
+const test_1 = require("../../test/src/test");
 let DbFactory = class DbFactory {
     async get() {
         await Q.delay(1);
@@ -10,13 +11,16 @@ let DbFactory = class DbFactory {
     }
 };
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], DbFactory.prototype, "moduleOptions", void 0);
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", Object)
 ], DbFactory.prototype, "env2", void 0);
 tslib_1.__decorate([
-    index_1.inject()
+    index_1.inject(),
+    tslib_1.__metadata("design:type", test_1.Test)
 ], DbFactory.prototype, "test", void 0);
 DbFactory = tslib_1.__decorate([
     index_1.define(),

@@ -97,7 +97,7 @@ export class Module<T extends IModuleOptions = any> {
 
             this._app.injector.addObject("moduleOptions", this._moduleOptions, true);
 
-            this.beforeInitialize();
+            await this.beforeInitialize();
 
             await this._loadInnerModules(this._app, this._moduleDefinition);
 
@@ -105,13 +105,13 @@ export class Module<T extends IModuleOptions = any> {
 
             this._handleImports(this._app);
 
-            this.beforeLaunch();
+            await this.beforeLaunch();
 
             this._fireClassExportEvents();
 
             await this._app.launch();
 
-            this.afterInitialize();
+            await this.afterInitialize();
 
 
         } catch (e) {
