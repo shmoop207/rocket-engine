@@ -22,7 +22,7 @@
     "npm": ">=3.0.0"
   },
   "main": "./index.js",
-  "version": "6.0.65",
+  "version": "6.0.66",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -36,20 +36,20 @@
     "appolo-inject": "^6.0.37",
     "bluebird": "^3.5.3",
     "lodash": "^4.17.11",
-    "tslib": "^1.9.3"
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.26",
+    "@types/bluebird": "^3.5.27",
     "@types/chai": "^4.1.7",
-    "@types/lodash": "^4.14.123",
-    "@types/mocha": "^5.2.6",
-    "@types/node": "^11.12.0",
-    "@types/sinon": "^7.0.10",
+    "@types/lodash": "^4.14.135",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.0.10",
+    "@types/sinon": "^7.0.13",
     "@types/sinon-chai": "^3.2.2",
     "chai": "4.2.0",
-    "mocha": "^6.0.2",
-    "sinon": "^7.3.0",
+    "mocha": "^6.1.4",
+    "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0",
-    "typescript": "^3.3.3"
+    "typescript": "^3.5.2"
   }
 }
