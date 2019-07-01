@@ -3,8 +3,8 @@ import {IClass} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
 import _ = require('lodash');
 
-export const BeforeSymbol = Symbol("__before__");
-export const AfterSymbol = Symbol("__after__");
+export const BeforeSymbol = "__before__";
+export const AfterSymbol = "__after__";
 
 interface IActions {
     [index: string]: IActionsItem
