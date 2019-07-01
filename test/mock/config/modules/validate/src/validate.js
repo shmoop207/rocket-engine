@@ -4,13 +4,11 @@ const tslib_1 = require("tslib");
 const index_1 = require("../../../../../../index");
 let ValidatePipeLine = class ValidatePipeLine {
     run(context, next) {
-        let index = 0;
-        if (context.index >= 0) {
-            index = context.index;
-        }
-        if (context.args[index] > context.metaData.validateNum) {
-            context.args[index] = 0;
-        }
+        context.values.forEach(item => {
+            if (item.value > context.metaData.validateNum) {
+                context.setArgumentAt(item.index, 0);
+            }
+        });
         return next();
     }
 };

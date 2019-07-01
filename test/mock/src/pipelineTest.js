@@ -4,7 +4,7 @@ const tslib_1 = require("tslib");
 const index_1 = require("../../../index");
 let PipelineTest = class PipelineTest {
     async run(context, next) {
-        context.args[0].push(2);
+        context.getArgumentAt(0).push(2);
         return next();
     }
 };
@@ -14,7 +14,7 @@ PipelineTest = tslib_1.__decorate([
 exports.PipelineTest = PipelineTest;
 let PipelineTest2 = class PipelineTest2 {
     async run(context, next) {
-        context.args[0].push(3);
+        context.getArgumentAt(0).push(3);
         return next();
     }
 };

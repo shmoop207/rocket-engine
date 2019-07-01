@@ -1,4 +1,5 @@
 import {IPipelineContext, IPipelineFn, IPipelineMetadata} from "./IPipeline";
+import {PipelineContext} from "./pipelineContext";
 
 export function runPipes(pipes: IPipelineMetadata[]) {
 
@@ -38,7 +39,7 @@ function run(i: number, params: { index: number, pipes: IPipelineMetadata[], con
     try {
         let next = run.bind(null, i + 1, params);
 
-        let context = Object.assign({index: pipe.index, metaData: pipe.metaData || {}, options: pipe.options || {}},params.context)
+        let context = new PipelineContext(params.context, pipe.index, pipe.metaData, pipe.options);
 
         let result = (fn as IPipelineFn)(context, next);
 

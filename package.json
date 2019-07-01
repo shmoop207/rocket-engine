@@ -22,7 +22,7 @@
     "npm": ">=3.0.0"
   },
   "main": "./index.js",
-  "version": "6.0.66",
+  "version": "6.0.67",
   "license": "MIT",
   "repository": {
     "type": "git",

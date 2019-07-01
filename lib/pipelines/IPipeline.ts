@@ -1,3 +1,5 @@
+import {PipelineContext} from "./pipelineContext";
+
 export interface IMetadata {
     [index: string]: IPipelineMetadata[]
 }
@@ -11,13 +13,13 @@ export interface IPipelineMetadata {
 
 }
 
-export type IPipelineFn = (context: IPipelineContext, next: () => Promise<any>) => void
+export type IPipelineFn = (context: PipelineContext, next: () => Promise<any>) => void
 
 export type IPipeLineRunner = IPipelineFn | IPipelineCtr
 export type Next = () => Promise<void>
 
 export interface IPipeline {
-    run(context: IPipelineContext, next: () => Promise<any>)
+    run(context: PipelineContext, next: () => Promise<any>)
 }
 
 

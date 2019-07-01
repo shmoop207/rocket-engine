@@ -6,6 +6,7 @@ import {Injector} from "appolo-inject/lib/inject";
 import {App} from "../app";
 import {Events} from "../interfaces/events";
 import    _ = require('lodash');
+import {PipelineContext} from "./pipelineContext";
 
 export class PipelineManager {
 
@@ -44,8 +45,8 @@ export class PipelineManager {
         this._convertPipeline(pipelines);
 
         pipelines.push({
-            pipeline: (context: IPipelineContext, next: Next) => {
-                return old.apply(context.instance, context.args)
+            pipeline: (context: PipelineContext, next: Next) => {
+                return old.apply(context.instance, context.arguments)
             }
         });
 
@@ -67,7 +68,7 @@ export class PipelineManager {
                 return
             }
 
-            pipe.pipeline = (context: IPipelineContext, next: Next) => {
+            pipe.pipeline = (context: PipelineContext, next: Next) => {
                 let pipeline = this._injector.get<IPipeline>(id);
 
                 return pipeline.run(context, next);
