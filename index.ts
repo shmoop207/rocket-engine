@@ -25,7 +25,7 @@ import {
     IParamInject,
     lazy,
     override,
-    singleton,dynamicFactory
+    singleton, dynamicFactory
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
@@ -67,9 +67,10 @@ export {IApp} from './lib/interfaces/IApp'
 export {Module} from './lib/modules/module'
 export {Events} from './lib/interfaces/events'
 export {IClass, IModuleOptions} from './lib/interfaces/IModuleDefinition'
-export {IPipelineContext,IPipeline} from './lib/pipelines/IPipeline'
+export {IPipeline, IPipelineFn} from './lib/pipelines/IPipeline'
+export {PipelineContext} from './lib/pipelines/pipelineContext'
 export {
-    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval, before, after,pipeline
+    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval, before, after, pipeline
 }from './lib/decoretors/decorators'
 
 
