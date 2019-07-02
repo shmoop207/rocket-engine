@@ -2,7 +2,7 @@ import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunn
 import {PipeSetSymbol, PipeSymbol} from "../decoretors/pipeline";
 import {runPipes} from "./pipelineRunner";
 import {Util} from "../util/util";
-import {Injector} from "appolo-inject/lib/inject";
+import {Injector,Util as AppoloUtil} from "../../";
 import {App} from "../app";
 import {Events} from "../interfaces/events";
 import    _ = require('lodash');
@@ -34,7 +34,7 @@ export class PipelineManager {
 
         let old = fn.prototype[action];
 
-        if (Reflect.hasMetadata(PipeSetSymbol, fn, action)) {
+        if (Reflect.hasOwnMetadata(PipeSetSymbol, fn, action) || !AppoloUtil.getClassDefinition(fn)) {
             return
         }
 
