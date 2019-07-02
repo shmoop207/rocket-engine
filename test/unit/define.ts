@@ -21,7 +21,10 @@ describe('define', function () {
         await app.launch();
     });
 
-    afterEach(function () {
+    afterEach(async function () {
+
+        await app.reset();
+
     })
 
 
@@ -108,6 +111,25 @@ describe('define', function () {
         result.should.be.eq(0);
 
         result = await controller.validateTest2(5,7);
+
+        result.should.be.eq(5)
+
+
+
+    });
+
+    it('should call base class pipeline validate arguments', async function () {
+        let controller = app.injector.getObject<Controller>(Controller);
+
+        let result = await controller.validateBase(5,5);
+
+        result.should.be.eq(10);
+
+        result = await controller.validateBase(6,7);
+
+        result.should.be.eq(0);
+
+        result = await controller.validateBase(5,7);
 
         result.should.be.eq(5)
 

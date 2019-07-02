@@ -1,7 +1,7 @@
 import {IExported} from "../interfaces/IModuleDefinition";
 import _ = require('lodash');
 
-export class ReflectUtils {
+export class Reflector {
     public static findReflectData<T>(symbol: Symbol | string, exported: IExported[]): IExported & { metaData: T } {
 
         for (let i = 0, len = (exported ? exported.length : 0); i < len; i++) {
@@ -30,7 +30,7 @@ export class ReflectUtils {
         return results;
     }
 
-    public static setReflectMetadata(key: string | Symbol, value: any, target: any, propertyKey?: string) {
+    public static setMetadata(key: string | Symbol, value: any, target: any, propertyKey?: string) {
         if (propertyKey) {
             Reflect.defineMetadata(key, value, target.constructor, propertyKey)
         } else {
@@ -39,7 +39,7 @@ export class ReflectUtils {
         }
     }
 
-    public static getReflectMetadata<T>(symbol: Symbol | string, klass: any, propertyName?: string, defaultValue?: T): T {
+    public static getMetadata<T>(symbol: Symbol | string, klass: any, propertyName?: string, defaultValue?: T): T {
 
         let value = Reflect.getOwnMetadata(symbol, klass, propertyName);
 
@@ -56,9 +56,21 @@ export class ReflectUtils {
         return value
     }
 
-    public static decorateReflectMetadata(key: string | Symbol, value: any) {
-        return function (target: any, propertyKey: string) {
-            ReflectUtils.setReflectMetadata(key, value, target, propertyKey);
+    public static getOwnMetadata<T>(symbol: Symbol | string, klass: any, propertyName?: string, defaultValue?: T): T {
+
+        let value = Reflect.getOwnMetadata(symbol, klass, propertyName);
+
+        if (!value && defaultValue != undefined) {
+            value = defaultValue;
+            Reflect.defineMetadata(symbol, value, klass, propertyName);
+        }
+
+        return value
+    }
+
+    public static decorateMetadata(key: string | Symbol, value: any) {
+        return function (target: any, propertyKey?: string) {
+            Reflector.setMetadata(key, value, propertyKey ? target.constructor : target, propertyKey);
         }
     }
 }

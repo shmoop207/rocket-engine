@@ -5,9 +5,10 @@ import {Logger2} from "../config/modules/logger2";
 import {BeforeTest} from "./beforeTest";
 import {PipelineTest, PipelineTest2} from "./pipelineTest";
 import {validate} from "../config/modules/validate/validateModule";
+import {BaseController} from "../config/modules/baseClass/src/baseController";
 
 @define()
-export class Controller extends EventDispatcher {
+export class Controller extends BaseController {
     working: boolean;
     @inject() manager: Manager;
     @inject() logger2: Logger2;
@@ -49,6 +50,7 @@ export class Controller extends EventDispatcher {
         return value + value2;
 
     }
+
 }
 
 

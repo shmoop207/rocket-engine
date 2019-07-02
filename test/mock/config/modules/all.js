@@ -11,6 +11,7 @@ const delayModule_1 = require("./delay/delayModule");
 const dbModule_1 = require("./db/dbModule");
 const nestedModule_1 = require("./nested/nestedModule");
 const validateModule_1 = require("./validate/validateModule");
+const baseModuleClassModule_1 = require("./baseClass/baseModuleClassModule");
 module.exports = async function (env, app) {
     await app.module(logger_1.default);
     await app.module(logger2_1.default({ test: 'test2' }));
@@ -20,6 +21,7 @@ module.exports = async function (env, app) {
     await app.module(logger7_1.default({ test: 'test7' }));
     await app.module(testModule_1.TestModule);
     await app.module(validateModule_1.ValidateModule);
+    await app.module(baseModuleClassModule_1.BaseModuleClassModule);
     await app.module(new delayModule_1.DelayModule({ delay: 10, testModule: env.test }), new delayModule_1.DelayModule({
         delay: 1,
         testModule: env.test,

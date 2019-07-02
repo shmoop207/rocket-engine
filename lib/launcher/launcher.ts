@@ -295,13 +295,8 @@ export class Launcher {
 
     public reset() {
 
-
-        _.forEach(this._exported, file => {
-            let keys = Reflect.getMetadataKeys(file.fn);
-
-            _.forEach(keys,key=>Reflect.deleteMetadata(key,file.fn));
-
-            delete require.cache[file.path]
+        _.forEach(this._files, file => {
+            delete require.cache[file];
         });
 
         this._exported = [];

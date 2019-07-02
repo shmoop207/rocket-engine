@@ -6,7 +6,7 @@ import CallSite = NodeJS.CallSite;
 import {Injector, Util as InjectUtil} from "appolo-inject";
 import {ILogger} from "../interfaces/ILogger";
 import {IExported} from "../interfaces/IModuleDefinition";
-import {ReflectUtils} from "./reflectUtils";
+import {Reflector} from "./reflector";
 
 export class Util extends InjectUtil {
 
@@ -84,25 +84,25 @@ export class Util extends InjectUtil {
 
     public static findReflectData<T>(symbol: Symbol | string, exported: IExported[]): IExported & { metaData: T } {
 
-        return ReflectUtils.findReflectData(symbol,exported)
+        return Reflector.findReflectData(symbol,exported)
     }
 
     public static findAllReflectData<T>(symbol: Symbol | string, exported: IExported[]): (IExported & { metaData: T })[] {
 
-        return ReflectUtils.findAllReflectData(symbol,exported)
+        return Reflector.findAllReflectData(symbol,exported)
     }
 
     public static setReflectMetadata(key: string | Symbol, value: any, target: any, propertyKey?: string) {
-        return ReflectUtils.setReflectMetadata(key,value,target,propertyKey)
+        return Reflector.setMetadata(key,value,target,propertyKey)
     }
 
     public static getReflectMetadata<T>(symbol: Symbol | string, klass: any, propertyName?: string, defaultValue?: T): T {
 
-        return ReflectUtils.getReflectMetadata(symbol,klass,propertyName,defaultValue)
+        return Reflector.getMetadata(symbol,klass,propertyName,defaultValue)
     }
 
     public static decorateReflectMetadata(key: string | Symbol, value: any) {
-        return ReflectUtils.decorateReflectMetadata(key,value)
+        return Reflector.decorateMetadata(key,value)
     }
 
 

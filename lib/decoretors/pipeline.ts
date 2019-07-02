@@ -1,5 +1,5 @@
 import {IMetadata, IPipelineCtr, IPipelineFn} from "../pipelines/IPipeline";
-import {Util} from "../util/util";
+import {Reflector} from "../util/reflector";
 
 export const PipeSymbol = "__PipeSymbol__";
 export const PipeSetSymbol = "__PipeSetSymbol__";
@@ -8,13 +8,13 @@ export const PipeSetSymbol = "__PipeSetSymbol__";
 export function pipeline(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, options?: any) {
 
     return function (target: any, propertyKey: string, descriptor?: PropertyDescriptor | number) {
-        let result = Util.getReflectData<IMetadata>(PipeSymbol, target.constructor, {});
+        let result: IMetadata = Reflector.getOwnMetadata(PipeSymbol, target.constructor, undefined, {});
 
         if (!result[propertyKey]) {
             result[propertyKey] = [];
         }
 
-        let index:number = NaN;
+        let index: number = NaN;
 
         if (typeof descriptor == "number") {
             index = descriptor;

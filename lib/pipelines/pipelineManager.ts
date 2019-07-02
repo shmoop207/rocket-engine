@@ -2,6 +2,7 @@ import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunn
 import {PipeSetSymbol, PipeSymbol} from "../decoretors/pipeline";
 import {runPipes} from "./pipelineRunner";
 import {Util} from "../util/util";
+import {Reflector} from "../util/reflector";
 import {Injector, Util as AppoloUtil} from "../../";
 import {App} from "../app";
 import    _ = require('lodash');
@@ -22,7 +23,7 @@ export class PipelineManager {
             return;
         }
 
-        let metadata = Util.getReflectData<IMetadata>(PipeSymbol, fn);
+        let metadata = Reflector.getOwnMetadata<IMetadata>(PipeSymbol, fn);
 
         _.forEach(metadata, (pipelines, action) => {
             this.overrideMethod(pipelines, fn, action)
@@ -31,16 +32,11 @@ export class PipelineManager {
 
     public overrideMethod(pipelines: IPipelineMetadata[], fn: Function, action: string) {
 
+        pipelines = _.cloneDeep(pipelines);
 
         this._convertPipeline(pipelines);
 
-        if (Reflect.hasOwnMetadata(PipeSetSymbol, fn, action) || !AppoloUtil.getClassDefinition(fn)) {
-            return
-        }
-
         let old = fn.prototype[action];
-
-        Reflect.defineMetadata(PipeSetSymbol, pipelines, fn, action);
 
         pipelines = pipelines.reverse();
 
@@ -68,8 +64,9 @@ export class PipelineManager {
                 return
             }
 
+            let injector = this._injector;
             pipe.pipeline = (context: PipelineContext, next: Next) => {
-                let pipeline = this._injector.get<IPipeline>(id);
+                let pipeline = injector.get<IPipeline>(id);
 
                 return pipeline.run(context, next);
             }

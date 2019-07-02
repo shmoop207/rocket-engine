@@ -29,7 +29,7 @@ import {
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
-export {ReflectUtils} from "./lib/util/reflectUtils"
+export {Reflector} from "./lib/util/reflector"
 export {EventDispatcher} from 'appolo-event-dispatcher';
 export {Launcher} from './lib/launcher/launcher';
 export {FilesLoader} from './lib/loader/filesLoader';

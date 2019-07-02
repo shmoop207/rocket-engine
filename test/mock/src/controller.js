@@ -6,7 +6,8 @@ const manager_1 = require("./manager");
 const beforeTest_1 = require("./beforeTest");
 const pipelineTest_1 = require("./pipelineTest");
 const validateModule_1 = require("../config/modules/validate/validateModule");
-let Controller = class Controller extends index_1.EventDispatcher {
+const baseController_1 = require("../config/modules/baseClass/src/baseController");
+let Controller = class Controller extends baseController_1.BaseController {
     constructor() {
         super();
     }

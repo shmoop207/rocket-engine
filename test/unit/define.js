@@ -14,7 +14,8 @@ describe('define', function () {
         });
         await app.launch();
     });
-    afterEach(function () {
+    afterEach(async function () {
+        await app.reset();
     });
     it('should define class static config', function () {
         let manager2 = app.injector.getObject(manager2_1.Manager2);
@@ -71,6 +72,15 @@ describe('define', function () {
         result = await controller.validateTest2(6, 7);
         result.should.be.eq(0);
         result = await controller.validateTest2(5, 7);
+        result.should.be.eq(5);
+    });
+    it('should call base class pipeline validate arguments', async function () {
+        let controller = app.injector.getObject(controller_1.Controller);
+        let result = await controller.validateBase(5, 5);
+        result.should.be.eq(10);
+        result = await controller.validateBase(6, 7);
+        result.should.be.eq(0);
+        result = await controller.validateBase(5, 7);
         result.should.be.eq(5);
     });
 });
