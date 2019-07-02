@@ -10,15 +10,14 @@ interface IActions {
     [index: string]: IActionsItem
 }
 
-interface IActionsItem
-{
-    isOverride?:boolean,
+interface IActionsItem {
+    isOverride?: boolean,
     items: { klass: IClass, action?: (c: any) => Function | string }[]
     propertyKey: string
 
 }
 
-function decorate<T>(symbol: Symbol, klass: IClass, action?: (c: T) => Function | string) {
+function decorate<T>(symbol: Symbol | string, klass: IClass, action?: (c: T) => Function | string) {
     return function (target: any, propertyKey: string, descriptor?: PropertyDescriptor) {
 
         let data = Util.getReflectData<IActions>(symbol, target.constructor, {});
@@ -46,15 +45,15 @@ export function after<T>(klass: IClass, action: (c: T) => Function) {
 }
 
 export function handleBeforeDecorator(target: any, app: App) {
-    baseHandler(target,app,BeforeSymbol,extendBefore)
+    baseHandler(target, app, BeforeSymbol, extendBefore)
 }
 
 
 export function handleAfterDecorator(target: any, app: App) {
-    baseHandler(target,app,AfterSymbol,extendAfter)
+    baseHandler(target, app, AfterSymbol, extendAfter)
 }
 
-function baseHandler(target: any, app: App,symbol:Symbol,handler:Function){
+function baseHandler(target: any, app: App, symbol: Symbol|string, handler: Function) {
     let meta = Util.getReflectData<IActions>(symbol, target);
 
     if (!meta) {
@@ -63,21 +62,21 @@ function baseHandler(target: any, app: App,symbol:Symbol,handler:Function){
 
     _.forEach(meta, item => {
 
-        if(item.isOverride){
+        if (item.isOverride) {
             return;
         }
 
         let old = target.prototype[item.propertyKey];
 
-        item.isOverride =  true;
+        item.isOverride = true;
 
-        target.prototype[item.propertyKey] = handler(old,app,item)
+        target.prototype[item.propertyKey] = handler(old, app, item)
     })
 }
 
 
- function  extendAfter(old:Function,app:App,item:IActionsItem) {
-    return async function(){
+function extendAfter(old: Function, app: App, item: IActionsItem) {
+    return async function () {
         let args = Array.from(arguments);
 
         let result = await old.apply(this, args);
@@ -95,8 +94,8 @@ function baseHandler(target: any, app: App,symbol:Symbol,handler:Function){
 
 }
 
- function  extendBefore(old:Function,app:App,item:IActionsItem) {
-    return async function(){
+function extendBefore(old: Function, app: App, item: IActionsItem) {
+    return async function () {
         let args = Array.from(arguments);
 
         for (let action of item.items) {
