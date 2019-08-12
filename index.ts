@@ -25,7 +25,7 @@ import {
     IParamInject,
     lazy,
     override,
-    singleton, dynamicFactory
+    singleton, dynamicFactory, customInjectFn, initMethodAsync
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
@@ -56,7 +56,7 @@ export {
     lazy,
     injectAliasFactory,
     IParamInject,
-    define, Define, override, injectLazy
+    define, Define, override, injectLazy, customInjectFn, initMethodAsync
 }
 
 export {IOptions} from './lib/interfaces/IOptions'

@@ -117,13 +117,17 @@ export class App extends EventDispatcher implements IApp {
         return this._launcher.exported
     }
 
-    public get exportedRoot():IExported[] {
+    public addExported(value: IExported): void {
+        this._launcher.exported.push(value)
+    }
+
+    public get exportedRoot(): IExported[] {
         let parent: IApp = this;
 
         let exported = [];
 
         while (parent != null) {
-            exported.push(...parent.exported)
+            exported.push(...parent.exported);
             parent = parent.parent;
         }
 

@@ -2,6 +2,7 @@
 import chai = require('chai');
 import {App, createApp} from "../../index";
 import {Bootstrap} from "../mock/src/bootstrap";
+import {DbManager} from "../mock/config/modules/db/src/dbManager";
 
 let should = chai.should();
 
@@ -100,6 +101,14 @@ describe('modules', function () {
 
         let bootstrap = app.injector.getObject<Bootstrap>(Bootstrap);
         bootstrap.dbMock.env.should.be.eq("development");
+
+    });
+
+    it('should have export module file in root app', function () {
+
+
+        let dbManager = app.injector.getObject<DbManager>("dbMockDbManager");
+        dbManager.isFoundExportedFile.should.be.ok;
 
     });
 

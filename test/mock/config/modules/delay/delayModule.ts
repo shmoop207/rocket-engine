@@ -17,7 +17,7 @@ export class DelayModule extends Module<IOptions> {
 
     }
 
-    protected beforeLaunch() {
+    public beforeLaunch() {
         this._app.on(Events.ClassExport, (fn: Function, path: string) => {
             if (fn === Bootstrap && !this._app.parent.injector.getInstance("exportedClassEvent")) {
 

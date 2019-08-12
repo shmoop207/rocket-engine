@@ -10,6 +10,7 @@ import {IPlugin} from "../interfaces/IModuleDefinition";
 import {ModuleSymbol} from "../decoretors/module";
 import {App} from "../app";
 import {Events} from "../interfaces/events";
+import {ModuleLoader} from "./moduleLoader";
 
 export interface IModuleCrt {
     new(...args: any[]): Module
@@ -20,7 +21,7 @@ export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
 export type ModuleFn = ModuleFunction | IModuleCrt | Module<any>
 
 export class ModuleManager {
-    private readonly _modules: Module[];
+    private readonly _modules: ModuleLoader[];
 
     constructor(private _options: IOptions, private _injector: Injector) {
         this._modules = [];
@@ -28,29 +29,33 @@ export class ModuleManager {
 
     public async loadDynamicModules() {
 
-        await Util.runRegroupByParallel<Module>(this._modules, module => module.moduleOptions.parallel, module => this._loadModule(module));
+        await Util.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.module.moduleOptions.parallel, module => this._loadModule(module));
     }
 
-    private async _loadModule(module: Module) {
+    private async _loadModule(module: ModuleLoader) {
         this._injector.get<App>(App).fireEvent(Events.BeforeModuleInit, module);
 
-        await module.initialize(this._injector);
+        await module.initialize();
 
         this._injector.get<App>(App).fireEvent(Events.ModuleInit, module);
 
     }
 
-    public async _loadDynamicModule(moduleFn: typeof Module | Module, isParallel: boolean) {
+    private async _registerModule(moduleFn: typeof Module | Module, isParallel: boolean) {
 
 
         let module = Module.isPrototypeOf(moduleFn) ? new (moduleFn as typeof Module)() : moduleFn as Module;
 
         module.moduleOptions.parallel = isParallel;
 
+        let loader = new ModuleLoader(module,this._injector);
+
+        loader.preInitialize();
+
         if (module.moduleOptions.immediate) {
-            await this._loadModule(module);
+            await this._loadModule(loader);
         } else {
-            this._modules.push(module);
+            this._modules.push(loader);
         }
     }
 
@@ -59,7 +64,7 @@ export class ModuleManager {
 
         let [dynamicModules, staticModules] = _.partition(modules, module => Reflect.hasMetadata(ModuleSymbol, module) || Reflect.hasMetadata(ModuleSymbol, module.constructor))
 
-        await Q.map(dynamicModules, item => this._loadDynamicModule(item as typeof Module | Module, dynamicModules.length > 1));
+        await Q.map(dynamicModules, item => this._registerModule(item as typeof Module | Module, dynamicModules.length > 1));
 
 
         await Q.map(staticModules, item => this._loadStaticModule(item as ModuleFunction));

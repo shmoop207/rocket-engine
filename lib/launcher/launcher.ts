@@ -281,15 +281,18 @@ export class Launcher {
     }
 
     private _handlePipeLines() {
-        _.forEach(this.exported, item => {
+
+        for (let i = 0, len = (this.exported || []).length; i < len; i++) {
+            let item = this.exported[i];
+
             handleBeforeDecorator(item.fn, this._app);
             handleAfterDecorator(item.fn, this._app);
 
             this._pipelineManager.handleExport(item.fn)
-        })
+        }
     }
 
-    public get exported() {
+    public get exported(): IExported[] {
         return this._exported;
     }
 

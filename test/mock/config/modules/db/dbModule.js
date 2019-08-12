@@ -4,6 +4,7 @@ const tslib_1 = require("tslib");
 const index_1 = require("../../../../../index");
 const dbFactory_1 = require("./src/dbFactory");
 const dbManager_1 = require("./src/dbManager");
+const nestedProvider_1 = require("../nested/src/nestedProvider");
 let DbModule = class DbModule extends index_1.Module {
     constructor(opts) {
         super(opts);
@@ -16,6 +17,11 @@ let DbModule = class DbModule extends index_1.Module {
     }
     get imports() {
         return [{ id: "env", type: 'env2' }];
+    }
+    afterInitialize() {
+        let dbManager = this.app.injector.get(dbManager_1.DbManager);
+        let isFound = this.app.parent.exported.find(item => item.fn === nestedProvider_1.NestedProvider);
+        dbManager.isFoundExportedFile = !!isFound;
     }
 };
 DbModule = tslib_1.__decorate([

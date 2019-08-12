@@ -1,4 +1,4 @@
-import {Events, IModuleOptions, Module, module} from '../../../../../index';
+import {Events, IClass, IModuleOptions, Module, module} from '../../../../../index';
 import {Bootstrap} from "../../../src/bootstrap";
 import {NestedProvider} from "./src/nestedProvider";
 import {DbManager} from "../db/src/dbManager";
@@ -14,11 +14,15 @@ interface IOptions extends IModuleOptions {
 export class NestedModule extends Module<IOptions> {
 
     public get exports() {
-        return [{id: this.moduleOptions.id || "nestedProvider", type: NestedProvider},{id:"dbManagerNested",type:"dbMock2DbManager"}];
+        return [{id: this.moduleOptions.id || "nestedProvider", type: NestedProvider}, {
+            id: "dbManagerNested",
+            type: "dbMock2DbManager"
+        }];
 
     }
 
-
-
+    public get fileExports(): IClass[] {
+        return [NestedProvider]
+    }
 }
 

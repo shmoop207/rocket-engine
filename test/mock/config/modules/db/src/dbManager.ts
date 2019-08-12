@@ -13,6 +13,8 @@ export class DbManager {
     @inject() env2: IEnv;
     @inject() test: Test;
 
+    public isFoundExportedFile:boolean = false;
+
 
 
     public get db(){

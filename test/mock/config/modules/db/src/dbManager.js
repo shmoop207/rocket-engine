@@ -5,6 +5,9 @@ const index_1 = require("../../../../../../index");
 const test_1 = require("../../test/src/test");
 const dbFactory_1 = require("./dbFactory");
 let DbManager = class DbManager {
+    constructor() {
+        this.isFoundExportedFile = false;
+    }
     get db() {
         return this.dbFactory;
     }

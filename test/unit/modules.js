@@ -67,5 +67,9 @@ describe('modules', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
         bootstrap.dbMock.env.should.be.eq("development");
     });
+    it('should have export module file in root app', function () {
+        let dbManager = app.injector.getObject("dbMockDbManager");
+        dbManager.isFoundExportedFile.should.be.ok;
+    });
 });
 //# sourceMappingURL=modules.js.map
