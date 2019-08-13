@@ -29,6 +29,10 @@ export class ModuleManager {
 
     public async loadDynamicModules() {
 
+        for (let i = 0, len = this._modules.length; i < len; i++) {
+            this._modules[i].preInitialize();
+        }
+
         await Util.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.module.moduleOptions.parallel, module => this._loadModule(module));
     }
 
@@ -48,11 +52,10 @@ export class ModuleManager {
 
         module.moduleOptions.parallel = isParallel;
 
-        let loader = new ModuleLoader(module,this._injector);
-
-        loader.preInitialize();
+        let loader = new ModuleLoader(module, this._injector);
 
         if (module.moduleOptions.immediate) {
+            loader.preInitialize();
             await this._loadModule(loader);
         } else {
             this._modules.push(loader);

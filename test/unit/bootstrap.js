@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chai = require("chai");
 const bootstrap_1 = require("../mock/src/bootstrap");
 const index_1 = require("../../index");
+const testModule_1 = require("../mock/config/modules/test2/testModule");
 let should = chai.should();
 describe('bootstrap', function () {
     let app;
@@ -10,6 +11,7 @@ describe('bootstrap', function () {
         app = index_1.createApp({
             root: process.cwd() + '/test/mock'
         });
+        await app.module(testModule_1.Test2Module);
         await app.launch();
     });
     afterEach(function () {
