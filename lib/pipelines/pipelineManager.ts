@@ -42,7 +42,10 @@ export class PipelineManager {
 
         pipelines.push({
             pipeline: (context: PipelineContext, next: Next) => {
-                return old.apply(context.instance, context.arguments)
+
+                let fn = old["__PIPELINE__"] ? old["__PIPELINE__"] : old;
+
+                return fn.apply(context.instance, context.arguments)
             }
         });
 
@@ -54,6 +57,8 @@ export class PipelineManager {
             let result = await pipesCompiled({args: arguments, instance: this, type: fn, action, argsTypes});
             return result;
         };
+
+        fn.prototype[action]["__PIPELINE__"] = old
     }
 
     private _convertPipeline(pipes: IPipelineMetadata[]) {

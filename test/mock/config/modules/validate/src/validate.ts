@@ -10,14 +10,13 @@ export class ValidatePipeLine {
 
     run(context: PipelineContext<{ validateNum: number }>, next) {
 
-        context.values.forEach(item=>{
+        context.values.forEach(item => {
             if (item.value > context.metaData.validateNum) {
 
-                context.setArgumentAt(item.index,0);
+                context.setArgumentAt(item.index, 0);
 
             }
         });
-
 
         return next()
     }
