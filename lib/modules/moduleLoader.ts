@@ -69,7 +69,7 @@ export class ModuleLoader {
 
 
         } catch (e) {
-            Util.logger(this._parenInjector).error(`failed to initialize module ${this.constructor.name}`, {e: e.stack});
+            Util.logger(this._parenInjector).error(`failed to initialize module ${this._module.constructor.name}`, {e: e.stack});
 
             throw e;
         }
@@ -95,14 +95,6 @@ export class ModuleLoader {
     private _setDefinitions() {
         if (this._moduleDefinition.options) {
             _.extend(this._module.moduleOptions, this._moduleDefinition.options)
-        }
-
-        if (this._moduleDefinition.exports) {
-            this._module.exports = this._moduleDefinition.exports;
-        }
-
-        if (this._moduleDefinition.imports) {
-            this._module.imports = this._moduleDefinition.imports;
         }
     }
 
@@ -147,7 +139,14 @@ export class ModuleLoader {
     }
 
     private _handleExports(app: IApp) {
-        _.forEach(this._module.exports, item => {
+
+        let moduleExports = [].concat(this._module.exports);
+
+        if (this._moduleDefinition.exports && this._moduleDefinition.exports.length) {
+            moduleExports.push(...this._moduleDefinition.exports)
+        }
+
+        _.forEach(moduleExports, item => {
 
 
             let id, type;
@@ -179,7 +178,14 @@ export class ModuleLoader {
     }
 
     private _handleImports(app: IApp) {
-        _.forEach(this._module.imports, item => {
+
+        let moduleImports = [].concat(this._module.imports);
+
+        if (this._moduleDefinition.imports && this._moduleDefinition.imports.length) {
+            moduleImports.push(...this._moduleDefinition.imports)
+        }
+
+        _.forEach(moduleImports, item => {
 
             if (typeof item == "function") {
                 return;
