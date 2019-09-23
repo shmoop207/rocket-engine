@@ -16,10 +16,12 @@ export function pipeline(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, o
 
         let index: number = NaN;
 
-        if (typeof descriptor == "number") {
-            index = descriptor;
+        let isParam = typeof descriptor == "number";
+
+        if (isParam) {
+            index = descriptor as number;
         }
 
-        result[propertyKey].push({pipeline, metaData, options, index})
+        result[propertyKey][isParam ? "unshift" : "push"]({pipeline, metaData, options, index})
     }
 }

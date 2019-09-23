@@ -24,6 +24,10 @@ let Controller = class Controller extends baseController_1.BaseController {
         arr.push(1);
         return arr;
     }
+    async pipelineTest2(arr) {
+        arr.push(1);
+        return arr;
+    }
     async validateTest(value) {
         return value;
     }
@@ -58,6 +62,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [Array]),
     tslib_1.__metadata("design:returntype", Promise)
 ], Controller.prototype, "pipelineTest", null);
+tslib_1.__decorate([
+    tslib_1.__param(0, index_1.pipeline(pipelineTest_1.PipelineTest)), tslib_1.__param(0, index_1.pipeline(pipelineTest_1.PipelineTest2)),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [Array]),
+    tslib_1.__metadata("design:returntype", Promise)
+], Controller.prototype, "pipelineTest2", null);
 tslib_1.__decorate([
     validateModule_1.validate(5),
     tslib_1.__metadata("design:type", Function),

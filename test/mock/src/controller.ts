@@ -41,6 +41,14 @@ export class Controller extends BaseController {
         return arr;
     }
 
+
+
+    async pipelineTest2(@pipeline(PipelineTest) @pipeline(PipelineTest2) arr: number[]) {
+        arr.push(1);
+        return arr;
+    }
+
+
     @validate(5)
     async validateTest(value: number) {
         return value

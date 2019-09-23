@@ -58,6 +58,11 @@ describe('define', function () {
         let result = await controller.pipelineTest([]);
         result.should.be.deep.equals([2, 3, 1]);
     });
+    it.only('should call pipeline decorator in order params', async function () {
+        let controller = app.injector.getObject(controller_1.Controller);
+        let result = await controller.pipelineTest2([]);
+        result.should.be.deep.equals([3, 2, 1]);
+    });
     it('should call pipeline validate', async function () {
         let controller = app.injector.getObject(controller_1.Controller);
         let result = await controller.validateTest(6);
