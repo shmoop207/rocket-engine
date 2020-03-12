@@ -10,6 +10,8 @@ import {PipelineContext} from "./pipelineContext";
 
 export class PipelineManager {
 
+    private _methodsOverride: { klass: Function, property: string, old: Function }[] = [];
+
     constructor(private _injector: Injector, private _app: App) {
 
     }
@@ -58,7 +60,9 @@ export class PipelineManager {
             return result;
         };
 
-        fn.prototype[action]["__PIPELINE__"] = old
+        fn.prototype[action]["__PIPELINE__"] = old;
+
+        this._methodsOverride.push({klass: fn, property: action, old: old["__PIPELINE__"] ? old["__PIPELINE__"] : old})
     }
 
     private _convertPipeline(pipes: IPipelineMetadata[]) {
@@ -75,6 +79,12 @@ export class PipelineManager {
 
                 return pipeline.run(context, next);
             }
+        })
+    }
+
+    public reset() {
+        _.forEach(this._methodsOverride, item => {
+            item.klass.prototype[item.property] = item.old;
         })
     }
 }

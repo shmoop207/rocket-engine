@@ -302,11 +302,17 @@ export class Launcher {
             delete require.cache[file];
         });
 
+        _.forEach(this.exported, file => {
+            delete require.cache[file.path];
+        });
+
         this._exported = [];
 
         for (let filePath of FilesLoader.load(this._options.root, ["config"])) {
             delete require.cache[filePath]
         }
+
+        this._pipelineManager.reset();
 
         this._files.length = 0;
         this._app = null;

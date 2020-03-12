@@ -38,6 +38,9 @@ describe('define', function () {
     });
     it('should define mixsins', function () {
         class Test {
+            constructor() {
+                this.a = 1;
+            }
             on(event, fn) {
                 return true;
             }
@@ -51,14 +54,14 @@ describe('define', function () {
             index_1.mixins(Test)
         ], Test2);
         let test = new Test2();
-        test.on().should.be.ok;
+        test.on.should.be.ok;
     });
     it('should call pipeline decorator', async function () {
         let controller = app.injector.getObject(controller_1.Controller);
         let result = await controller.pipelineTest([]);
         result.should.be.deep.equals([2, 3, 1]);
     });
-    it.only('should call pipeline decorator in order params', async function () {
+    it('should call pipeline decorator in order params', async function () {
         let controller = app.injector.getObject(controller_1.Controller);
         let result = await controller.pipelineTest2([]);
         result.should.be.deep.equals([3, 2, 1]);

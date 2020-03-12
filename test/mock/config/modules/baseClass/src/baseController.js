@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const index_1 = require("../../../../../../index");
 const validateModule_1 = require("../../validate/validateModule");
-class BaseController extends index_1.EventDispatcher {
+class Base2Controller extends index_1.EventDispatcher {
     async validateBase(value, value2) {
         return value + value2;
     }
@@ -13,6 +13,9 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:type", Function),
     tslib_1.__metadata("design:paramtypes", [Number, Number]),
     tslib_1.__metadata("design:returntype", Promise)
-], BaseController.prototype, "validateBase", null);
+], Base2Controller.prototype, "validateBase", null);
+exports.Base2Controller = Base2Controller;
+class BaseController extends Base2Controller {
+}
 exports.BaseController = BaseController;
 //# sourceMappingURL=baseController.js.map

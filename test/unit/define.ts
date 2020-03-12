@@ -15,7 +15,7 @@ describe('define', function () {
     beforeEach(async () => {
         app = createApp({
             root: process.cwd() + '/test/mock'
-        })
+        });
 
 
         await app.launch();
@@ -25,7 +25,7 @@ describe('define', function () {
 
         await app.reset();
 
-    })
+    });
 
 
     it('should define class static config', function () {
@@ -34,7 +34,7 @@ describe('define', function () {
         should.exist(manager2);
         should.exist(manager2.manager);
         manager2.manager.run().should.be.ok;
-    })
+    });
 
     it('should define class with linq', function () {
         let manager3 = app.injector.getObject<Manager3>(Manager3);
@@ -59,6 +59,10 @@ describe('define', function () {
     it('should define mixsins', function () {
 
         class Test {
+            private a:number
+            constructor(){
+                this.a = 1
+            }
             on(event, fn) {
                 return true;
             }
@@ -69,13 +73,15 @@ describe('define', function () {
         }
 
         @mixins(Test)
-        class Test2 {
+        class Test2{
 
         }
 
+        interface Test2 extends Test{}
+
 
         let test = new Test2();
-        (test as any).on().should.be.ok
+        test.on.should.be.ok
     });
 
     it('should call pipeline decorator', async function () {
@@ -86,7 +92,7 @@ describe('define', function () {
         result.should.be.deep.equals([2, 3, 1])
     });
 
-    it.only('should call pipeline decorator in order params', async function () {
+    it('should call pipeline decorator in order params', async function () {
         let controller = app.injector.getObject<Controller>(Controller);
 
         let result = await controller.pipelineTest2([]);
