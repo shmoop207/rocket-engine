@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Q = require("bluebird");
+const appolo_utils_1 = require("appolo-utils");
 function default_1(options) {
     return async (env, inject) => {
         let logger6 = {
@@ -9,7 +9,7 @@ function default_1(options) {
             }
         };
         inject.addObject('logger6', logger6);
-        await Q.delay(2);
+        await appolo_utils_1.Promises.delay(2);
     };
 }
 exports.default = default_1;

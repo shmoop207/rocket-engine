@@ -8,7 +8,7 @@ import {IClass, IModuleDefinition} from "../interfaces/IModuleDefinition";
 import {IEnv} from "../interfaces/IEnv";
 import {createApp, IApp} from "../../index";
 import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/module";
-import   _ = require('lodash');
+import {Promises, Arrays, Objects} from 'appolo-utils';
 
 export class ModuleLoader {
 
@@ -19,7 +19,7 @@ export class ModuleLoader {
 
         this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _module.constructor);
 
-        _module.moduleOptions = _.defaults({}, _module.moduleOptions, {
+        _module.moduleOptions = Objects.defaults({}, _module.moduleOptions, {
             immediate: this._moduleDefinition.immediate,
             parallel: this._moduleDefinition.parallel
         }, {immediate: false, parallel: false});
@@ -38,7 +38,7 @@ export class ModuleLoader {
 
         this._module.app = this._createApp(this._parenInjector, this._moduleDefinition);
 
-        this._module.moduleOptions = _.defaultsDeep({}, this._module.moduleOptions || {}, this._module.defaults);
+        this._module.moduleOptions = Objects.defaults({}, this._module.moduleOptions || {}, this._module.defaults);
 
         this._module.app.injector.addObject("moduleOptions", this._module.moduleOptions, true);
 
@@ -81,7 +81,7 @@ export class ModuleLoader {
             return;
         }
 
-        _.forEach(this._module.app.parent.exported, item => {
+        this._module.app.parent.exported.forEach(item => {
 
             if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
 
@@ -94,7 +94,7 @@ export class ModuleLoader {
 
     private _setDefinitions() {
         if (this._moduleDefinition.options) {
-            _.extend(this._module.moduleOptions, this._moduleDefinition.options)
+            Object.assign(this._module.moduleOptions, this._moduleDefinition.options)
         }
     }
 
@@ -109,7 +109,7 @@ export class ModuleLoader {
         });
 
         app.injector.addObject("rootEnv", rootEnv, true);
-        app.injector.addObject("env", _.extend({}, rootEnv, app.env), true);
+        app.injector.addObject("env", Object.assign({}, rootEnv, app.env), true);
 
 
         Reflect.defineMetadata(AppModuleOptionsSymbol, this._module.moduleOptions, app);
@@ -146,7 +146,7 @@ export class ModuleLoader {
             moduleExports.push(...this._moduleDefinition.exports)
         }
 
-        _.forEach(moduleExports, item => {
+        moduleExports.forEach(item => {
 
 
             let id, type;
@@ -172,7 +172,7 @@ export class ModuleLoader {
     }
 
     private _handleFileExport() {
-        _.forEach(this._module.fileExports, fn => {
+        this._module.fileExports.forEach(fn => {
             (this._module.app.parent as App).addExported({path: "", fn, define: Util.getClassDefinition(fn)})
         })
     }
@@ -185,7 +185,7 @@ export class ModuleLoader {
             moduleImports.push(...this._moduleDefinition.imports)
         }
 
-        _.forEach(moduleImports, item => {
+        (moduleImports || []).forEach(item => {
 
             if (typeof item == "function") {
                 return;

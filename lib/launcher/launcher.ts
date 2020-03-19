@@ -14,7 +14,7 @@ import {AppModuleOptionsSymbol} from "../decoretors/module";
 import {IApp} from "../interfaces/IApp";
 import   path = require('path');
 import   fs = require('fs');
-import    _ = require('lodash');
+import {Objects, Classes} from 'appolo-utils';
 import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/beforeDecorator";
 import {PipelineManager} from "../pipelines/pipelineManager";
 
@@ -46,7 +46,7 @@ export class Launcher {
 
     public loadOptions(options: IOptions): IOptions {
 
-        let opts = _.defaults(options || {}, this.Defaults);
+        let opts = Objects.defaults(options || {}, this.Defaults);
 
         this._options = opts;
         return opts;
@@ -65,7 +65,7 @@ export class Launcher {
             let environment = fs.existsSync(environmentPath) ? require(environmentPath) : {};
 
             //add current env config to appolo env
-            _.defaultsDeep(env, environment || {}, all);
+            Objects.defaults(env, environment || {}, all);
         }
 
         //save evn name
@@ -222,7 +222,7 @@ export class Launcher {
         }
 
 
-        let loadPaths = _.union(this._options.paths, this._env.paths);
+        let loadPaths = (this._options.paths || []).concat(this._env.paths || []);
 
         for (let filePath of FilesLoader.load(this._options.root, loadPaths)) {
             try {
@@ -239,12 +239,12 @@ export class Launcher {
     }
 
     private _handleExported(exported: any, filePath: string) {
-        let keys = Object.keys(exported);
+        let keys = Object.keys(exported || {});
 
         for (let i = 0, len = keys.length; i < len; i++) {
             let key = keys[i], fn = exported[key];
 
-            if (!_.isFunction(fn)) {
+            if (!Classes.isFunction(fn)) {
                 continue;
             }
 
@@ -298,11 +298,11 @@ export class Launcher {
 
     public reset() {
 
-        _.forEach(this._files, file => {
+        this._files.forEach(file => {
             delete require.cache[file];
         });
 
-        _.forEach(this.exported, file => {
+        this.exported.forEach(file => {
             delete require.cache[file.path];
         });
 

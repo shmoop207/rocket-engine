@@ -1,4 +1,4 @@
-import Q  = require('bluebird');
+import {Promises} from 'appolo-utils';
 import {define, IFactory, inject, singleton,factory} from '../../../../../../index';
 import {IEnv} from "../../../../../../lib/interfaces/IEnv";
 import {Test} from "../../test/src/test";

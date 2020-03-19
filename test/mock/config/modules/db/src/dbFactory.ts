@@ -1,4 +1,4 @@
-import Q  = require('bluebird');
+import {Promises} from 'appolo-utils';
 import {define, IFactory, inject, singleton,factory} from '../../../../../../index';
 import {IEnv} from "../../../../../../lib/interfaces/IEnv";
 import {Test} from "../../test/src/test";
@@ -15,7 +15,7 @@ export class DbFactory implements IFactory<{conn:string,env:string,name:string,t
 
     async get(): Promise<{conn:string,env:string,name:string,time:number}> {
 
-        await Q.delay(1);
+        await Promises.delay(1);
 
 
         return {conn:"working",env:this.env2.type,name:this.test.name,time:Date.now()}

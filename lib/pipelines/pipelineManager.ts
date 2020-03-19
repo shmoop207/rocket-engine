@@ -2,11 +2,11 @@ import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunn
 import {PipeSetSymbol, PipeSymbol} from "../decoretors/pipeline";
 import {runPipes} from "./pipelineRunner";
 import {Util} from "../util/util";
-import {Reflector} from "../util/reflector";
+import {Reflector} from "appolo-utils";
 import {Injector, Util as AppoloUtil} from "../../";
 import {App} from "../app";
-import    _ = require('lodash');
 import {PipelineContext} from "./pipelineContext";
+import {Promises, Arrays, Objects} from 'appolo-utils';
 
 export class PipelineManager {
 
@@ -27,14 +27,14 @@ export class PipelineManager {
 
         let metadata = Reflector.getOwnMetadata<IMetadata>(PipeSymbol, fn);
 
-        _.forEach(metadata, (pipelines, action) => {
-            this.overrideMethod(pipelines, fn, action)
+        Object.keys(metadata || {}).forEach(action => {
+            this.overrideMethod(metadata[action], fn, action)
         });
     }
 
     public overrideMethod(pipelines: IPipelineMetadata[], fn: Function, action: string) {
 
-        pipelines = _.cloneDeep(pipelines);
+        pipelines = Objects.cloneDeep(pipelines);
 
         this._convertPipeline(pipelines);
 
@@ -66,7 +66,7 @@ export class PipelineManager {
     }
 
     private _convertPipeline(pipes: IPipelineMetadata[]) {
-        _.forEach(pipes, (pipe, index) => {
+        pipes.forEach((pipe, index) => {
             let id = Util.getClassId(pipe.pipeline);
 
             if (!id) {
@@ -83,7 +83,7 @@ export class PipelineManager {
     }
 
     public reset() {
-        _.forEach(this._methodsOverride, item => {
+        this._methodsOverride.forEach( item => {
             item.klass.prototype[item.property] = item.old;
         })
     }

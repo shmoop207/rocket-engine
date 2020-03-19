@@ -1,7 +1,8 @@
 import {Util} from "../util/util";
 import {IClass} from "../interfaces/IModuleDefinition";
 import {App} from "../app";
-import _ = require('lodash');
+import {Classes} from 'appolo-utils';
+
 
 export const BeforeSymbol = "__before__";
 export const AfterSymbol = "__after__";
@@ -12,12 +13,12 @@ interface IActions {
 
 interface IActionsItem {
     isOverride?: boolean,
-    items: { klass: IClass, action?: (c: any) => Function | string }[]
+    items: { klass: IClass, action?: ((c: any) => Function) | string }[]
     propertyKey: string
 
 }
 
-function decorate<T>(symbol: Symbol | string, klass: IClass, action?: (c: T) => Function | string) {
+function decorate<T>(symbol: Symbol | string, klass: IClass, action?: ((c: T) => Function) | string) {
     return function (target: any, propertyKey: string, descriptor?: PropertyDescriptor) {
 
         let data = Util.getReflectData<IActions>(symbol, target.constructor, {});
@@ -53,15 +54,15 @@ export function handleAfterDecorator(target: any, app: App) {
     baseHandler(target, app, AfterSymbol, extendAfter)
 }
 
-function baseHandler(target: any, app: App, symbol: Symbol|string, handler: Function) {
+function baseHandler(target: any, app: App, symbol: Symbol | string, handler: Function) {
     let meta = Util.getReflectData<IActions>(symbol, target);
 
     if (!meta) {
         return;
     }
 
-    _.forEach(meta, item => {
-
+    Object.keys(meta || {}).forEach(key => {
+        let item = meta[key];
         if (item.isOverride) {
             return;
         }
@@ -84,7 +85,9 @@ function extendAfter(old: Function, app: App, item: IActionsItem) {
         for (let action of item.items) {
             let handler = app.injector.get(action.klass);
 
-            let handlerAction = _.isFunction(action.action) ? action.action(handler) : handler[action.action || "run"];
+            let handlerAction = Classes.isFunction(action.action)
+                ? (action.action as Function)(handler)
+                : handler[action.action as string || "run"];
 
             result = await handlerAction.apply(this, [result])
         }
@@ -101,11 +104,13 @@ function extendBefore(old: Function, app: App, item: IActionsItem) {
         for (let action of item.items) {
             let handler = app.injector.get(action.klass);
 
-            let handlerAction = _.isFunction(action.action) ? action.action(handler) : handler[action.action || "run"];
+            let handlerAction = Classes.isFunction(action.action)
+                ? (action.action as Function)(handler)
+                : handler[action.action as string || "run"];
 
             args = await handlerAction.apply(handler, args);
 
-            if (!_.isArray(args)) {
+            if (!Array.isArray(args)) {
                 args = [args];
             }
         }

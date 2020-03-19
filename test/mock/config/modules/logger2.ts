@@ -1,5 +1,5 @@
 import appolo = require('../../../../index');
-import    Q = require('bluebird');
+import {Promises} from 'appolo-utils';
 
 export interface Logger2{
     getName():string

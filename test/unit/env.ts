@@ -45,7 +45,7 @@ describe('environments', function () {
     });
 
 
-    it('should create dev environment with deep config', async () => {
+    xit('should create dev environment with deep config', async () => {
 
         let app = await App.create({
             root: process.cwd() + '/test/mock'

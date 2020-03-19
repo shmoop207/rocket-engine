@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const Q = require("bluebird");
+const appolo_utils_1 = require("appolo-utils");
 const index_1 = require("../../../../../../index");
 let DelayProvider = class DelayProvider {
     async get() {
         let time = Date.now();
-        await Q.delay(this.moduleOptions.delay);
+        await appolo_utils_1.Promises.delay(this.moduleOptions.delay);
         return { delay: this.moduleOptions.delay, time: Date.now() - time };
     }
 };

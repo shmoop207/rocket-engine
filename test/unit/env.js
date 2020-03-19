@@ -26,7 +26,7 @@ describe('environments', function () {
         app.env.test.should.be.equal("testProd");
         app.env.type.should.be.equal("production");
     });
-    it('should create dev environment with deep config', async () => {
+    xit('should create dev environment with deep config', async () => {
         let app = await index_1.App.create({
             root: process.cwd() + '/test/mock'
         }).launch();

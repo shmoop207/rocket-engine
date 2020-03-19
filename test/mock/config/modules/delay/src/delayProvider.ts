@@ -1,4 +1,4 @@
-import Q  = require('bluebird');
+import {Promises} from 'appolo-utils';
 import {define, IFactory, inject, singleton,factory} from '../../../../../../index';
 import {Delay} from "./delay";
 
@@ -13,7 +13,7 @@ export class DelayProvider implements IFactory<{delay:number,time:number}> {
 
         let time = Date.now();
 
-        await Q.delay(this.moduleOptions.delay);
+        await Promises.delay(this.moduleOptions.delay);
 
         return {delay:this.moduleOptions.delay,time: Date.now() - time}
 

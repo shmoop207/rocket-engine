@@ -1,5 +1,5 @@
 import {IMetadata, IPipelineCtr, IPipelineFn} from "../pipelines/IPipeline";
-import {Reflector} from "../util/reflector";
+import {Reflector} from "appolo-utils";
 
 export const PipeSymbol = "__PipeSymbol__";
 export const PipeSetSymbol = "__PipeSetSymbol__";

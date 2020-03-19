@@ -2,12 +2,12 @@
 
 import fs = require('fs');
 import    path = require('path');
-import    _ = require('lodash');
+import {Objects,Classes} from 'appolo-utils';
 
 export class FilesLoader {
 
     public static * load(root:string, filesPath:string|string[]) {
-        if (!_.isArray(filesPath)) {
+        if (!Array.isArray(filesPath)) {
             filesPath = [filesPath];
         }
 
@@ -24,11 +24,11 @@ export class FilesLoader {
                 let newPath = path.join(filePath, file);
                 let stat = fs.statSync(newPath);
 
-                if (stat.isFile() && /(.*)\.(js)$/.test(file) && !_.startsWith(file, "~")) {
+                if (stat.isFile() && /(.*)\.(js)$/.test(file) && !file.startsWith( "~")) {
 
                     yield newPath;
 
-                } else if (stat.isDirectory()  && !_.startsWith(file, "~")) {
+                } else if (stat.isDirectory()  && !file.startsWith( "~")) {
                     yield * this._loadFiles(newPath);
                 }
             }

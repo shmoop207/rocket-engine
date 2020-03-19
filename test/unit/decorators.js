@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const chai = require("chai");
-const Q = require("bluebird");
+const appolo_utils_1 = require("appolo-utils");
 const index_1 = require("../../index");
 let should = chai.should();
 describe("decorator", function () {
@@ -16,7 +16,7 @@ describe("decorator", function () {
             }
         }
         tslib_1.__decorate([
-            index_1.throttle(10, { leading: false }),
+            index_1.throttle(10),
             tslib_1.__metadata("design:type", Function),
             tslib_1.__metadata("design:paramtypes", []),
             tslib_1.__metadata("design:returntype", void 0)
@@ -25,7 +25,7 @@ describe("decorator", function () {
         test.handle();
         test.handle();
         test.handle();
-        await Q.delay(11);
+        await appolo_utils_1.Promises.delay(11);
         test.test.should.be.eq(1);
     });
     it('should call debounce', async () => {
@@ -47,9 +47,9 @@ describe("decorator", function () {
         test.handle();
         test.handle();
         test.handle();
-        await Q.delay(5);
+        await appolo_utils_1.Promises.delay(5);
         test.test.should.be.eq(0);
-        await Q.delay(11);
+        await appolo_utils_1.Promises.delay(11);
         test.test.should.be.eq(1);
     });
     it('should call bind', async () => {
@@ -87,9 +87,9 @@ describe("decorator", function () {
         ], Test.prototype, "handle", null);
         let test = new Test();
         test.handle();
-        await Q.delay(5);
+        await appolo_utils_1.Promises.delay(5);
         test.test.should.be.eq(0);
-        await Q.delay(11);
+        await appolo_utils_1.Promises.delay(11);
         test.test.should.be.eq(1);
     });
     it('should call cache', async () => {
@@ -151,7 +151,7 @@ describe("decorator", function () {
         ], Test.prototype, "handle", null);
         let test = new Test();
         await test.handle();
-        await Q.delay(12);
+        await appolo_utils_1.Promises.delay(12);
         await test.handle();
         await test.handle();
         test.test.should.be.eq(2);

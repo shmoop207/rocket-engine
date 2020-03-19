@@ -2,7 +2,7 @@
 import appolo  = require('../../index');
 import chai = require('chai')
 import {EventDispatcher} from "../../index";
-import Q = require("bluebird");
+import {Promises} from 'appolo-utils';
 
 let should = chai.should();
 
@@ -49,7 +49,7 @@ describe("event dispatcher", function () {
         let a = new EventHandler();
         a.on("test", (v) => value = v);
 
-        await Q.delay(150);
+        await Promises.delay(150);
 
         value.should.be.eq(5);
 
@@ -69,9 +69,9 @@ describe("event dispatcher", function () {
 
         let fn = (v) => value = v;
         a.on("test", fn);
-        await Q.delay(10);
+        await Promises.delay(10);
         a.un("test", fn);
-        await Q.delay(140);
+        await Promises.delay(140);
 
         value.should.be.eq(0);
 
@@ -91,9 +91,9 @@ describe("event dispatcher", function () {
 
         let fn = ((v) => value = v);
         a.on("test", fn);
-        await Q.delay(10);
+        await Promises.delay(10);
         a.removeAllListeners();
-        await Q.delay(140);
+        await Promises.delay(140);
 
         value.should.be.eq(0);
 

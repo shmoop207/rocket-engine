@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const appolo = require("../../index");
 const chai = require("chai");
 const index_1 = require("../../index");
-const Q = require("bluebird");
+const appolo_utils_1 = require("appolo-utils");
 let should = chai.should();
 describe("event dispatcher", function () {
     class EventHandler {
@@ -35,7 +35,7 @@ describe("event dispatcher", function () {
         }
         let a = new EventHandler();
         a.on("test", (v) => value = v);
-        await Q.delay(150);
+        await appolo_utils_1.Promises.delay(150);
         value.should.be.eq(5);
     });
     it("should subscribe with fire event with params", async () => {
@@ -49,9 +49,9 @@ describe("event dispatcher", function () {
         let a = new EventHandler();
         let fn = (v) => value = v;
         a.on("test", fn);
-        await Q.delay(10);
+        await appolo_utils_1.Promises.delay(10);
         a.un("test", fn);
-        await Q.delay(140);
+        await appolo_utils_1.Promises.delay(140);
         value.should.be.eq(0);
     });
     it("should removeAllListeners with fire event with params", async () => {
@@ -65,9 +65,9 @@ describe("event dispatcher", function () {
         let a = new EventHandler();
         let fn = ((v) => value = v);
         a.on("test", fn);
-        await Q.delay(10);
+        await appolo_utils_1.Promises.delay(10);
         a.removeAllListeners();
-        await Q.delay(140);
+        await appolo_utils_1.Promises.delay(140);
         value.should.be.eq(0);
     });
 });

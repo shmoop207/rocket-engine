@@ -1,5 +1,5 @@
 import appolo = require('../../../../index');
-import    Q = require('bluebird');
+import {Promises} from 'appolo-utils';
 
 
 export default async function (env,inject) {
@@ -12,6 +12,6 @@ export default async function (env,inject) {
 
     inject.addObject('logger',logger);
 
-    await  Q.delay( 100)
+    await  Promises.delay( 100)
 
 }

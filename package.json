@@ -22,7 +22,7 @@
     "npm": ">=3.0.0"
   },
   "main": "./index.js",
-  "version": "6.0.82",
+  "version": "7.0.0",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -31,25 +31,22 @@
   "readme": "",
   "readmeFilename": "README.md",
   "dependencies": {
-    "appolo-decorators": "^6.0.14",
-    "appolo-event-dispatcher": "^6.0.14",
-    "appolo-inject": "^6.0.38",
-    "bluebird": "^3.5.5",
-    "lodash": "^4.17.15",
-    "tslib": "^1.10.0"
+    "appolo-decorators": "^7.0.2",
+    "appolo-event-dispatcher": "^7.0.0",
+    "appolo-inject": "^7.0.2",
+    "appolo-utils": "^0.0.42",
+    "tslib": "^1.11.1"
   },
   "devDependencies": {
-    "@types/bluebird": "^3.5.27",
-    "@types/chai": "^4.1.7",
-    "@types/lodash": "^4.14.136",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.0.10",
-    "@types/sinon": "^7.0.13",
-    "@types/sinon-chai": "^3.2.2",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.9.1",
+    "@types/sinon": "^7.5.2",
+    "@types/sinon-chai": "^3.2.3",
     "chai": "4.2.0",
-    "mocha": "^6.1.4",
-    "sinon": "^7.3.2",
-    "sinon-chai": "^3.3.0",
-    "typescript": "^3.5.2"
+    "mocha": "^7.1.0",
+    "sinon": "^9.0.1",
+    "sinon-chai": "^3.5.0",
+    "typescript": "^3.8.3"
   }
 }

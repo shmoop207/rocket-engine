@@ -1,6 +1,6 @@
 "use strict";
 import chai = require('chai');
-import Q = require('bluebird');
+import {Promises} from 'appolo-utils';
 import {bind, cache, debounce, delay, once, throttle} from "../../index";
 
 let should = chai.should();
@@ -14,7 +14,7 @@ describe("decorator", function () {
 
             test = 0;
 
-            @throttle(10, {leading: false})
+            @throttle(10)
             handle() {
                 return ++this.test;
             }
@@ -25,7 +25,7 @@ describe("decorator", function () {
         test.handle();
         test.handle();
         test.handle();
-        await Q.delay(11);
+        await Promises.delay(11);
 
         test.test.should.be.eq(1);
 
@@ -50,10 +50,10 @@ describe("decorator", function () {
         test.handle();
         test.handle();
 
-        await Q.delay(5);
+        await Promises.delay(5);
         test.test.should.be.eq(0);
 
-        await Q.delay(11);
+        await Promises.delay(11);
 
         test.test.should.be.eq(1);
 
@@ -94,10 +94,10 @@ describe("decorator", function () {
 
         test.handle();
 
-        await Q.delay(5);
+        await Promises.delay(5);
         test.test.should.be.eq(0);
 
-        await Q.delay(11);
+        await Promises.delay(11);
 
         test.test.should.be.eq(1);
 
@@ -164,7 +164,7 @@ describe("decorator", function () {
 
         let test = new Test();
         await test.handle();
-        await Q.delay(12);
+        await Promises.delay(12);
 
         await test.handle();
         await test.handle();

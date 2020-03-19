@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const Q = require("bluebird");
+const appolo_utils_1 = require("appolo-utils");
 const index_1 = require("../../../../../../index");
 const test_1 = require("../../test/src/test");
 let DbFactory = class DbFactory {
     async get() {
-        await Q.delay(1);
+        await appolo_utils_1.Promises.delay(1);
         return { conn: "working", env: this.env2.type, name: this.test.name, time: Date.now() };
     }
 };

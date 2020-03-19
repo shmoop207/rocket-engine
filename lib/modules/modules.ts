@@ -1,6 +1,5 @@
 "use strict";
-import    Q = require('bluebird');
-import   _ = require('lodash');
+import {Promises, Arrays} from 'appolo-utils';
 import   path = require('path');
 import {Util} from "../util/util";
 import {Injector} from "appolo-inject";
@@ -65,12 +64,12 @@ export class ModuleManager {
 
     public async load(modules: ModuleFn[]): Promise<any> {
 
-        let [dynamicModules, staticModules] = _.partition(modules, module => Reflect.hasMetadata(ModuleSymbol, module) || Reflect.hasMetadata(ModuleSymbol, module.constructor))
+        let [dynamicModules, staticModules] = Arrays.partition(modules, module => Reflect.hasMetadata(ModuleSymbol, module) || Reflect.hasMetadata(ModuleSymbol, module.constructor))
 
-        await Q.map(dynamicModules, item => this._registerModule(item as typeof Module | Module, dynamicModules.length > 1));
+        await Promises.map(dynamicModules, item => this._registerModule(item as typeof Module | Module, dynamicModules.length > 1));
 
 
-        await Q.map(staticModules, item => this._loadStaticModule(item as ModuleFunction));
+        await Promises.map(staticModules, item => this._loadStaticModule(item as ModuleFunction));
 
 
     }
@@ -78,21 +77,21 @@ export class ModuleManager {
     private _loadStaticModule(moduleFn: ModuleFunction): PromiseLike<any> {
         //remove the callback arg
         let args = Util.getFunctionArgs(moduleFn as ModuleFunction),
-            lastArg = _.last(args),
+            lastArg = args[args.length-1],
             isCallback = false;
 
-        if (_.includes(['callback', 'next', 'fn', 'func'], lastArg)) {
-            args = _.initial(args);
+        if (['callback', 'next', 'fn', 'func'].indexOf(lastArg) > -1) {
+            args = args.slice(0,-1);
             isCallback = true;
         }
 
-        let dependencies = _.map(args, (arg: string) => this._injector.getObject(arg));
+        let dependencies = args.map((arg: string) => this._injector.getObject(arg));
 
         if (isCallback) {
-            return Q.fromCallback((callback) => (moduleFn as ModuleFunction).apply(moduleFn, dependencies.concat([callback])));
+            return Promises.fromCallback((callback) => (moduleFn as ModuleFunction).apply(moduleFn, dependencies.concat([callback])));
         }
 
-        return Q.try(() => (moduleFn as ModuleFunction).apply(moduleFn, dependencies))
+        return Promise.resolve().then(() => (moduleFn as ModuleFunction).apply(moduleFn, dependencies))
     }
 
     public async loadStaticModules(): Promise<void> {
