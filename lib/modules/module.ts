@@ -4,21 +4,16 @@ import {Util} from "../util/util";
 import {IClass, IModuleDefinition, IModuleOptions, ModuleTypes} from "../interfaces/IModuleDefinition";
 
 
-export class Module<T extends IModuleOptions = any> {
-
-
+export class Module<T = any> {
 
     protected _exports: ModuleTypes = [];
     protected _fileExports: IClass[] = [];
     protected _imports: ModuleTypes = [];
     protected _moduleOptions: T;
     protected _app: IApp;
-    //protected _parallel: boolean;
-    //protected _immediate: boolean;
 
-    constructor(options: T = {} as T) {
+    constructor(options: T & IModuleOptions = {} as T) {
         this._moduleOptions = options;
-
     }
 
     protected readonly Defaults: Partial<T> = {};
@@ -26,7 +21,6 @@ export class Module<T extends IModuleOptions = any> {
     public get defaults(): Partial<T> {
         return this.Defaults
     }
-
 
 
     public get app(): IApp {

@@ -26,6 +26,10 @@ export class PipelineContext<T = any> {
         return this._context.instance;
     }
 
+    public originFn(): Function {
+        return this._context.instance[this._context.action]["__PIPELINE__"]
+    }
+
     public get type(): any {
         return this._context.type;
     }
