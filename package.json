@@ -22,7 +22,7 @@
     "npm": ">=3.0.0"
   },
   "main": "./index.js",
-  "version": "7.0.1",
+  "version": "7.0.2",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -31,10 +31,10 @@
   "readme": "",
   "readmeFilename": "README.md",
   "dependencies": {
-    "appolo-decorators": "^7.0.2",
-    "appolo-event-dispatcher": "^7.0.0",
-    "appolo-inject": "^7.0.2",
-    "appolo-utils": "^0.0.42",
+    "appolo-decorators": "^7.0.3",
+    "appolo-event-dispatcher": "^7.0.1",
+    "appolo-inject": "^7.0.4",
+    "appolo-utils": "^0.0.54",
     "tslib": "^1.11.1"
   },
   "devDependencies": {
