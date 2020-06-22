@@ -1,4 +1,5 @@
 import {PipelineContext} from "./pipelineContext";
+import {IDefinition} from "appolo-inject";
 
 export interface IMetadata {
     [index: string]: IPipelineMetadata[]
@@ -30,6 +31,7 @@ export interface IPipelineCtr {
 export interface IPipelineContext<T = any> {
     args: IArguments,
     instance: any,
+    definition:IDefinition
     type: any,
     action: string
     argsTypes: any[],

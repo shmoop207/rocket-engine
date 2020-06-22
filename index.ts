@@ -25,7 +25,7 @@ import {
     IParamInject,
     lazy,
     override,
-    singleton, dynamicFactory, customInjectFn, initMethodAsync
+    singleton, dynamicFactory, customInjectFn, initMethodAsync, customParam
 } from 'appolo-inject'
 
 export {Util} from "./lib/util/util"
@@ -34,6 +34,7 @@ export {Launcher} from './lib/launcher/launcher';
 export {FilesLoader} from './lib/loader/filesLoader';
 
 export {
+    customParam,
     dynamicFactory,
     Injector,
     singleton,
@@ -69,8 +70,22 @@ export {IClass, IModuleOptions} from './lib/interfaces/IModuleDefinition'
 export {IPipeline, IPipelineFn} from './lib/pipelines/IPipeline'
 export {PipelineContext} from './lib/pipelines/pipelineContext'
 export {
-    mixins, bootstrap, module, throttle, bind, delay, debounce, cache, once, interval, before, after, pipeline
-}from './lib/decoretors/decorators'
+    mixins,
+    bootstrap,
+    module,
+    throttle,
+    bind,
+    delay,
+    debounce,
+    cache,
+    once,
+    interval,
+    before,
+    after,
+    pipeline,
+    pipelineInstance,
+    pipelineType
+} from './lib/decoretors/decorators'
 
 
 export let createApp = function (options?: IOptions): App {

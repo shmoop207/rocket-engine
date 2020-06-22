@@ -14,7 +14,7 @@ interface IActions {
 interface IActionsItem {
     isOverride?: boolean,
     items: { klass: IClass, action?: ((c: any) => Function) | string }[]
-    propertyKey: string
+    propertyKey?: string
 
 }
 
@@ -119,3 +119,5 @@ function extendBefore(old: Function, app: App, item: IActionsItem) {
     }
 
 }
+
+

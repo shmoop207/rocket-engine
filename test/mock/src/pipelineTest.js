@@ -22,4 +22,14 @@ PipelineTest2 = tslib_1.__decorate([
     index_1.define()
 ], PipelineTest2);
 exports.PipelineTest2 = PipelineTest2;
+let PipelineTestOnCreate = class PipelineTestOnCreate {
+    async run(context, next) {
+        context.instance["onCreateTest"] = true;
+        return next();
+    }
+};
+PipelineTestOnCreate = tslib_1.__decorate([
+    index_1.define()
+], PipelineTestOnCreate);
+exports.PipelineTestOnCreate = PipelineTestOnCreate;
 //# sourceMappingURL=pipelineTest.js.map

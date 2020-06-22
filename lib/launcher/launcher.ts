@@ -15,8 +15,10 @@ import {IApp} from "../interfaces/IApp";
 import   path = require('path');
 import   fs = require('fs');
 import {Objects, Classes} from 'appolo-utils';
-import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/beforeDecorator";
 import {PipelineManager} from "../pipelines/pipelineManager";
+import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/propertyDecorators";
+
+import {IDefinition} from "appolo-inject/lib/IDefinition";
 
 export class Launcher {
 
@@ -131,7 +133,9 @@ export class Launcher {
             return;
         }
 
+
         await this.initInjector();
+
 
         await this.initBootStrap();
 
@@ -169,6 +173,8 @@ export class Launcher {
             return;
         }
 
+        this._injector.instanceCreatedEvent.on(this._onInstanceCreated, this)
+
         await Util.runRegroupByParallel<IApp>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initInjector())
 
         this._app.fireEvent(Events.BeforeInjectorInit);
@@ -181,6 +187,10 @@ export class Launcher {
 
         this._app.fireEvent(Events.InjectorInit);
 
+    }
+
+    private async _onInstanceCreated(action: { instance: any, definition: IDefinition }) {
+        this._pipelineManager.overrideInstanceCreate(action.definition.type, action.definition, action.instance);
     }
 
     protected async initBootStrap(): Promise<void> {
@@ -288,7 +298,12 @@ export class Launcher {
             handleBeforeDecorator(item.fn, this._app);
             handleAfterDecorator(item.fn, this._app);
 
-            this._pipelineManager.handleExport(item.fn)
+            if (item.define) {
+                this._pipelineManager.handleExport(item.fn, item.define.definition);
+                this._pipelineManager.overrideKlassRegister(item.fn, item.define.definition);
+            }
+
+
         }
     }
 

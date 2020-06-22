@@ -7,6 +7,7 @@ let should = require('chai').should();
 import {App, createApp, define, singleton, inject, EventDispatcher, mixins} from '../../index';
 import {Manager2} from "../mock/src/manager2";
 import Manager3 from "../mock/src/manager3";
+import {Manager} from "../mock/src/manager";
 
 
 describe('define', function () {
@@ -59,10 +60,12 @@ describe('define', function () {
     it('should define mixsins', function () {
 
         class Test {
-            private a:number
-            constructor(){
+            private a: number
+
+            constructor() {
                 this.a = 1
             }
+
             on(event, fn) {
                 return true;
             }
@@ -73,11 +76,12 @@ describe('define', function () {
         }
 
         @mixins(Test)
-        class Test2{
+        class Test2 {
 
         }
 
-        interface Test2 extends Test{}
+        interface Test2 extends Test {
+        }
 
 
         let test = new Test2();
@@ -113,21 +117,28 @@ describe('define', function () {
 
     });
 
+    it('should call pipeline on create', async function () {
+        let manager = app.injector.getObject<Manager>(Manager);
+
+
+        (manager as any).onCreateTest.should.be.ok
+
+    });
+
     it('should call pipeline validate arguments', async function () {
         let controller = app.injector.getObject<Controller>(Controller);
 
-        let result = await controller.validateTest2(5,5);
+        let result = await controller.validateTest2(5, 5);
 
         result.should.be.eq(10);
 
-        result = await controller.validateTest2(6,7);
+        result = await controller.validateTest2(6, 7);
 
         result.should.be.eq(0);
 
-        result = await controller.validateTest2(5,7);
+        result = await controller.validateTest2(5, 7);
 
         result.should.be.eq(5)
-
 
 
     });
@@ -135,18 +146,17 @@ describe('define', function () {
     it('should call base class pipeline validate arguments', async function () {
         let controller = app.injector.getObject<Controller>(Controller);
 
-        let result = await controller.validateBase(5,5);
+        let result = await controller.validateBase(5, 5);
 
         result.should.be.eq(10);
 
-        result = await controller.validateBase(6,7);
+        result = await controller.validateBase(6, 7);
 
         result.should.be.eq(0);
 
-        result = await controller.validateBase(5,7);
+        result = await controller.validateBase(5, 7);
 
         result.should.be.eq(5)
-
 
 
     });

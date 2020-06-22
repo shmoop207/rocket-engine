@@ -9,7 +9,7 @@ interface IOptions extends IModuleOptions {
 }
 
 
-@module({exports:[]})
+@module({exports: []})
 export class DelayModule extends Module<IOptions> {
 
     public get exports() {

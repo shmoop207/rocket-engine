@@ -26,6 +26,7 @@ exports.singleton = appolo_inject_1.singleton;
 exports.dynamicFactory = appolo_inject_1.dynamicFactory;
 exports.customInjectFn = appolo_inject_1.customInjectFn;
 exports.initMethodAsync = appolo_inject_1.initMethodAsync;
+exports.customParam = appolo_inject_1.customParam;
 var util_1 = require("./lib/util/util");
 exports.Util = util_1.Util;
 var appolo_event_dispatcher_1 = require("appolo-event-dispatcher");
@@ -56,6 +57,8 @@ exports.interval = decorators_1.interval;
 exports.before = decorators_1.before;
 exports.after = decorators_1.after;
 exports.pipeline = decorators_1.pipeline;
+exports.pipelineInstance = decorators_1.pipelineInstance;
+exports.pipelineType = decorators_1.pipelineType;
 exports.createApp = function (options) {
     return new app_1.App(options);
 };

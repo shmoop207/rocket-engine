@@ -6,6 +6,7 @@ let should = require('chai').should();
 const index_1 = require("../../index");
 const manager2_1 = require("../mock/src/manager2");
 const manager3_1 = require("../mock/src/manager3");
+const manager_1 = require("../mock/src/manager");
 describe('define', function () {
     let app;
     beforeEach(async () => {
@@ -72,6 +73,10 @@ describe('define', function () {
         result.should.be.eq(0);
         result = await controller.validateTest(5);
         result.should.be.eq(5);
+    });
+    it('should call pipeline on create', async function () {
+        let manager = app.injector.getObject(manager_1.Manager);
+        manager.onCreateTest.should.be.ok;
     });
     it('should call pipeline validate arguments', async function () {
         let controller = app.injector.getObject(controller_1.Controller);

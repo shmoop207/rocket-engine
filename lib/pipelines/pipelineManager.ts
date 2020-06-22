@@ -1,5 +1,5 @@
 import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunner, Next} from "./IPipeline";
-import {PipeSetSymbol, PipeSymbol} from "../decoretors/pipeline";
+import {PipeInstanceCreateSymbol, PipeKlassRegisterSymbol, PipeSetSymbol, PipeSymbol} from "../decoretors/pipeline";
 import {runPipes} from "./pipelineRunner";
 import {Util} from "../util/util";
 import {Reflector} from "appolo-utils";
@@ -7,6 +7,7 @@ import {Injector, Util as AppoloUtil} from "../../";
 import {App} from "../app";
 import {PipelineContext} from "./pipelineContext";
 import {Promises, Arrays, Objects} from 'appolo-utils';
+import {IDefinition} from "appolo-inject/index";
 
 export class PipelineManager {
 
@@ -20,7 +21,7 @@ export class PipelineManager {
 
     }
 
-    public handleExport(fn: any) {
+    public handleExport(fn: any, definition: IDefinition) {
         if (!Util.isClass(fn)) {
             return;
         }
@@ -28,15 +29,51 @@ export class PipelineManager {
         let metadata = Reflector.getOwnMetadata<IMetadata>(PipeSymbol, fn);
 
         Object.keys(metadata || {}).forEach(action => {
-            this.overrideMethod(metadata[action], fn, action)
+            this.overrideMethod(metadata[action], fn, definition, action)
         });
     }
 
-    public overrideMethod(pipelines: IPipelineMetadata[], fn: Function, action: string) {
+    public overrideKlassRegister(fn: Function, definition: IDefinition, instance?: any) {
+        let metadata = Reflector.getOwnMetadata<IPipelineMetadata[]>(PipeKlassRegisterSymbol, fn);
+
+        this.overrideKlass(metadata, fn, definition)
+
+    }
+
+    public overrideInstanceCreate(fn: Function, definition: IDefinition, instance?: any) {
+        let metadata = Reflector.getOwnMetadata<IPipelineMetadata[]>(PipeInstanceCreateSymbol, fn);
+
+        this.overrideKlass(metadata, fn, definition, instance)
+    }
+
+    public overrideKlass(pipelines: IPipelineMetadata[], fn: Function, definition: IDefinition, instance?: any) {
+        try {
+            if (!pipelines || !pipelines.length) {
+                return;
+            }
+
+            pipelines = Objects.cloneDeep(pipelines);
+
+            this._convertPipeline(pipelines);
+
+            pipelines = pipelines.reverse();
+
+            let pipesCompiled = runPipes(pipelines);
+
+            return pipesCompiled({definition, args: null, instance, type: fn, action: null, argsTypes: []})
+        } catch (e) {
+            //TODO handle Error
+        }
+
+    }
+
+
+    public overrideMethod(pipelines: IPipelineMetadata[], fn: Function, definition: IDefinition, action: string) {
 
         pipelines = Objects.cloneDeep(pipelines);
 
         this._convertPipeline(pipelines);
+
 
         let old = fn.prototype[action];
 
@@ -56,7 +93,14 @@ export class PipelineManager {
         let pipesCompiled = runPipes(pipelines);
 
         fn.prototype[action] = async function () {
-            let result = await pipesCompiled({args: arguments, instance: this, type: fn, action, argsTypes});
+            let result = await pipesCompiled({
+                definition,
+                args: arguments,
+                instance: this,
+                type: fn,
+                action,
+                argsTypes
+            });
             return result;
         };
 
@@ -83,7 +127,7 @@ export class PipelineManager {
     }
 
     public reset() {
-        this._methodsOverride.forEach( item => {
+        this._methodsOverride.forEach(item => {
             item.klass.prototype[item.property] = item.old;
         })
     }

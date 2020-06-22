@@ -1,8 +1,11 @@
-import {IMetadata, IPipelineCtr, IPipelineFn} from "../pipelines/IPipeline";
+import {IMetadata, IPipelineCtr, IPipelineFn, IPipelineMetadata} from "../pipelines/IPipeline";
 import {Reflector} from "appolo-utils";
 
 export const PipeSymbol = "__PipeSymbol__";
 export const PipeSetSymbol = "__PipeSetSymbol__";
+
+export const PipeKlassRegisterSymbol = "__PipeKlassRegisterSymbol__";
+export const PipeInstanceCreateSymbol = "__PipeInstanceCreateSymbol__";
 
 
 export function pipeline(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, options?: any) {
@@ -23,5 +26,29 @@ export function pipeline(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, o
         }
 
         result[propertyKey][isParam ? "unshift" : "push"]({pipeline, metaData, options, index})
+    }
+}
+
+export function pipelineType(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, options?: any) {
+
+    return function (target: any) {
+        let result: IPipelineMetadata[] = Reflector.getFnMetadata(PipeKlassRegisterSymbol, target.constructor, []);
+        result.push({
+            pipeline,
+            metaData,
+            options,
+        })
+    }
+}
+
+export function pipelineInstance(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, options?: any) {
+
+    return function (target: any) {
+        let result: IPipelineMetadata[] = Reflector.getFnMetadata(PipeInstanceCreateSymbol, target, []);
+        result.push({
+            pipeline,
+            metaData,
+            options,
+        })
     }
 }
