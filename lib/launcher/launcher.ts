@@ -269,6 +269,7 @@ export class Launcher {
         if (hasDefine) {
             this._app.fireEvent(Events.BeforeInjectRegister, fn, filePath);
             define = this._injector.register(fn as IClass, null, filePath);
+            this._pipelineManager.overrideKlassRegister(fn, define.definition);
             this._files.push(filePath);
             this._app.fireEvent(Events.InjectRegister, fn, filePath, define)
 
@@ -300,7 +301,6 @@ export class Launcher {
 
             if (item.define) {
                 this._pipelineManager.handleExport(item.fn, item.define.definition);
-                this._pipelineManager.overrideKlassRegister(item.fn, item.define.definition);
             }
 
 

@@ -32,7 +32,7 @@ export function pipeline(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, o
 export function pipelineType(pipeline: IPipelineFn | IPipelineCtr, metaData?: any, options?: any) {
 
     return function (target: any) {
-        let result: IPipelineMetadata[] = Reflector.getFnMetadata(PipeKlassRegisterSymbol, target.constructor, []);
+        let result: IPipelineMetadata[] = Reflector.getFnMetadata(PipeKlassRegisterSymbol, target, []);
         result.push({
             pipeline,
             metaData,
