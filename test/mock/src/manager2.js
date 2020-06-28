@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Manager2 = void 0;
 const tslib_1 = require("tslib");
 const index_1 = require("../../../index");
 const manager_1 = require("./manager");

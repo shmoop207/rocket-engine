@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ValidateModule = exports.validate = void 0;
 const tslib_1 = require("tslib");
 const index_1 = require("../../../../../index");
 const validate_1 = require("./src/validate");
