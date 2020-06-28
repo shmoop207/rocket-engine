@@ -39,7 +39,7 @@ export class PipelineContext<T = any> {
     }
 
     public get argumentsTypes(): any[] {
-        return this._context.argsTypes;
+        return this._context.argsTypes || [];
     }
 
     public get isArgument(): boolean {

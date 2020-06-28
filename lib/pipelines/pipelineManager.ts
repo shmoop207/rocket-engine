@@ -89,7 +89,7 @@ export class PipelineManager {
             }
         });
 
-        let argsTypes = Reflect.getMetadata("design:paramtypes", fn.prototype, action);
+        let argsTypes = Reflect.getMetadata("design:paramtypes", fn.prototype, action) || [];
 
         let pipesCompiled = runPipes(pipelines);
 
