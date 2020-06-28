@@ -190,7 +190,7 @@ export class Launcher {
     }
 
     private async _onInstanceCreated(action: { instance: any, definition: IDefinition }) {
-        this._pipelineManager.overrideInstanceCreate(action.definition.type, action.definition, action.instance);
+        this._pipelineManager.overrideKlassInstance(action.definition.type, action.definition, action.instance);
     }
 
     protected async initBootStrap(): Promise<void> {
@@ -269,10 +269,7 @@ export class Launcher {
         if (hasDefine) {
             this._app.fireEvent(Events.BeforeInjectRegister, fn, filePath);
             define = this._injector.register(fn as IClass, null, filePath);
-            this._pipelineManager.overrideKlassRegister(fn, define.definition);
             this._files.push(filePath);
-            this._app.fireEvent(Events.InjectRegister, fn, filePath, define)
-
         }
 
         this._exported.push({
@@ -300,10 +297,10 @@ export class Launcher {
             handleAfterDecorator(item.fn, this._app);
 
             if (item.define) {
-                this._pipelineManager.handleExport(item.fn, item.define.definition);
+                this._pipelineManager.overrideKlassType(item.fn, item.define.definition);
+                this._pipelineManager.overrideKlassMethods(item.fn, item.define.definition);
+                this._app.fireEvent(Events.InjectRegister, item.fn, item.path, item.define.definition)
             }
-
-
         }
     }
 

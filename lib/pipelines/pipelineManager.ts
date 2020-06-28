@@ -8,6 +8,7 @@ import {App} from "../app";
 import {PipelineContext} from "./pipelineContext";
 import {Promises, Arrays, Objects} from 'appolo-utils';
 import {IDefinition} from "appolo-inject/index";
+import {ILogger} from "../interfaces/ILogger";
 
 export class PipelineManager {
 
@@ -21,7 +22,7 @@ export class PipelineManager {
 
     }
 
-    public handleExport(fn: any, definition: IDefinition) {
+    public overrideKlassMethods(fn: any, definition: IDefinition) {
         if (!Util.isClass(fn)) {
             return;
         }
@@ -29,24 +30,24 @@ export class PipelineManager {
         let metadata = Reflector.getOwnMetadata<IMetadata>(PipeSymbol, fn);
 
         Object.keys(metadata || {}).forEach(action => {
-            this.overrideMethod(metadata[action], fn, definition, action)
+            this.overrideKlassMethod(metadata[action], fn, definition, action)
         });
     }
 
-    public overrideKlassRegister(fn: Function, definition: IDefinition, instance?: any) {
+    public overrideKlassType(fn: Function, definition: IDefinition, instance?: any) {
         let metadata = Reflector.getOwnMetadata<IPipelineMetadata[]>(PipeKlassRegisterSymbol, fn);
 
-        this.overrideKlass(metadata, fn, definition)
+        return this._overrideKlass(metadata, fn, definition)
 
     }
 
-    public overrideInstanceCreate(fn: Function, definition: IDefinition, instance?: any) {
+    public overrideKlassInstance(fn: Function, definition: IDefinition, instance?: any) {
         let metadata = Reflector.getOwnMetadata<IPipelineMetadata[]>(PipeInstanceCreateSymbol, fn);
 
-        this.overrideKlass(metadata, fn, definition, instance)
+        return this._overrideKlass(metadata, fn, definition, instance)
     }
 
-    public overrideKlass(pipelines: IPipelineMetadata[], fn: Function, definition: IDefinition, instance?: any) {
+    private _overrideKlass(pipelines: IPipelineMetadata[], fn: Function, definition: IDefinition, instance?: any) {
         try {
             if (!pipelines || !pipelines.length) {
                 return;
@@ -62,13 +63,13 @@ export class PipelineManager {
 
             return pipesCompiled({definition, args: null, instance, type: fn, action: null, argsTypes: []})
         } catch (e) {
-            //TODO handle Error
+            Util.logger(this._app.injector).error("failed to override klass")
         }
 
     }
 
 
-    public overrideMethod(pipelines: IPipelineMetadata[], fn: Function, definition: IDefinition, action: string) {
+    public overrideKlassMethod(pipelines: IPipelineMetadata[], fn: Function, definition: IDefinition, action: string) {
 
         pipelines = Objects.cloneDeep(pipelines);
 
