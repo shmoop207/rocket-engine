@@ -1,8 +1,9 @@
 "use strict";
-import {bootstrap, define, IBootstrap, inject, singleton} from '../../../index';
+import {bootstrap,  IBootstrap,} from '../../../index';
 import {Manager} from "./manager";
 import {Delay} from "../config/modules/delay/src/delay";
 import {DbManager} from "../config/modules/db/src/dbManager";
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
 
 @define()
 @singleton()

@@ -1,4 +1,5 @@
 "use strict";
+var DbModule_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DbModule = void 0;
 const tslib_1 = require("tslib");
@@ -6,9 +7,10 @@ const index_1 = require("../../../../../index");
 const dbFactory_1 = require("./src/dbFactory");
 const dbManager_1 = require("./src/dbManager");
 const nestedProvider_1 = require("../nested/src/nestedProvider");
-let DbModule = class DbModule extends index_1.Module {
-    constructor(opts) {
-        super(opts);
+const inject_1 = require("@appolo/inject");
+let DbModule = DbModule_1 = class DbModule extends index_1.Module {
+    static for(options, moduleOptions = {}) {
+        return { module: DbModule_1, options, moduleOptions };
     }
     get exports() {
         return [{ id: this.moduleOptions.id, type: dbFactory_1.DbFactory }, {
@@ -20,14 +22,18 @@ let DbModule = class DbModule extends index_1.Module {
         return [{ id: "env", type: 'env2' }];
     }
     afterInitialize() {
-        let dbManager = this.app.injector.get(dbManager_1.DbManager);
-        let isFound = this.app.parent.exported.find(item => item.fn === nestedProvider_1.NestedProvider);
-        dbManager.isFoundExportedFile = !!isFound;
+    }
+    afterLaunch() {
+        let isFound = this.app.parent.discovery.findByType(nestedProvider_1.NestedProvider);
+        this.dbManager.isFoundExportedFile = !!isFound && !!this.dbManager.db;
     }
 };
-DbModule = tslib_1.__decorate([
-    index_1.module(),
-    tslib_1.__metadata("design:paramtypes", [Object])
+tslib_1.__decorate([
+    inject_1.injectLazy(),
+    tslib_1.__metadata("design:type", dbManager_1.DbManager)
+], DbModule.prototype, "dbManager", void 0);
+DbModule = DbModule_1 = tslib_1.__decorate([
+    index_1.module()
 ], DbModule);
 exports.DbModule = DbModule;
 //# sourceMappingURL=dbModule.js.map

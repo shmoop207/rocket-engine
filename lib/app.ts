@@ -1,14 +1,14 @@
 import {IEnv} from "./interfaces/IEnv";
-import {Define, Injector} from "appolo-inject";
+import {Define, Injector} from "@appolo/inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
-import {EventDispatcher} from "appolo-event-dispatcher";
-import {ModuleFn, ModuleManager} from "./modules/modules";
-import {IClass, IExported} from "./interfaces/IModuleDefinition";
+import {EventDispatcher,IEventOptions} from "@appolo/events";
+import {ModuleManager} from "./modules/modules";
+import {IClass, ModuleArg} from "./interfaces/IModule";
 import {IApp} from "./interfaces/IApp";
-import {IEventOptions} from "appolo-event-dispatcher/lib/IEventOptions";
 import {Events} from "./interfaces/events";
 import {PipelineManager} from "./pipelines/pipelineManager";
+import {Discovery} from "./launcher/discovery";
 
 
 export class App extends EventDispatcher implements IApp {
@@ -22,12 +22,15 @@ export class App extends EventDispatcher implements IApp {
     protected _parent: IApp;
     protected _children: IApp[] = [];
     private _root: IApp;
+    private _discovery: Discovery;
 
 
     constructor(options?: IOptions) {
         super();
 
         this._launcher = new Launcher(this);
+
+        this._discovery = new Discovery(this);
 
         this._options = this._launcher.loadOptions(options);
 
@@ -39,6 +42,10 @@ export class App extends EventDispatcher implements IApp {
 
         this._moduleManager = this._launcher.createModuleManager();
         this._pipelineManager = this._launcher.createPipelineManager();
+    }
+
+    public get discovery(): Discovery {
+        return this._discovery;
     }
 
     public static create(options: IOptions): App {
@@ -72,7 +79,7 @@ export class App extends EventDispatcher implements IApp {
         return this._injector.register(id, type)
     }
 
-    public async module(...modules: ModuleFn[]): Promise<void> {
+    public async module(...modules: ModuleArg[]): Promise<void> {
 
         await this._moduleManager.load(modules);
     }
@@ -108,34 +115,10 @@ export class App extends EventDispatcher implements IApp {
 
     }
 
-    public get exportedClasses(): { fn: Function, path: string, define: Define }[] {
-        return this.exported
-    }
 
-    public get exported(): IExported[] {
-        return this._launcher.exported
-    }
-
-    public addExported(value: IExported): void {
-        this._launcher.exported.push(value)
-    }
-
-    public get exportedRoot(): IExported[] {
-        let parent: IApp = this;
-
-        let exported = [];
-
-        while (parent != null) {
-            exported.push(...parent.exported);
-            parent = parent.parent;
-        }
-
-        return exported;
-    }
-
-    public reset() {
+    public async reset() {
         this.fireEvent(Events.BeforeReset);
-        this._children.forEach( app => app.reset());
+        this._children.forEach(app => app.reset());
 
         this._injector.reset();
 
@@ -145,7 +128,9 @@ export class App extends EventDispatcher implements IApp {
 
         this._injector = null;
 
-        this._launcher.reset();
+        await this._launcher.reset();
+
+        this._discovery.reset()
 
         this.fireEvent(Events.Reset);
     }

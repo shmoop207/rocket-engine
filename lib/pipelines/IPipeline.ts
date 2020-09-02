@@ -1,5 +1,5 @@
 import {PipelineContext} from "./pipelineContext";
-import {IDefinition} from "appolo-inject";
+import {IDefinition} from "@appolo/inject";
 
 export interface IMetadata {
     [index: string]: IPipelineMetadata[]

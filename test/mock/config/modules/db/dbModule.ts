@@ -1,14 +1,19 @@
-import {module, Module} from '../../../../../index';
+import {IModuleOptions, module, Module} from '../../../../../index';
 import {DbFactory} from "./src/dbFactory";
 import {DbManager} from "./src/dbManager";
 import {NestedProvider} from "../nested/src/nestedProvider";
+import {IModuleParams} from "../../../../../lib/interfaces/IModule";
+import {define, singleton,inject,initMethod,IFactory,factory,injectLazy}  from '@appolo/inject';
 
 
 @module()
 export class DbModule extends Module {
 
-    constructor(opts: { id: string }) {
-        super(opts);
+
+    @injectLazy() dbManager: DbManager
+
+    public static for(options: { id: string }, moduleOptions: IModuleOptions = {}): IModuleParams {
+        return {module: DbModule, options, moduleOptions}
     }
 
     public get exports() {
@@ -24,12 +29,16 @@ export class DbModule extends Module {
     }
 
     public afterInitialize() {
-        let dbManager = this.app.injector.get<DbManager>(DbManager);
 
-        let isFound = this.app.parent.exported.find(item =>item.fn === NestedProvider);
 
-        dbManager.isFoundExportedFile = !!isFound;
 
+    }
+
+    public afterLaunch() {
+
+        let isFound = this.app.parent.discovery.findByType(NestedProvider);
+
+        this.dbManager.isFoundExportedFile = !!isFound && !!this.dbManager.db;
     }
 }
 

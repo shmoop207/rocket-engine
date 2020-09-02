@@ -1,5 +1,7 @@
-import {define, IFactory, inject, singleton,factory,bootstrap} from '../../../../../../index';
+import {bootstrap} from '../../../../../../index';
 import {DbFactory} from "./dbFactory";
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+
 @define()
 @singleton()
 @bootstrap()

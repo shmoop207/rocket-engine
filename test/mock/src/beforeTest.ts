@@ -1,4 +1,5 @@
-import {define} from "../../../index";
+import {} from "../../../index";
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
 
 @define()
 export class BeforeTest {

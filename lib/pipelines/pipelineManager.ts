@@ -1,13 +1,12 @@
 import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunner, Next} from "./IPipeline";
-import {PipeInstanceCreateSymbol, PipeKlassRegisterSymbol, PipeSetSymbol, PipeSymbol} from "../decoretors/pipeline";
+import {PipeInstanceCreateSymbol, PipeKlassRegisterSymbol, PipeSetSymbol, PipeSymbol} from "../decoretors/pipelineDecorators";
 import {runPipes} from "./pipelineRunner";
 import {Util} from "../util/util";
-import {Reflector} from "appolo-utils";
-import {Injector, Util as AppoloUtil} from "../../";
+import {Reflector,Objects} from "@appolo/utils";
 import {App} from "../app";
+import {Injector} from "@appolo/inject";
 import {PipelineContext} from "./pipelineContext";
-import {Promises, Arrays, Objects} from 'appolo-utils';
-import {IDefinition} from "appolo-inject/index";
+import {IDefinition} from "@appolo/inject";
 import {ILogger} from "../interfaces/ILogger";
 
 export class PipelineManager {

@@ -1,7 +1,7 @@
-import {define, module, Module, singleton, inject, initMethod, Util} from '../../../../../../index';
 import {IEnv} from "../../../../../../lib/interfaces/IEnv";
 import {IPipelineContext} from "../../../../../../lib/pipelines/IPipeline";
 import {PipelineContext} from "../../../../../../lib/pipelines/pipelineContext";
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
 
 @define()
 @singleton()

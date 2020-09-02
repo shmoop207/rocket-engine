@@ -1,5 +1,5 @@
 import appolo = require('../../../../index');
-import {Promises} from 'appolo-utils';
+import {Promises} from '@appolo/utils';
 
 
 export default async function (env,inject) {

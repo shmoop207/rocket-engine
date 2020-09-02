@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BeforeTest = void 0;
 const tslib_1 = require("tslib");
-const index_1 = require("../../../index");
+const inject_1 = require("@appolo/inject");
 let BeforeTest = class BeforeTest {
     run(num) {
         return num + 5;
@@ -12,7 +12,7 @@ let BeforeTest = class BeforeTest {
     }
 };
 BeforeTest = tslib_1.__decorate([
-    index_1.define()
+    inject_1.define()
 ], BeforeTest);
 exports.BeforeTest = BeforeTest;
 //# sourceMappingURL=beforeTest.js.map

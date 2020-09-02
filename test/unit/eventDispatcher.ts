@@ -1,8 +1,8 @@
 "use strict";
 import appolo  = require('../../index');
 import chai = require('chai')
-import {EventDispatcher} from "../../index";
-import {Promises} from 'appolo-utils';
+import {EventDispatcher} from "@appolo/events";
+import {Promises} from '@appolo/utils';
 
 let should = chai.should();
 
@@ -10,7 +10,7 @@ describe("event dispatcher", function () {
 
     class EventHandler {
 
-        dispatcher: appolo.EventDispatcher;
+        dispatcher: EventDispatcher;
 
         constructor(dispatcher) {
             this.dispatcher = dispatcher;
@@ -22,7 +22,7 @@ describe("event dispatcher", function () {
     }
 
     it('can un-subscribe from event while handling the event itself', function () {
-        let dispatcher = new appolo.EventDispatcher();
+        let dispatcher = new EventDispatcher();
 
         let handler1 = new EventHandler(dispatcher);
         let handler2 = new EventHandler(dispatcher);

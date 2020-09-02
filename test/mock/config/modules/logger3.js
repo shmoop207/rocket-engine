@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const appolo_utils_1 = require("appolo-utils");
+const utils_1 = require("@appolo/utils");
 function default_1(options) {
     return async (env, inject, logger2) => {
         let logger3 = {
@@ -9,7 +9,7 @@ function default_1(options) {
             }
         };
         inject.addObject('logger3', logger3);
-        await appolo_utils_1.Promises.delay(1);
+        await utils_1.Promises.delay(1);
     };
 }
 exports.default = default_1;

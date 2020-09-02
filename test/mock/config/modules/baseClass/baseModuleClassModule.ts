@@ -1,4 +1,5 @@
-import {define, module, Module, singleton, pipeline, Util} from '../../../../../index';
+import { module, Module, pipeline, Util} from '../../../../../index';
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
 
 
 @module({immediate: true})

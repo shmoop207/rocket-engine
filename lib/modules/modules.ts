@@ -1,23 +1,16 @@
 "use strict";
-import {Promises, Arrays} from 'appolo-utils';
+import {Promises, Arrays, Classes, Functions} from '@appolo/utils';
 import   path = require('path');
 import {Util} from "../util/util";
-import {Injector} from "appolo-inject";
+import {Injector} from "@appolo/inject";
 import {Module} from "./module";
 import {IOptions} from "../interfaces/IOptions";
-import {IPlugin} from "../interfaces/IModuleDefinition";
-import {ModuleSymbol} from "../decoretors/module";
+import {IModuleParams, IPlugin, ModuleArg} from "../interfaces/IModule";
+import {ModuleSymbol} from "../decoretors/moduleDecorators";
 import {App} from "../app";
 import {Events} from "../interfaces/events";
 import {ModuleLoader} from "./moduleLoader";
 
-export interface IModuleCrt {
-    new(...args: any[]): Module
-}
-
-export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
-
-export type ModuleFn = ModuleFunction | IModuleCrt | Module<any>
 
 export class ModuleManager {
     private readonly _modules: ModuleLoader[];
@@ -32,7 +25,13 @@ export class ModuleManager {
             this._modules[i].preInitialize();
         }
 
-        await Util.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.module.moduleOptions.parallel, module => this._loadModule(module));
+        await Util.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => this._loadModule(module));
+    }
+
+    public async initAfterInjectDynamicModules() {
+
+
+        await Util.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => module.afterLaunch());
     }
 
     private async _loadModule(module: ModuleLoader) {
@@ -44,16 +43,13 @@ export class ModuleManager {
 
     }
 
-    private async _registerModule(moduleFn: typeof Module | Module, isParallel: boolean) {
+    private async _registerModule(moduleParams: IModuleParams, isParallel: boolean) {
 
+        moduleParams.moduleOptions.parallel = isParallel;
 
-        let module = Module.isPrototypeOf(moduleFn) ? new (moduleFn as typeof Module)() : moduleFn as Module;
+        let loader = new ModuleLoader(moduleParams, this._injector);
 
-        module.moduleOptions.parallel = isParallel;
-
-        let loader = new ModuleLoader(module, this._injector);
-
-        if (module.moduleOptions.immediate) {
+        if (moduleParams.moduleOptions.immediate) {
             loader.preInitialize();
             await this._loadModule(loader);
         } else {
@@ -62,36 +58,47 @@ export class ModuleManager {
     }
 
 
-    public async load(modules: ModuleFn[]): Promise<any> {
+    public async load(modules: ModuleArg[]): Promise<any> {
 
-        let [dynamicModules, staticModules] = Arrays.partition(modules, module => Reflect.hasMetadata(ModuleSymbol, module) || Reflect.hasMetadata(ModuleSymbol, module.constructor))
+        let moduleParams = modules.map<IModuleParams>((item: any) => {
+            if (Classes.isClass(item)) {
+                return {module: item,options: {}, moduleOptions: {}}
+            } else if (Functions.isFunction(item)) {
+                return {fn: item, options: {}, moduleOptions: {}}
+            } else {
+                return {options: {}, moduleOptions: {}, ...item}
+            }
+        })
 
-        await Promises.map(dynamicModules, item => this._registerModule(item as typeof Module | Module, dynamicModules.length > 1));
+
+        let [dynamicModules, staticModules] = Arrays.partition(moduleParams, module => !!module.module)
+
+        await Promises.map(dynamicModules, item => this._registerModule(item, dynamicModules.length > 1));
 
 
-        await Promises.map(staticModules, item => this._loadStaticModule(item as ModuleFunction));
+        await Promises.map(staticModules, item => this._loadStaticModule(item));
 
 
     }
 
-    private _loadStaticModule(moduleFn: ModuleFunction): PromiseLike<any> {
+    private _loadStaticModule(moduleParams: IModuleParams): PromiseLike<any> {
         //remove the callback arg
-        let args = Util.getFunctionArgs(moduleFn as ModuleFunction),
-            lastArg = args[args.length-1],
+        let args = Util.getFunctionArgs(moduleParams.fn),
+            lastArg = args[args.length - 1],
             isCallback = false;
 
         if (['callback', 'next', 'fn', 'func'].indexOf(lastArg) > -1) {
-            args = args.slice(0,-1);
+            args = args.slice(0, -1);
             isCallback = true;
         }
 
         let dependencies = args.map((arg: string) => this._injector.getObject(arg));
 
         if (isCallback) {
-            return Promises.fromCallback((callback) => (moduleFn as ModuleFunction).apply(moduleFn, dependencies.concat([callback])));
+            return Promises.fromCallback((callback) => (moduleParams.fn).apply(moduleParams.fn, dependencies.concat([callback])));
         }
 
-        return Promise.resolve().then(() => (moduleFn as ModuleFunction).apply(moduleFn, dependencies))
+        return Promise.resolve().then(() => (moduleParams.fn).apply(moduleParams.fn, dependencies))
     }
 
     public async loadStaticModules(): Promise<void> {

@@ -1,9 +1,10 @@
 import appolo = require('../../../../index');
-import {Promises} from 'appolo-utils';
+import {Promises} from '@appolo/utils';
+import {Injector}  from '@appolo/inject';
 
 
 export  default function (options?:any) {
-    return   async (env, inject:appolo.Injector, logger2)=> {
+    return   async (env, inject:Injector, logger2)=> {
 
         let logger3 = {
             getName: function () {

@@ -2,10 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
 const controller_1 = require("../mock/src/controller");
+const helpers_1 = require("@appolo/helpers");
 let should = require('chai').should();
 const index_1 = require("../../index");
 const manager2_1 = require("../mock/src/manager2");
-const manager3_1 = require("../mock/src/manager3");
+const manager3_1 = require("../mock/src/manager/manager3");
 const manager_1 = require("../mock/src/manager");
 describe('define', function () {
     let app;
@@ -52,7 +53,7 @@ describe('define', function () {
         let Test2 = class Test2 {
         };
         Test2 = tslib_1.__decorate([
-            index_1.mixins(Test)
+            helpers_1.mixins(Test)
         ], Test2);
         let test = new Test2();
         test.on.should.be.ok;

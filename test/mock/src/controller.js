@@ -8,6 +8,7 @@ const beforeTest_1 = require("./beforeTest");
 const pipelineTest_1 = require("./pipelineTest");
 const validateModule_1 = require("../config/modules/validate/validateModule");
 const baseController_1 = require("../config/modules/baseClass/src/baseController");
+const inject_1 = require("@appolo/inject");
 let Controller = class Controller extends baseController_1.BaseController {
     constructor() {
         super();
@@ -37,11 +38,11 @@ let Controller = class Controller extends baseController_1.BaseController {
     }
 };
 tslib_1.__decorate([
-    index_1.inject(),
+    inject_1.inject(),
     tslib_1.__metadata("design:type", manager_1.Manager)
 ], Controller.prototype, "manager", void 0);
 tslib_1.__decorate([
-    index_1.inject(),
+    inject_1.inject(),
     tslib_1.__metadata("design:type", Object)
 ], Controller.prototype, "logger2", void 0);
 tslib_1.__decorate([
@@ -82,7 +83,7 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:returntype", Promise)
 ], Controller.prototype, "validateTest2", null);
 Controller = tslib_1.__decorate([
-    index_1.define(),
+    inject_1.define(),
     tslib_1.__metadata("design:paramtypes", [])
 ], Controller);
 exports.Controller = Controller;

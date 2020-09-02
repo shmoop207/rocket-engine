@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ValidatePipeLine = void 0;
 const tslib_1 = require("tslib");
-const index_1 = require("../../../../../../index");
+const inject_1 = require("@appolo/inject");
 let ValidatePipeLine = class ValidatePipeLine {
     run(context, next) {
         context.values.forEach(item => {
@@ -14,8 +14,8 @@ let ValidatePipeLine = class ValidatePipeLine {
     }
 };
 ValidatePipeLine = tslib_1.__decorate([
-    index_1.define(),
-    index_1.singleton()
+    inject_1.define(),
+    inject_1.singleton()
 ], ValidatePipeLine);
 exports.ValidatePipeLine = ValidatePipeLine;
 //# sourceMappingURL=validate.js.map

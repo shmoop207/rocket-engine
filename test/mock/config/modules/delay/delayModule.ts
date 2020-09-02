@@ -1,8 +1,9 @@
 import {Events, IModuleOptions, Module, module} from '../../../../../index';
 import {Delay} from "./src/delay";
 import {Bootstrap} from "../../../src/bootstrap";
+import {IModuleParams} from "../../../../../lib/interfaces/IModule";
 
-interface IOptions extends IModuleOptions {
+interface IOptions {
     delay: number,
     testModule: string,
     id?: string
@@ -11,6 +12,10 @@ interface IOptions extends IModuleOptions {
 
 @module({exports: []})
 export class DelayModule extends Module<IOptions> {
+
+    public static for(options: IOptions, moduleOptions: IModuleOptions = {}): IModuleParams {
+        return {module: DelayModule, options, moduleOptions}
+    }
 
     public get exports() {
         return [{id: this.moduleOptions.id || "delay", type: Delay}];

@@ -1,7 +1,6 @@
-import {Injector} from "appolo-inject";
 import {createApp, IApp} from "../../index"
 import {Util} from "../util/util";
-import {IClass, IModuleDefinition, IModuleOptions, ModuleTypes} from "../interfaces/IModuleDefinition";
+import {IClass, ModuleTypes} from "../interfaces/IModule";
 
 
 export class Module<T = any> {
@@ -12,9 +11,7 @@ export class Module<T = any> {
     protected _moduleOptions: T;
     protected _app: IApp;
 
-    constructor(options: T & IModuleOptions = {} as T) {
-        this._moduleOptions = options;
-    }
+
 
     protected readonly Defaults: Partial<T> = {};
 
@@ -85,6 +82,10 @@ export class Module<T = any> {
     }
 
     public afterInitialize() {
+
+    }
+
+    public afterLaunch(){
 
     }
 

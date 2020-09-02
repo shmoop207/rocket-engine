@@ -1,24 +1,22 @@
 "use strict";
-import {createContainer, Define, InjectDefineSymbol, Injector} from "appolo-inject";
+import {createContainer, Define, InjectDefineSymbol, Injector,IDefinition} from "@appolo/inject";
 import {IOptions} from "../interfaces/IOptions";
 import {Util} from "../util/util";
 import {IBootstrap} from "../interfaces/IBootstrap";
 import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
 import {ModuleManager} from "../modules/modules";
-import {IClass, IExported, IModuleOptions} from "../interfaces/IModuleDefinition";
+import {IClass, IExported, IModuleOptions} from "../interfaces/IModule";
 import {App} from "../app";
 import {BootstrapSymbol} from "../decoretors/bootstrapDecorator";
 import {Events} from "../interfaces/events";
-import {AppModuleOptionsSymbol} from "../decoretors/module";
+import {AppModuleOptionsSymbol} from "../decoretors/moduleDecorators";
 import {IApp} from "../interfaces/IApp";
 import   path = require('path');
 import   fs = require('fs');
-import {Objects, Classes} from 'appolo-utils';
+import {Objects, Classes} from '@appolo/utils';
 import {PipelineManager} from "../pipelines/pipelineManager";
 import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/propertyDecorators";
-
-import {IDefinition} from "appolo-inject/lib/IDefinition";
 
 export class Launcher {
 
@@ -30,12 +28,10 @@ export class Launcher {
     protected _app: App;
     private _isInitialized: boolean = false;
     private _files: string[] = [];
-    private _exported: IExported[];
     private _moduleOptions: IModuleOptions;
 
     constructor(app: App) {
         this._app = app;
-        this._exported = [];
     }
 
     protected readonly Defaults = {
@@ -121,7 +117,7 @@ export class Launcher {
             return;
         }
 
-        this._initFiles();
+        await this._initFiles();
 
         await this.initStaticModules();
 
@@ -133,9 +129,9 @@ export class Launcher {
             return;
         }
 
-
         await this.initInjector();
 
+        await this.initAfterInjectDynamicModules();
 
         await this.initBootStrap();
 
@@ -166,6 +162,19 @@ export class Launcher {
         await this._moduleManager.loadDynamicModules();
 
         this._app.fireEvent(Events.ModulesLoaded);
+    }
+
+    protected async initAfterInjectDynamicModules() {
+        if (this._isInitialized) {
+            return;
+        }
+        for (let app of this._app.children) {
+            await (app as App).launcher.initAfterInjectDynamicModules();
+
+        }
+
+        await this._moduleManager.initAfterInjectDynamicModules();
+
     }
 
     protected async initInjector() {
@@ -221,20 +230,20 @@ export class Launcher {
     }
 
 
-    private _initFiles() {
+    private async _initFiles() {
 
         if (this._isInitialized) {
             return;
         }
 
         for (let app of this._app.children) {
-            (app as App).launcher._initFiles()
+            await (app as App).launcher._initFiles()
         }
 
 
         let loadPaths = (this._options.paths || []).concat(this._env.paths || []);
 
-        for (let filePath of FilesLoader.load(this._options.root, loadPaths)) {
+        for await (let filePath of FilesLoader.load(this._options.root, loadPaths)) {
             try {
                 let exported: any = require(filePath);
 
@@ -272,7 +281,7 @@ export class Launcher {
             this._files.push(filePath);
         }
 
-        this._exported.push({
+        this._app.discovery.addExported({
             path: filePath,
             fn: fn,
             define
@@ -290,8 +299,8 @@ export class Launcher {
 
     private _handlePipeLines() {
 
-        for (let i = 0, len = (this.exported || []).length; i < len; i++) {
-            let item = this.exported[i];
+        for (let i = 0, len = (this._app.discovery.exported || []).length; i < len; i++) {
+            let item = this._app.discovery.exported[i];
 
             handleBeforeDecorator(item.fn, this._app);
             handleAfterDecorator(item.fn, this._app);
@@ -304,23 +313,19 @@ export class Launcher {
         }
     }
 
-    public get exported(): IExported[] {
-        return this._exported;
-    }
 
-    public reset() {
+    public async reset() {
 
         this._files.forEach(file => {
             delete require.cache[file];
         });
 
-        this.exported.forEach(file => {
+        this._app.discovery.exported.forEach(file => {
             delete require.cache[file.path];
         });
 
-        this._exported = [];
 
-        for (let filePath of FilesLoader.load(this._options.root, ["config"])) {
+        for await (let filePath of FilesLoader.load(this._options.root, ["config"])) {
             delete require.cache[filePath]
         }
 

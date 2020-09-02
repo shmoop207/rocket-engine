@@ -1,6 +1,6 @@
-import {Promises} from 'appolo-utils';
-import {define, IFactory, inject, singleton,factory} from '../../../../../../index';
+import {Promises} from '@appolo/utils';
 import {Delay} from "./delay";
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
 
 @define()
 @singleton()

@@ -22,13 +22,13 @@ module.exports = async function (env, app) {
     await app.module(testModule_1.TestModule);
     await app.module(validateModule_1.ValidateModule);
     await app.module(baseModuleClassModule_1.BaseModuleClassModule);
-    await app.module(new delayModule_1.DelayModule({ delay: 10, testModule: env.test }), new delayModule_1.DelayModule({
+    await app.module(delayModule_1.DelayModule.for({ delay: 11, testModule: env.test }), delayModule_1.DelayModule.for({
         delay: 1,
         testModule: env.test,
         id: "delay2"
     }));
-    await app.module(new dbModule_1.DbModule({ id: "dbMock" }));
-    await app.module(new nestedModule_1.NestedModule({
+    await app.module(dbModule_1.DbModule.for({ id: "dbMock" }));
+    await app.module(nestedModule_1.NestedModule.for({
         delay: 1,
         testModule: env.test,
     }));

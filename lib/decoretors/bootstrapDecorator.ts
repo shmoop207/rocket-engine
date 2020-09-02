@@ -1,4 +1,4 @@
-import {IClass} from "../interfaces/IModuleDefinition";
+import {IClass} from "../interfaces/IModule";
 import {Util} from "../util/util";
 import {App} from "../app";
 

@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BaseController = exports.Base2Controller = void 0;
 const tslib_1 = require("tslib");
-const index_1 = require("../../../../../../index");
 const validateModule_1 = require("../../validate/validateModule");
-class Base2Controller extends index_1.EventDispatcher {
+const events_1 = require("@appolo/events");
+class Base2Controller extends events_1.EventDispatcher {
     async validateBase(value, value2) {
         return value + value2;
     }

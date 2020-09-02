@@ -1,27 +1,32 @@
 import {Module} from "./module";
 import {App} from "../app";
-import {Injector} from "appolo-inject/lib/inject";
+import {Injector,InjectDefineSymbol} from "@appolo/inject";
 import {Util} from "../util/util";
 import {Events} from "../interfaces/events";
-import {InjectDefineSymbol} from "appolo-inject/lib/decorators";
-import {IClass, IModuleDefinition} from "../interfaces/IModuleDefinition";
 import {IEnv} from "../interfaces/IEnv";
-import {createApp, IApp} from "../../index";
-import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/module";
-import {Promises, Arrays, Objects} from 'appolo-utils';
+import {createApp, IApp, IClass} from "../../index";
+import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/moduleDecorators";
+import {Promises, Arrays, Objects} from '@appolo/utils';
+import {IModuleDefinition, IModuleOptions, IModuleParams} from "../interfaces/IModule";
 
 export class ModuleLoader {
 
     protected _moduleDefinition: IModuleDefinition = {};
+    protected _moduleOptions: IModuleOptions = {}
+    protected _module: Module;
 
 
-    constructor(protected _module: Module, protected _parenInjector: Injector) {
+    constructor(protected _moduleParams: IModuleParams, protected _parenInjector: Injector) {
 
-        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _module.constructor);
+        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _moduleParams.module);
 
-        _module.moduleOptions = Objects.defaults({}, _module.moduleOptions, {
-            immediate: this._moduleDefinition.immediate,
-            parallel: this._moduleDefinition.parallel
+        if (!this._moduleDefinition) {
+            throw new Error(`failed to find moduleDefinition for ${_moduleParams.module}`)
+        }
+
+        this._moduleOptions = Objects.defaults({}, _moduleParams.moduleOptions, {
+            immediate: this._moduleDefinition?.immediate,
+            parallel: this._moduleDefinition?.parallel
         }, {immediate: false, parallel: false});
     }
 
@@ -29,22 +34,31 @@ export class ModuleLoader {
         return this._module
     }
 
+    public get moduleOptions(): IModuleOptions {
+        return this.module.moduleOptions
+    }
+
     public preInitialize() {
         if (!this._moduleDefinition) {
             return;
         }
 
+        let app = this._createApp(this._parenInjector, this._moduleDefinition);
+
+        this._module = app.injector.get(this._moduleParams.module)
+
         this._setDefinitions();
 
-        this._module.app = this._createApp(this._parenInjector, this._moduleDefinition);
+        this._module.app = app
 
-        this._module.moduleOptions = Objects.defaults({}, this._module.moduleOptions || {}, this._module.defaults);
+        this._module.moduleOptions = Objects.defaults({}, this._moduleParams.options || {}, this._module.defaults);
 
         this._module.app.injector.addObject("moduleOptions", this._module.moduleOptions, true);
 
         this._handleFileExport();
 
     }
+
 
     public async initialize(): Promise<void> {
 
@@ -53,7 +67,7 @@ export class ModuleLoader {
 
             await this._module.beforeInitialize();
 
-            await this._loadInnerModules(this._module.app, this._moduleDefinition);
+            // await this._loadInnerModules(this._module.app, this._moduleDefinition);
 
             this._handleExports(this._module.app);
 
@@ -75,13 +89,17 @@ export class ModuleLoader {
         }
     }
 
+    public async afterLaunch(): Promise<void> {
+        await this._module.afterLaunch();
+    }
+
 
     private _fireClassExportEvents() {
         if (!this._module.app.hasListener(Events.ClassExport) && !this._module.app.hasListener(Events.InjectRegister)) {
             return;
         }
 
-        this._module.app.parent.exported.forEach(item => {
+        this._module.app.parent.discovery.exported.forEach(item => {
 
             if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
 
@@ -111,32 +129,33 @@ export class ModuleLoader {
         app.injector.addObject("rootEnv", rootEnv, true);
         app.injector.addObject("env", Object.assign({}, rootEnv, app.env), true);
 
-
-        Reflect.defineMetadata(AppModuleOptionsSymbol, this._module.moduleOptions, app);
+        Reflect.defineMetadata(AppModuleOptionsSymbol, this._moduleOptions, app);
 
         app.injector.parent = parent;
 
         app.parent = parent.get<App>('app');
 
+        app.register(this._moduleParams.module)
+
         return app;
     }
 
-    private async _loadInnerModules(app: IApp, moduleDefinition: IModuleDefinition) {
-
-        if (!moduleDefinition.modules) {
-            return;
-        }
-
-        for (let module of moduleDefinition.modules) {
-            let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
-
-            let moduleLoader = new ModuleLoader(moduleInstance, app.injector);
-
-            moduleLoader.preInitialize();
-
-            await moduleLoader.initialize();
-        }
-    }
+    // private async _loadInnerModules(app: IApp, moduleDefinition: IModuleDefinition) {
+    //
+    //     if (!moduleDefinition.modules) {
+    //         return;
+    //     }
+    //
+    //     for (let module of moduleDefinition.modules) {
+    //         let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
+    //
+    //         let moduleLoader = new ModuleLoader(moduleInstance, app.injector);
+    //
+    //         moduleLoader.preInitialize();
+    //
+    //         await moduleLoader.initialize();
+    //     }
+    // }
 
     private _handleExports(app: IApp) {
 
@@ -173,7 +192,7 @@ export class ModuleLoader {
 
     private _handleFileExport() {
         this._module.fileExports.forEach(fn => {
-            (this._module.app.parent as App).addExported({path: "", fn, define: Util.getClassDefinition(fn)})
+            (this._module.app.parent as App).discovery.addExported({path: "", fn, define: Util.getClassDefinition(fn)})
         })
     }
 

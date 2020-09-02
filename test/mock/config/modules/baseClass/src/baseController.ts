@@ -1,10 +1,11 @@
 "use strict";
-import {before, define, EventDispatcher, inject, after, pipeline} from '../../../../../../index';
 import {Manager} from "../../../../src/manager";
 import {Logger2} from "../../logger2";
 import {BeforeTest} from "../../../../src/beforeTest";
 import {PipelineTest, PipelineTest2} from "../../../../src/pipelineTest";
 import {validate} from "../../validate/validateModule";
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+import {EventDispatcher}  from '@appolo/events';
 
 export class Base2Controller extends EventDispatcher {
 

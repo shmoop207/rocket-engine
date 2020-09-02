@@ -2,8 +2,9 @@ import {Events, IClass, IModuleOptions, Module, module} from '../../../../../ind
 import {Bootstrap} from "../../../src/bootstrap";
 import {NestedProvider} from "./src/nestedProvider";
 import {DbManager} from "../db/src/dbManager";
+import {IModuleParams} from "../../../../../lib/interfaces/IModule";
 
-interface IOptions extends IModuleOptions {
+interface IOptions {
     delay: number,
     testModule: string,
     id?: string
@@ -12,6 +13,10 @@ interface IOptions extends IModuleOptions {
 
 @module()
 export class NestedModule extends Module<IOptions> {
+
+    public static for(options: IOptions, moduleOptions: IModuleOptions = {}): IModuleParams {
+        return {module: NestedModule, options, moduleOptions}
+    }
 
     public get exports() {
         return [{id: this.moduleOptions.id || "nestedProvider", type: NestedProvider}, {

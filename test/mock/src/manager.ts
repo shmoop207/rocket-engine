@@ -1,7 +1,8 @@
 "use strict";
-import {define, singleton, inject, EventDispatcher, pipeline} from '../../../index';
 import {PipelineTest2, PipelineTestOnCreate} from "./pipelineTest";
-import {pipelineInstance} from "../../../lib/decoretors/pipeline";
+import {pipelineInstance} from "../../../lib/decoretors/pipelineDecorators";
+import {define, singleton,inject,initMethod}  from '@appolo/inject';
+import {EventDispatcher}  from '@appolo/events';
 
 @define()
 @singleton()

@@ -1,12 +1,13 @@
 import appolo = require('../../../../index');
-import {Promises} from 'appolo-utils';
+import {Injector}  from '@appolo/inject';
+import {Promises} from '@appolo/utils';
 
 export interface Logger2{
     getName():string
 }
 
 export  default function (options?:any) {
-    return   (env, inject:appolo.Injector, logger,next)=> {
+    return   (env, inject:Injector, logger,next)=> {
 
         let logger2 = {
             getName: function () {

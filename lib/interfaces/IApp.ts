@@ -1,7 +1,8 @@
 import {IEnv} from "./IEnv";
-import {Define, Injector} from "appolo-inject/index";
-import {IEventDispatcher} from "appolo-event-dispatcher/";
-import {IExported} from "./IModuleDefinition";
+import {Define, Injector} from "@appolo/inject";
+import {IEventDispatcher} from "@appolo/events";
+import {IExported} from "./IModule";
+import {Discovery} from "../launcher/discovery";
 
 export interface IApp extends IEventDispatcher {
     env: IEnv
@@ -15,8 +16,6 @@ export interface IApp extends IEventDispatcher {
 
     launch(): Promise<IApp>
 
-    exported: IExported[]
-
-    exportedRoot: IExported[]
+    discovery: Discovery
 
 }

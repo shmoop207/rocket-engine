@@ -2,35 +2,36 @@
 
 import fs = require('fs');
 import    path = require('path');
-import {Objects,Classes} from 'appolo-utils';
+import {Objects, Promises} from '@appolo/utils';
+import {Dir} from "fs";
 
 export class FilesLoader {
 
-    public static * load(root:string, filesPath:string|string[]) {
+    public static async* load(root: string, filesPath: string | string[]) {
         if (!Array.isArray(filesPath)) {
             filesPath = [filesPath];
         }
 
-        for (let filePath of filesPath) {
+        for await (let filePath of filesPath) {
 
-            yield * this._loadFiles(path.join(root, filePath));
+            yield* this._walk(path.join(root, filePath));
         }
     }
 
-    private static * _loadFiles(filePath:string) {
-        if (fs.existsSync(filePath)) {
+    private static async* _walk(dir: string) {
 
-            for (let file of fs.readdirSync(filePath)) {
-                let newPath = path.join(filePath, file);
-                let stat = fs.statSync(newPath);
+        let [err, dirs] = await Promises.to<fs.Dir, Error>(fs.promises.opendir(dir))
 
-                if (stat.isFile() && /(.*)\.(js)$/.test(file) && !file.startsWith( "~")) {
+        if (err) {
+            return;
+        }
 
-                    yield newPath;
-
-                } else if (stat.isDirectory()  && !file.startsWith( "~")) {
-                    yield * this._loadFiles(newPath);
-                }
+        for await (const d of dirs) {
+            const file = path.join(dir, d.name);
+            if (d.isDirectory() && !file.startsWith("~")) {
+                yield* await this._walk(file);
+            } else if (d.isFile() && file.endsWith(".js") && !file.startsWith("~")) {
+                yield file;
             }
         }
     }

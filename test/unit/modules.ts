@@ -19,9 +19,9 @@ describe('modules', function () {
 
     });
 
-    afterEach(function () {
+    afterEach(async ()=> {
 
-        app.reset()
+        await app.reset()
     })
 
     it('should initialize module', function () {

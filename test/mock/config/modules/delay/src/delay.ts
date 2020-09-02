@@ -1,5 +1,6 @@
-import {define, inject, singleton} from '../../../../../../index';
+import {} from '../../../../../../index';
 import {DelayManager} from "./delayManager";
+import {define, singleton,inject,initMethod}  from '@appolo/inject';
 
 @define()
 @singleton()

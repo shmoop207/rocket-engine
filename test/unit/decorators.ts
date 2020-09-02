@@ -1,7 +1,8 @@
 "use strict";
 import chai = require('chai');
-import {Promises} from 'appolo-utils';
-import {bind, cache, debounce, delay, once, throttle} from "../../index";
+import {Promises} from '@appolo/utils';
+import {bind, cache, debounce, delay, once, throttle} from "@appolo/helpers";
+import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
 
 let should = chai.should();
 

@@ -12,8 +12,8 @@ describe('modules', function () {
         });
         await app.launch();
     });
-    afterEach(function () {
-        app.reset();
+    afterEach(async () => {
+        await app.reset();
     });
     it('should initialize module', function () {
         let logger = app.injector.getObject('logger');

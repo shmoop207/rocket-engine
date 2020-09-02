@@ -2,11 +2,12 @@
 
 
 import {Controller} from "../mock/src/controller";
+import {bind, cache, debounce, delay, once, throttle,mixins} from "@appolo/helpers";
 
 let should = require('chai').should();
-import {App, createApp, define, singleton, inject, EventDispatcher, mixins} from '../../index';
+import {App, createApp} from '../../index';
 import {Manager2} from "../mock/src/manager2";
-import Manager3 from "../mock/src/manager3";
+import Manager3 from "../mock/src/manager/manager3";
 import {Manager} from "../mock/src/manager";
 
 

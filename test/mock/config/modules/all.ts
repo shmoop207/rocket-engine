@@ -28,15 +28,15 @@ export = async function (env: IEnv, app: App) {
     await app.module(ValidateModule);
     await app.module(BaseModuleClassModule);
     await app.module(
-        new DelayModule({delay: 10, testModule: env.test}),
-        new DelayModule({
+        DelayModule.for({delay: 11, testModule: env.test}),
+        DelayModule.for({
             delay: 1,
             testModule: env.test,
             id: "delay2"
         }));
-    await app.module(new DbModule({id: "dbMock"}));
+    await app.module(DbModule.for({id: "dbMock"}));
 
-    await app.module(new NestedModule({
+    await app.module(NestedModule.for({
         delay: 1,
         testModule: env.test,
     }));
