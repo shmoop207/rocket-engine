@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createApp = exports.pipelineType = exports.pipelineInstance = exports.pipeline = exports.after = exports.before = exports.module = exports.bootstrap = exports.PipelineContext = exports.Events = exports.Module = exports.App = exports.FilesLoader = exports.Discovery = exports.Launcher = exports.Util = void 0;
 const app_1 = require("./lib/app");
-var util_1 = require("./lib/util/util");
-Object.defineProperty(exports, "Util", { enumerable: true, get: function () { return util_1.Util; } });
+var exportedUtil_1 = require("./lib/util/exportedUtil");
+Object.defineProperty(exports, "Util", { enumerable: true, get: function () { return exportedUtil_1.ExportedUtil; } });
 var launcher_1 = require("./lib/launcher/launcher");
 Object.defineProperty(exports, "Launcher", { enumerable: true, get: function () { return launcher_1.Launcher; } });
 var discovery_1 = require("./lib/launcher/discovery");

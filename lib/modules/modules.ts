@@ -10,6 +10,8 @@ import {ModuleSymbol} from "../decoretors/moduleDecorators";
 import {App} from "../app";
 import {Events} from "../interfaces/events";
 import {ModuleLoader} from "./moduleLoader";
+import { Util as InjectUtil} from "@appolo/inject";
+import {ExportedUtil} from "../util/exportedUtil";
 
 
 export class ModuleManager {
@@ -25,13 +27,13 @@ export class ModuleManager {
             this._modules[i].preInitialize();
         }
 
-        await Util.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => this._loadModule(module));
+        await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => this._loadModule(module));
     }
 
     public async initAfterInjectDynamicModules() {
 
 
-        await Util.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => module.afterLaunch());
+        await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => module.afterLaunch());
     }
 
     private async _loadModule(module: ModuleLoader) {
@@ -83,7 +85,7 @@ export class ModuleManager {
 
     private _loadStaticModule(moduleParams: IModuleParams): PromiseLike<any> {
         //remove the callback arg
-        let args = Util.getFunctionArgs(moduleParams.fn),
+        let args = Classes.functionArgsNames(moduleParams.fn),
             lastArg = args[args.length - 1],
             isCallback = false;
 
@@ -108,7 +110,7 @@ export class ModuleManager {
             environmentPath = path.join(this._options.root, 'config/modules/', this._options.environment + '.js');
 
 
-        await Util.loadPathWithArgs([allPath, environmentPath], this._injector)
+        await ExportedUtil.loadPathWithArgs([allPath, environmentPath], this._injector)
     }
 
 

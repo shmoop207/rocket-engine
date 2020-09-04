@@ -1,7 +1,6 @@
 "use strict";
 import {createContainer, Define, InjectDefineSymbol, Injector,IDefinition} from "@appolo/inject";
 import {IOptions} from "../interfaces/IOptions";
-import {Util} from "../util/util";
 import {IBootstrap} from "../interfaces/IBootstrap";
 import {IEnv} from "../interfaces/IEnv";
 import {FilesLoader} from "../loader/filesLoader";
@@ -14,9 +13,10 @@ import {AppModuleOptionsSymbol} from "../decoretors/moduleDecorators";
 import {IApp} from "../interfaces/IApp";
 import   path = require('path');
 import   fs = require('fs');
-import {Objects, Classes} from '@appolo/utils';
+import {Objects, Classes,Promises} from '@appolo/utils';
 import {PipelineManager} from "../pipelines/pipelineManager";
 import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/propertyDecorators";
+import {Util} from "@appolo/inject";
 
 export class Launcher {
 
@@ -236,10 +236,7 @@ export class Launcher {
             return;
         }
 
-        for (let app of this._app.children) {
-            await (app as App).launcher._initFiles()
-        }
-
+       await Promises.map(this._app.children,app=>(app as App).launcher._initFiles())
 
         let loadPaths = (this._options.paths || []).concat(this._env.paths || []);
 

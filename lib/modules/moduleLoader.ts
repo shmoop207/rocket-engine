@@ -8,6 +8,8 @@ import {createApp, IApp, IClass} from "../../index";
 import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/moduleDecorators";
 import {Promises, Arrays, Objects} from '@appolo/utils';
 import {IModuleDefinition, IModuleOptions, IModuleParams} from "../interfaces/IModule";
+import { Util as InjectUtil} from "@appolo/inject";
+import {ExportedUtil} from "../util/exportedUtil";
 
 export class ModuleLoader {
 
@@ -83,7 +85,7 @@ export class ModuleLoader {
 
 
         } catch (e) {
-            Util.logger(this._parenInjector).error(`failed to initialize module ${this._module.constructor.name}`, {e: e.stack});
+            ExportedUtil.logger(this._parenInjector).error(`failed to initialize module ${this._module.constructor.name}`, {e: e.stack});
 
             throw e;
         }
@@ -171,7 +173,7 @@ export class ModuleLoader {
             let id, type;
 
             if (typeof item == "function") {
-                id = Util.getClassNameOrId(item as IClass);
+                id = InjectUtil.getClassNameOrId(item as IClass);
                 type = item;
                 app.injector.parent.addDefinition(id, {injector: app.injector})
             } else {
@@ -179,7 +181,7 @@ export class ModuleLoader {
                 type = item.type;
                 app.injector.parent.addDefinition(item.id, {
                     injector: app.injector,
-                    refName: Util.getClassNameOrId(item.type)
+                    refName: InjectUtil.getClassNameOrId(item.type)
                 })
             }
             this._module.app.fireEvent(Events.ModuleExport, type, id);
@@ -192,7 +194,7 @@ export class ModuleLoader {
 
     private _handleFileExport() {
         this._module.fileExports.forEach(fn => {
-            (this._module.app.parent as App).discovery.addExported({path: "", fn, define: Util.getClassDefinition(fn)})
+            (this._module.app.parent as App).discovery.addExported({path: "", fn, define: InjectUtil.getClassDefinition(fn)})
         })
     }
 
@@ -210,7 +212,7 @@ export class ModuleLoader {
                 return;
             }
 
-            app.injector.addDefinition(Util.getClassNameOrId(item.type), {
+            app.injector.addDefinition(InjectUtil.getClassNameOrId(item.type), {
                 injector: app.injector.parent,
                 refName: item.id
             })

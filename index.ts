@@ -3,7 +3,7 @@ import {App} from "./lib/app";
 import {Module} from "./lib/modules/module";
 
 
-export {Util} from "./lib/util/util"
+export {ExportedUtil as Util} from "./lib/util/exportedUtil"
 export {Launcher} from './lib/launcher/launcher';
 export {Discovery} from './lib/launcher/discovery';
 export {FilesLoader} from './lib/loader/filesLoader';
@@ -16,7 +16,7 @@ export {App} from './lib/app'
 export {IApp} from './lib/interfaces/IApp'
 export {Module} from './lib/modules/module'
 export {Events} from './lib/interfaces/events'
-export {IClass, IModuleOptions} from './lib/interfaces/IModule'
+export {IClass, IModuleOptions, IModuleParams, ModuleArg} from './lib/interfaces/IModule'
 export {IPipeline, IPipelineFn} from './lib/pipelines/IPipeline'
 export {PipelineContext} from './lib/pipelines/pipelineContext'
 export {

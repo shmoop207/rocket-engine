@@ -3,15 +3,15 @@ import {IApp} from "../interfaces/IApp";
 import {App} from "../app";
 import {Reflector, Arrays} from "@appolo/utils";
 import {Define} from "@appolo/inject";
-import {Util} from "../util/util";
+import {Util} from "@appolo/inject";
 
 export class Discovery {
 
-    protected _app: App;
-    private _exported: IExported[];
+    protected _app: IApp;
+    protected _exported: IExported[];
 
 
-    constructor(app: App) {
+    constructor(app: IApp) {
         this._app = app;
         this._exported = [];
     }

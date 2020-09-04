@@ -1,7 +1,7 @@
-import {Util} from "../util/util";
 import {IClass} from "../interfaces/IModule";
 import {App} from "../app";
 import {Classes} from '@appolo/utils';
+import {Util} from "@appolo/inject";
 
 
 export const BeforeSymbol = "__before__";

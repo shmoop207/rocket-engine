@@ -1,13 +1,20 @@
 import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunner, Next} from "./IPipeline";
-import {PipeInstanceCreateSymbol, PipeKlassRegisterSymbol, PipeSetSymbol, PipeSymbol} from "../decoretors/pipelineDecorators";
+import {
+    PipeInstanceCreateSymbol,
+    PipeKlassRegisterSymbol,
+    PipeSetSymbol,
+    PipeSymbol
+} from "../decoretors/pipelineDecorators";
 import {runPipes} from "./pipelineRunner";
 import {Util} from "../util/util";
-import {Reflector,Objects} from "@appolo/utils";
+import {Reflector, Objects} from "@appolo/utils";
 import {App} from "../app";
 import {Injector} from "@appolo/inject";
 import {PipelineContext} from "./pipelineContext";
 import {IDefinition} from "@appolo/inject";
 import {ILogger} from "../interfaces/ILogger";
+import {Util as InjectUtil} from "@appolo/inject";
+import {ExportedUtil} from "../util/exportedUtil";
 
 export class PipelineManager {
 
@@ -22,7 +29,7 @@ export class PipelineManager {
     }
 
     public overrideKlassMethods(fn: any, definition: IDefinition) {
-        if (!Util.isClass(fn)) {
+        if (!InjectUtil.isClass(fn)) {
             return;
         }
 
@@ -62,7 +69,7 @@ export class PipelineManager {
 
             return pipesCompiled({definition, args: null, instance, type: fn, action: null, argsTypes: []})
         } catch (e) {
-            Util.logger(this._app.injector).error("failed to override klass")
+            ExportedUtil.logger(this._app.injector).error("failed to override klass")
         }
 
     }
@@ -111,7 +118,7 @@ export class PipelineManager {
 
     private _convertPipeline(pipes: IPipelineMetadata[]) {
         pipes.forEach((pipe, index) => {
-            let id = Util.getClassId(pipe.pipeline);
+            let id = InjectUtil.getClassId(pipe.pipeline);
 
             if (!id) {
                 return
