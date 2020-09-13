@@ -4,7 +4,8 @@ import {Injector} from "@appolo/inject";
 import {ILogger} from "../interfaces/ILogger";
 import { Classes, Reflector, Functions} from '@appolo/utils';
 import {IExported} from "../interfaces/IModule";
-import {Define} from "@appolo/inject/index";
+import {Define} from "@appolo/inject";
+import {Util as InjectUtil} from "@appolo/inject";
 
 export class Util {
 
@@ -40,15 +41,15 @@ export class Util {
     }
 
     public static getClassDefinition(fn: any): Define {
-        return Util.getClassDefinition(fn)
+        return InjectUtil.getClassDefinition(fn)
     }
 
     public static getClassId(fn: any): string {
-        return Util.getClassId(fn)
+        return InjectUtil.getClassId(fn)
     }
 
     public static getClassName(fn: Function): string {
-        return Util.getClassName(fn)
+        return InjectUtil.getClassName(fn)
     }
 
     public static async loadPathWithArgs(paths: string[], injector: Injector) {
