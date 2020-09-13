@@ -1,7 +1,7 @@
 "use strict";
 import {Promises, Arrays, Classes, Functions} from '@appolo/utils';
 import   path = require('path');
-import {Util} from "../util/util";
+import {Helpers} from "../util/helpers";
 import {Injector} from "@appolo/inject";
 import {Module} from "./module";
 import {IOptions} from "../interfaces/IOptions";
@@ -11,7 +11,7 @@ import {App} from "../app";
 import {Events} from "../interfaces/events";
 import {ModuleLoader} from "./moduleLoader";
 import { Util as InjectUtil} from "@appolo/inject";
-import {ExportedUtil} from "../util/exportedUtil";
+import {Util} from "../util/util";
 
 
 export class ModuleManager {
@@ -110,7 +110,7 @@ export class ModuleManager {
             environmentPath = path.join(this._options.root, 'config/modules/', this._options.environment + '.js');
 
 
-        await ExportedUtil.loadPathWithArgs([allPath, environmentPath], this._injector)
+        await Util.loadPathWithArgs([allPath, environmentPath], this._injector)
     }
 
 

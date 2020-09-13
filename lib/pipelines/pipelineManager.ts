@@ -6,7 +6,7 @@ import {
     PipeSymbol
 } from "../decoretors/pipelineDecorators";
 import {runPipes} from "./pipelineRunner";
-import {Util} from "../util/util";
+import {Helpers} from "../util/helpers";
 import {Reflector, Objects} from "@appolo/utils";
 import {App} from "../app";
 import {Injector} from "@appolo/inject";
@@ -14,7 +14,7 @@ import {PipelineContext} from "./pipelineContext";
 import {IDefinition} from "@appolo/inject";
 import {ILogger} from "../interfaces/ILogger";
 import {Util as InjectUtil} from "@appolo/inject";
-import {ExportedUtil} from "../util/exportedUtil";
+import {Util} from "../util/util";
 
 export class PipelineManager {
 
@@ -69,7 +69,7 @@ export class PipelineManager {
 
             return pipesCompiled({definition, args: null, instance, type: fn, action: null, argsTypes: []})
         } catch (e) {
-            ExportedUtil.logger(this._app.injector).error("failed to override klass")
+            Util.logger(this._app.injector).error("failed to override klass")
         }
 
     }

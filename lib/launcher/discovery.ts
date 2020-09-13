@@ -56,27 +56,52 @@ export class Discovery {
     }
 
     public setReflectMetadata(key: string | Symbol, value: any, target: any, propertyKey?: string) {
+        return Discovery.setReflectMetadata(key, value, target, propertyKey)
+    }
+
+    public static setReflectMetadata(key: string | Symbol, value: any, target: any, propertyKey?: string) {
         return Reflector.setMetadata(key, value, target, propertyKey)
     }
 
     public getReflectMetadata<T>(symbol: Symbol | string, klass: any, propertyName?: string, defaultValue?: T): T {
 
+        return Discovery.getReflectMetadata(symbol, klass, propertyName, defaultValue)
+    }
+
+    public static getReflectMetadata<T>(symbol: Symbol | string, klass: any, propertyName?: string, defaultValue?: T): T {
+
         return Reflector.getMetadata(symbol, klass, propertyName, defaultValue)
     }
 
     public decorateReflectMetadata(key: string | Symbol, value: any) {
+        return Discovery.decorateReflectMetadata(key, value)
+    }
+
+    public static decorateReflectMetadata(key: string | Symbol, value: any) {
         return Reflector.decorateMetadata(key, value)
     }
 
     public getClassDefinition(fn: any): Define {
+        return Discovery.getClassDefinition(fn)
+    }
+
+    public static getClassDefinition(fn: any): Define {
         return Util.getClassDefinition(fn)
     }
 
     public getClassId(fn: any): string {
+        return Discovery.getClassId(fn)
+    }
+
+    public static getClassId(fn: any): string {
         return Util.getClassId(fn)
     }
 
     public getClassName(fn: Function): string {
+        return Discovery.getClassName(fn)
+    }
+
+    public static getClassName(fn: Function): string {
         return Util.getClassName(fn)
     }
 

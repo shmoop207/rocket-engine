@@ -3,7 +3,7 @@ import {App} from "./lib/app";
 import {Module} from "./lib/modules/module";
 
 
-export {ExportedUtil as Util} from "./lib/util/exportedUtil"
+export {Util} from "./lib/util/util"
 export {Launcher} from './lib/launcher/launcher';
 export {Discovery} from './lib/launcher/discovery';
 export {FilesLoader} from './lib/loader/filesLoader';

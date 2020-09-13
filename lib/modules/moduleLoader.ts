@@ -1,7 +1,7 @@
 import {Module} from "./module";
 import {App} from "../app";
 import {Injector,InjectDefineSymbol} from "@appolo/inject";
-import {Util} from "../util/util";
+import {Helpers} from "../util/helpers";
 import {Events} from "../interfaces/events";
 import {IEnv} from "../interfaces/IEnv";
 import {createApp, IApp, IClass} from "../../index";
@@ -9,7 +9,7 @@ import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/moduleDecorato
 import {Promises, Arrays, Objects} from '@appolo/utils';
 import {IModuleDefinition, IModuleOptions, IModuleParams} from "../interfaces/IModule";
 import { Util as InjectUtil} from "@appolo/inject";
-import {ExportedUtil} from "../util/exportedUtil";
+import {Util} from "../util/util";
 
 export class ModuleLoader {
 
@@ -85,7 +85,7 @@ export class ModuleLoader {
 
 
         } catch (e) {
-            ExportedUtil.logger(this._parenInjector).error(`failed to initialize module ${this._module.constructor.name}`, {e: e.stack});
+            Util.logger(this._parenInjector).error(`failed to initialize module ${this._module.constructor.name}`, {e: e.stack});
 
             throw e;
         }

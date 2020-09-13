@@ -1,5 +1,5 @@
 import {createApp, IApp} from "../../index"
-import {Util} from "../util/util";
+import {Helpers} from "../util/helpers";
 import {IClass, ModuleTypes} from "../interfaces/IModule";
 
 

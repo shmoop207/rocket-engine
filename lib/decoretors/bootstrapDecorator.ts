@@ -1,5 +1,5 @@
 import {IClass} from "../interfaces/IModule";
-import {Util} from "../util/util";
+import {Helpers} from "../util/helpers";
 import {App} from "../app";
 
 export const BootstrapSymbol = "__bootstrap__";
