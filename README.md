@@ -1,5 +1,5 @@
 # Appolo-Engine
-[![Build Status](https://travis-ci.org/shmoop207/appolo-engine.svg?branch=master)](https://travis-ci.org/shmoop207/appolo-engine) [![Dependencies status](https://david-dm.org/shmoop207/appolo-engine.svg)](https://david-dm.org/shmoop207/appolo-engine) [![NPM version](https://badge.fury.io/js/appolo-engine.svg)](https://badge.fury.io/js/appolo-engine)  [![npm Downloads](https://img.shields.io/npm/dm/appolo-engine.svg?style=flat)](https://www.npmjs.com/package/appolo-engine)
+[![Build Status](https://travis-ci.com/shmoop207/appolo-engine.svg?branch=master)](https://travis-ci.org/shmoop207/appolo-engine) [![Dependencies status](https://david-dm.org/shmoop207/appolo-engine.svg)](https://david-dm.org/shmoop207/appolo-engine) [![NPM version](https://badge.fury.io/js/appolo-engine.svg)](https://badge.fury.io/js/appolo-engine)  [![npm Downloads](https://img.shields.io/npm/dm/appolo-engine.svg?style=flat)](https://www.npmjs.com/package/appolo-engine)
 [![Known Vulnerabilities](https://snyk.io/test/github/shmoop207/appolo-engine/badge.svg)](https://snyk.io/test/github/shmoop207/appolo-engine)
   
   ![appolo](https://www.dropbox.com/s/pwdvd6ohb74t7r7/appollo.png?raw=1)
@@ -20,7 +20,7 @@ Appolo architecture follows common patten of MVC and dependency injection which 
 
 ## Installation
 ```javascript
-npm install appolo-engine --save
+npm install @appolo/engine --save
 ```
 ## Typescript
 `appolo` requires TypeScript compiler version > 2.1 and the following settings in `tsconfig.json`:
@@ -32,7 +32,7 @@ npm install appolo-engine --save
 ## Quick Start
 In your app.js file:
 ```javascript
-var {createApp}  from 'appolo-engine';
+var {createApp}  from '@appolo/engine';
 createApp().launch();
 ```
 
@@ -67,7 +67,7 @@ appolo launch configuration options, all options are optional
 
 #### usage example:
 ```javascript
-import {createApp}  from 'appolo-engine';
+import {createApp}  from '@appolo/engine';
 (async ()=>{
     let app = await createApp({
         paths:[ 'src'],
@@ -101,7 +101,7 @@ export = {
 ```
 If we launch our app.js with `NODE_ENV = testing`
 ```javascript
-import {createApp}  from 'appolo-engine';
+import {createApp}  from '@appolo/engine';
 ...
 let app = await createApp().launch();
 var env = appolo.env;
@@ -136,7 +136,7 @@ You can always access the injector via `app.injector`.
  - `injectParam` - inject object by parameter
 ```javascript
 //dataRemoteManager.ts
-import {define,singleton,initMethod,inject,IFactory,factory} from 'appolo-engine';
+import {define,singleton,initMethod,inject,IFactory,factory} from '@appolo/inject';
 @define()
 @singleton()
 export class DataRemoteManager {
@@ -174,7 +174,7 @@ export class FooController{
 ```
 You can also use constructor injection or method parameter injection:
 ```javascript
-import {define,singleton,injectParam,initMethod,inject} from 'appolo';
+import {define,singleton,injectParam,initMethod,inject} from '@appolo/inject';
 @define()
 @singleton()
 export class DataManager {
@@ -200,7 +200,7 @@ Inherited injections are supported as well.
 Anything you inject on a base class will be available to child classes.
 Remember not to use `@define` on the parent class.
 ```javascript
-import {define,singleton,injectParam,initMethod,inject} from 'appolo-engine';
+import {define,singleton,injectParam,initMethod,inject} from '@appolo/inject';
 
 export class BaseManager {
     @inject() protected env:any
@@ -221,7 +221,8 @@ Appolo has a built-in event dispatcher to enable classes to listen to and fire e
 Event Dispatcher has the following methods:
 
 ```javascript
-import {define,singleton,injectParam,initMethod,inject,EventDispatcher} from 'appolo-engine';
+import {define,singleton,injectParam,initMethod,inject} from '@appolo/inject';
+import {EventDispatcher} from '@appolo/events';
 @define()
 @singleton()
 export class FooManager extends EventDispatcher{
@@ -256,9 +257,10 @@ By default, each module can inject:
 
 Module example:
 ```javascript
-import {App} from 'appolo-engine';
+import {App} from '@appolo/engine';
+import {Injector} from '@appolo/inject';
 export = async function(app:App){
-    await app.module(async function(env:any,inject:appolo.Injector){
+    await app.module(async function(env:any,inject:Injector){
         let myModuleObject = {data:'test'};
         await toSomeThing();
         inject.addObject('myModuleObject',myModuleObject);
@@ -267,7 +269,7 @@ export = async function(app:App){
 ```
 Now we can inject `myModuleObject` to any class:
 ```javascript
-import {define,singleton,initMethod,inject} from 'appolo';
+import {define,singleton,initMethod,inject} from '@appolo/inject';
 @define()
 export  class AuthMiddleware{
     @inject('myModuleObject') testObject:any
@@ -283,9 +285,10 @@ A logger module example with [winston][19]
 loggerModule.js file:
 ```javascript
 import winston = require('winston');
-import {App} from 'appolo-engine';
+import {App} from '@appolo/engine';
+import {Injector} from '@appolo/inject';
 export = async function(app:App){
-    await appolo.module(async function(env:any,inject:appolo.Injector){
+    await appolo.module(async function(env:any,inject:Injector){
         transports = [];
         transports.push(new (winston.transports.Console)({
             json: false,
@@ -297,7 +300,7 @@ export = async function(app:App){
 ```
 Now we you inject logger anywhere we need it:
 ```javascript
-import {define,singleton,initMethod,inject} from 'appolo-engine';
+import {define,singleton,initMethod,inject} from '@appolo/engine';
 @define()
 export class DataManager{
     @inject() logger:Logger
@@ -311,7 +314,8 @@ export class DataManager{
 
 Once it launched, appolo will try to find an appolo `bootstrap` class and call it's `run` method. Only when the bootstrap is finished, the server will start
 ```javascript
-import {define,singleton,injectParam,initMethod,inject,bootstrap,IBootstrap} from 'appolo-engine';
+import {bootstrap,IBootstrap} from '@appolo/engine';
+import {define,singleton,injectParam,initMethod,inject} from '@appolo/inject';
 @define()
 @bootstrap()
 export class Bootstrap implements IBootstrap{
