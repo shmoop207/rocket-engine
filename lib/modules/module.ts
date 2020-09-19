@@ -1,8 +1,9 @@
 import {createApp, IApp} from "../../index"
 import {Helpers} from "../util/helpers";
+import {initMethodAsync,singleton} from "@appolo/inject";
 import {IClass, ModuleTypes} from "../interfaces/IModule";
 
-
+@singleton()
 export class Module<T = any> {
 
     protected _exports: ModuleTypes = [];
@@ -10,7 +11,6 @@ export class Module<T = any> {
     protected _imports: ModuleTypes = [];
     protected _moduleOptions: T;
     protected _app: IApp;
-
 
 
     protected readonly Defaults: Partial<T> = {};
@@ -85,7 +85,12 @@ export class Module<T = any> {
 
     }
 
-    public afterLaunch(){
+    public afterLaunch() {
+
+    }
+
+    @initMethodAsync()
+    public onInjectInitialize() {
 
     }
 

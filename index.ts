@@ -5,7 +5,7 @@ import {Module} from "./lib/modules/module";
 
 export {Util} from "./lib/util/util"
 export {Launcher} from './lib/launcher/launcher';
-export {Discovery} from './lib/launcher/discovery';
+export {Discovery} from './lib/discovery/discovery';
 export {FilesLoader} from './lib/loader/filesLoader';
 
 

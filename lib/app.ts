@@ -2,13 +2,13 @@ import {IEnv} from "./interfaces/IEnv";
 import {Define, Injector} from "@appolo/inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
-import {EventDispatcher,IEventOptions} from "@appolo/events";
+import {EventDispatcher, IEventOptions} from "@appolo/events";
 import {ModuleManager} from "./modules/modules";
 import {IClass, ModuleArg} from "./interfaces/IModule";
 import {IApp} from "./interfaces/IApp";
 import {Events} from "./interfaces/events";
 import {PipelineManager} from "./pipelines/pipelineManager";
-import {Discovery} from "./launcher/discovery";
+import {Discovery} from "./discovery/discovery";
 
 
 export class App extends EventDispatcher implements IApp {
@@ -84,8 +84,16 @@ export class App extends EventDispatcher implements IApp {
         await this._moduleManager.load(modules);
     }
 
+    public getParent<T extends IApp = IApp>(): T {
+        return this.parent as T;
+    }
+
     public get parent(): IApp {
         return this._parent;
+    }
+
+    public getRoot<T extends IApp = IApp>(): T {
+        return this.root as T;
     }
 
     public get root(): IApp {

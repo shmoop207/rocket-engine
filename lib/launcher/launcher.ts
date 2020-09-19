@@ -278,7 +278,7 @@ export class Launcher {
             this._files.push(filePath);
         }
 
-        this._app.discovery.addExported({
+        this._app.discovery.add({
             path: filePath,
             fn: fn,
             define

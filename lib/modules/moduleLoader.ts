@@ -56,6 +56,7 @@ export class ModuleLoader {
         this._module.moduleOptions = Objects.defaults({}, this._moduleParams.options || {}, this._module.defaults);
 
         this._module.app.injector.addObject("moduleOptions", this._module.moduleOptions, true);
+        this._module.app.injector.addObject("discovery", app.discovery, true);
 
         this._handleFileExport();
 
@@ -194,7 +195,7 @@ export class ModuleLoader {
 
     private _handleFileExport() {
         this._module.fileExports.forEach(fn => {
-            (this._module.app.parent as App).discovery.addExported({path: "", fn, define: InjectUtil.getClassDefinition(fn)})
+            (this._module.app.parent as App).discovery.add({path: "", fn, define: InjectUtil.getClassDefinition(fn)})
         })
     }
 

@@ -15,6 +15,7 @@ export class DbManager {
     @inject() test: Test;
 
     public isFoundExportedFile:boolean = false;
+    public onInitCalled:boolean = false;
 
 
 

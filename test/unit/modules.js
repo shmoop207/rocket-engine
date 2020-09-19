@@ -70,6 +70,7 @@ describe('modules', function () {
     it('should have export module file in root app', function () {
         let dbManager = app.injector.getObject("dbMockDbManager");
         dbManager.isFoundExportedFile.should.be.ok;
+        dbManager.onInitCalled.should.be.ok;
     });
 });
 //# sourceMappingURL=modules.js.map

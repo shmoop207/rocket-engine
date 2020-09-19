@@ -6,7 +6,7 @@ var util_1 = require("./lib/util/util");
 Object.defineProperty(exports, "Util", { enumerable: true, get: function () { return util_1.Util; } });
 var launcher_1 = require("./lib/launcher/launcher");
 Object.defineProperty(exports, "Launcher", { enumerable: true, get: function () { return launcher_1.Launcher; } });
-var discovery_1 = require("./lib/launcher/discovery");
+var discovery_1 = require("./lib/discovery/discovery");
 Object.defineProperty(exports, "Discovery", { enumerable: true, get: function () { return discovery_1.Discovery; } });
 var filesLoader_1 = require("./lib/loader/filesLoader");
 Object.defineProperty(exports, "FilesLoader", { enumerable: true, get: function () { return filesLoader_1.FilesLoader; } });

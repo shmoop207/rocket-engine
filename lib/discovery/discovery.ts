@@ -16,25 +16,20 @@ export class Discovery {
         this._exported = [];
     }
 
+    public getRoot<T extends Discovery = Discovery>(): T {
+        return this._app.getRoot().discovery as T
+    }
+
+    public getParent<T extends Discovery = Discovery>(): T {
+        return this._app.getParent().discovery as T
+    }
+
     public get exported(): IExported[] {
         return this._exported
     }
 
-    public addExported(value: IExported): void {
+    public add(value: IExported): void {
         this.exported.push(value)
-    }
-
-    public get exportedRoot(): IExported[] {
-        let parent: IApp = this._app;
-
-        let exported = [];
-
-        while (parent != null) {
-            exported.push(...parent.discovery.exported);
-            parent = parent.parent;
-        }
-
-        return exported;
     }
 
     public filterByType(type: any): IExported[] {
@@ -47,12 +42,26 @@ export class Discovery {
 
     public findReflectData<T>(symbol: Symbol | string): IExported & { metaData: T } {
 
-        return Reflector.findReflectData(symbol, this._exported)
+        let item = Reflector.findReflectData<T,IExported>(symbol, this._exported)
+
+        if (item && item.define && this._app.injector.hasInstance(item.define.id)) {
+            item.instance = this._app.injector.getInstance(item.define.id);
+        }
+
+        return item;
     }
 
     public findAllReflectData<T>(symbol: Symbol | string): (IExported & { metaData: T })[] {
 
-        return Reflector.findAllReflectData(symbol, this._exported)
+        let items =  Reflector.findAllReflectData<T,IExported>(symbol, this._exported);
+
+        items.forEach(item=>{
+            if (item.define && this._app.injector.hasInstance(item.define.id)) {
+                item.instance = this._app.injector.getInstance(item.define.id);
+            }
+        });
+
+        return items;
     }
 
     public setReflectMetadata(key: string | Symbol, value: any, target: any, propertyKey?: string) {

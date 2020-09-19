@@ -34,6 +34,10 @@ export class DbModule extends Module {
 
     }
 
+    public async onInjectInitialize() {
+        this.dbManager.onInitCalled = true;
+    }
+
     public afterLaunch() {
 
         let isFound = this.app.parent.discovery.findByType(NestedProvider);

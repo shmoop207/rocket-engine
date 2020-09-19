@@ -23,6 +23,9 @@ let DbModule = DbModule_1 = class DbModule extends index_1.Module {
     }
     afterInitialize() {
     }
+    async onInjectInitialize() {
+        this.dbManager.onInitCalled = true;
+    }
     afterLaunch() {
         let isFound = this.app.parent.discovery.findByType(nestedProvider_1.NestedProvider);
         this.dbManager.isFoundExportedFile = !!isFound && !!this.dbManager.db;

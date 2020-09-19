@@ -8,6 +8,7 @@ const inject_1 = require("@appolo/inject");
 let DbManager = class DbManager {
     constructor() {
         this.isFoundExportedFile = false;
+        this.onInitCalled = false;
     }
     get db() {
         return this.dbFactory;

@@ -109,6 +109,7 @@ describe('modules', function () {
 
         let dbManager = app.injector.getObject<DbManager>("dbMockDbManager");
         dbManager.isFoundExportedFile.should.be.ok;
+        dbManager.onInitCalled.should.be.ok;
 
     });
 

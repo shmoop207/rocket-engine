@@ -28,6 +28,7 @@ export interface IModuleOptions {
 export interface IExported {
     fn: Function,
     path: string,
+    instance?: any
     define: Define
 }
 
