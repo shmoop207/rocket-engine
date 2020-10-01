@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createApp = exports.pipelineType = exports.pipelineInstance = exports.pipeline = exports.after = exports.before = exports.module = exports.bootstrap = exports.PipelineContext = exports.Events = exports.Module = exports.App = exports.FilesLoader = exports.Discovery = exports.Launcher = exports.Util = void 0;
+exports.createApp = exports.pipelineType = exports.pipelineInstance = exports.pipeline = exports.after = exports.before = exports.module = exports.bootstrap = exports.PipelineContext = exports.Module = exports.App = exports.FilesLoader = exports.Discovery = exports.Launcher = exports.Util = void 0;
 const app_1 = require("./lib/app");
 var util_1 = require("./lib/util/util");
 Object.defineProperty(exports, "Util", { enumerable: true, get: function () { return util_1.Util; } });
@@ -14,8 +14,6 @@ var app_2 = require("./lib/app");
 Object.defineProperty(exports, "App", { enumerable: true, get: function () { return app_2.App; } });
 var module_1 = require("./lib/modules/module");
 Object.defineProperty(exports, "Module", { enumerable: true, get: function () { return module_1.Module; } });
-var events_1 = require("./lib/interfaces/events");
-Object.defineProperty(exports, "Events", { enumerable: true, get: function () { return events_1.Events; } });
 var pipelineContext_1 = require("./lib/pipelines/pipelineContext");
 Object.defineProperty(exports, "PipelineContext", { enumerable: true, get: function () { return pipelineContext_1.PipelineContext; } });
 var decorators_1 = require("./lib/decoretors/decorators");

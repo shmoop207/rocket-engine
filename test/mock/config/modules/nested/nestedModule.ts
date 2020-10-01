@@ -1,4 +1,4 @@
-import {Events, IClass, IModuleOptions, Module, module} from '../../../../../index';
+import { IClass, IModuleOptions, Module, module} from '../../../../../index';
 import {Bootstrap} from "../../../src/bootstrap";
 import {NestedProvider} from "./src/nestedProvider";
 import {DbManager} from "../db/src/dbManager";

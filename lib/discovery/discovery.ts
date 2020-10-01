@@ -4,6 +4,7 @@ import {App} from "../app";
 import {Reflector, Arrays} from "@appolo/utils";
 import {Define} from "@appolo/inject";
 import {Util} from "@appolo/inject";
+import {InjectDefineSymbol} from "@appolo/inject/index";
 
 export class Discovery {
 
@@ -96,6 +97,14 @@ export class Discovery {
 
     public static getClassDefinition(fn: any): Define {
         return Util.getClassDefinition(fn)
+    }
+
+    public hasClassDefinition(fn: any): boolean {
+        return Discovery.hasClassDefinition(fn)
+    }
+
+    public static hasClassDefinition(fn: any): boolean {
+        return Reflect.hasMetadata(InjectDefineSymbol, fn)
     }
 
     public getClassId(fn: any): string {

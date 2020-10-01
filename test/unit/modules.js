@@ -57,6 +57,7 @@ describe('modules', function () {
         should.exist(bootstrap.dbMock);
         bootstrap.delay.data.msg.should.be.eq("testDev");
         bootstrap.delay2.data.msg.should.be.eq("testDev");
+        let aa = bootstrap.delay2.data.time - bootstrap.delay.data.time;
         bootstrap.delay2.data.time.should.be.lessThan(bootstrap.delay.data.time);
         bootstrap.dbMock.conn.should.be.eq("working");
         bootstrap.dbMock.name.should.be.eq("working");

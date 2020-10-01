@@ -1,16 +1,13 @@
-export enum Events {
-    BeforeModulesLoad = "beforeModulesLoad",
-    ModulesLoaded = "modulesLoaded",
-    BeforeInjectorInit = "beforeInjectorInit",
-    InjectorInit = "injectorInit",
-    BeforeBootstrap = "beforeBootstrap",
-    Bootstrap = "bootstrap",
-    BeforeInjectRegister = "beforeInjectRegister",
-    InjectRegister = "injectRegister",
-    ClassExport = "classExport",
-    BeforeModuleInit = "beforeModuleInit",
-    ModuleInit = "moduleInit",
-    ModuleExport = "moduleExport",
-    Reset = "reset",
-    BeforeReset = "reset"
-}
+//
+
+import {Module} from "../modules/module";
+import {Injector, IDefinition} from "@appolo/inject/index";
+
+export type EventModuleExport = { id: string, type: Function, module: Module, injector: Injector }
+
+export type EventBeforeModuleInit = { module: Module }
+export type EventModuleInit = { module: Module }
+
+export type EventBeforeInjectRegister = { type: Function, filePath: string }
+export type EventClassExport = { type: Function, filePath: string }
+export type EventInjectRegister = { type: Function, filePath: string, definition: IDefinition }

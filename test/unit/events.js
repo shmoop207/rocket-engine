@@ -17,12 +17,25 @@ describe('events', function () {
     });
     it('should have  events', async function () {
         let spy = sinon.spy();
-        for (let key in index_1.Events) {
-            app.once(index_1.Events[key], spy);
-        }
+        app.eventModuleExport.once(spy);
+        app.eventBeforeModuleInit.once(spy);
+        app.eventModuleInit.once(spy);
+        app.eventBeforeModulesLoad.once(spy);
+        app.eventModulesLoaded.once(spy);
+        app.eventBeforeInjectorInit.once(spy);
+        app.eventInjectorInit.once(spy);
+        app.eventBeforeBootstrap.once(spy);
+        app.eventBootstrap.once(spy);
+        app.eventsBeforeInjectRegister.once(spy);
+        app.eventsEventClassExport.once(spy);
+        app.eventsInjectRegister.once(spy);
+        app.eventsBeforeReset.once(spy);
+        app.eventsReset.once(spy);
         await app.launch();
-        app.reset();
-        spy.should.callCount(Object.keys(index_1.Events).length);
+        await app.reset();
+        app["resetTestEvent"].should.be.ok;
+        app["resetTest"].should.be.ok;
+        spy.should.callCount(14);
     });
 });
 //# sourceMappingURL=events.js.map

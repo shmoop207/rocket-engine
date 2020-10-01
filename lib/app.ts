@@ -2,16 +2,21 @@ import {IEnv} from "./interfaces/IEnv";
 import {Define, Injector} from "@appolo/inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
-import {EventDispatcher, IEventOptions} from "@appolo/events";
+import {Event, IEvent} from "@appolo/events";
 import {ModuleManager} from "./modules/modules";
 import {IClass, ModuleArg} from "./interfaces/IModule";
 import {IApp} from "./interfaces/IApp";
-import {Events} from "./interfaces/events";
 import {PipelineManager} from "./pipelines/pipelineManager";
 import {Discovery} from "./discovery/discovery";
+import {Module} from "./modules/module";
+import {
+    EventBeforeInjectRegister,
+    EventBeforeModuleInit, EventClassExport, EventInjectRegister,
+    EventModuleExport,
+    EventModuleInit
+} from "./interfaces/events";
 
-
-export class App extends EventDispatcher implements IApp {
+export class App implements IApp {
 
     protected _env: IEnv;
     protected _injector: Injector;
@@ -22,11 +27,12 @@ export class App extends EventDispatcher implements IApp {
     protected _parent: IApp;
     protected _children: IApp[] = [];
     private _root: IApp;
-    private _discovery: Discovery;
+    protected readonly _discovery: Discovery;
+
+
 
 
     constructor(options?: IOptions) {
-        super();
 
         this._launcher = new Launcher(this);
 
@@ -123,33 +129,56 @@ export class App extends EventDispatcher implements IApp {
 
     }
 
+    public readonly eventModuleExport: IEvent<EventModuleExport> = new Event();
+    public readonly eventBeforeModuleInit: IEvent<EventBeforeModuleInit> = new Event();
+    public readonly eventModuleInit: IEvent<EventModuleInit> = new Event();
+    public readonly eventBeforeModulesLoad: IEvent<void> = new Event();
+    public readonly eventModulesLoaded: IEvent<void> = new Event();
+    public readonly eventBeforeInjectorInit: IEvent<void> = new Event();
+    public readonly eventInjectorInit: IEvent<void> = new Event();
+    public readonly eventBeforeBootstrap: IEvent<void> = new Event();
+    public readonly eventBootstrap: IEvent<void> = new Event();
+    public readonly eventsBeforeInjectRegister: IEvent<EventBeforeInjectRegister> = new Event();
+    public readonly eventsEventClassExport: IEvent<EventClassExport> = new Event();
+    public readonly eventsInjectRegister: IEvent<EventInjectRegister> = new Event();
+    public readonly eventsBeforeReset: IEvent<void> = new Event();
+    public readonly eventsReset: IEvent<void> = new Event();
+
+    public get eventInstanceOwnInitialized(){
+        return this._injector.instanceOwnInitializedEvent;
+    }
+
+    public get eventInstanceInitialized(){
+        return this._injector.instanceInitializedEvent;
+    }
+
+    public get eventInstanceOwnCreated(){
+        return this._injector.instanceOwnCreatedEvent;
+    }
+
+    public get eventInstanceCreated(){
+        return this._injector.instanceCreatedEvent;
+    }
 
     public async reset() {
-        this.fireEvent(Events.BeforeReset);
+        await (this.eventsBeforeReset as Event<void>).fireEventAsync();
         this._children.forEach(app => app.reset());
+
+        await this._launcher.reset();
+
+        this._discovery.reset();
 
         this._injector.reset();
 
-        this._children.length = 0;
+        await (this.eventsReset as Event<void>).fireEventAsync();
 
         this._parent = null;
 
         this._injector = null;
 
-        await this._launcher.reset();
-
-        this._discovery.reset()
-
-        this.fireEvent(Events.Reset);
+        this._children.length = 0;
     }
 
-    public on(event: Events | string, fn: (...args: any[]) => any, scope?: any, options?: IEventOptions): void {
-        return super.on(event.toString(), fn, scope, options)
-    }
-
-    public once(event: Events | string, fn?: (...args: any[]) => any, scope?: any): Promise<any> | void {
-        return super.once(event.toString(), fn, scope);
-    }
 }
 
 

@@ -1,15 +1,15 @@
 import {Module} from "./module";
 import {App} from "../app";
-import {Injector,InjectDefineSymbol} from "@appolo/inject";
-import {Helpers} from "../util/helpers";
-import {Events} from "../interfaces/events";
+import {Injector, InjectDefineSymbol} from "@appolo/inject";
 import {IEnv} from "../interfaces/IEnv";
 import {createApp, IApp, IClass} from "../../index";
 import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/moduleDecorators";
 import {Promises, Arrays, Objects} from '@appolo/utils';
 import {IModuleDefinition, IModuleOptions, IModuleParams} from "../interfaces/IModule";
-import { Util as InjectUtil} from "@appolo/inject";
+import {Util as InjectUtil} from "@appolo/inject";
+import {Event} from "@appolo/events";
 import {Util} from "../util/util";
+import {EventModuleExport} from "../interfaces/events";
 
 export class ModuleLoader {
 
@@ -78,7 +78,7 @@ export class ModuleLoader {
 
             await this._module.beforeLaunch();
 
-            this._fireClassExportEvents();
+            //this._fireClassExportEvents();
 
             await this._module.app.launch();
 
@@ -97,21 +97,21 @@ export class ModuleLoader {
     }
 
 
-    private _fireClassExportEvents() {
-        if (!this._module.app.hasListener(Events.ClassExport) && !this._module.app.hasListener(Events.InjectRegister)) {
-            return;
-        }
-
-        this._module.app.parent.discovery.exported.forEach(item => {
-
-            if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
-
-                this._module.app.fireEvent(Events.InjectRegister, item.fn, item.path);
-            }
-
-            this._module.app.fireEvent(Events.ClassExport, item.fn, item.path);
-        })
-    }
+    // private _fireClassExportEvents() {
+    //     if (!this._module.app.hasListener(Events.ClassExport) && !this._module.app.hasListener(Events.InjectRegister)) {
+    //         return;
+    //     }
+    //
+    //     this._module.app.parent.discovery.exported.forEach(item => {
+    //
+    //         if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
+    //
+    //             this._module.app.fireEvent(Events.InjectRegister, item.fn, item.path);
+    //         }
+    //
+    //         this._module.app.fireEvent(Events.ClassExport, item.fn, item.path);
+    //     })
+    // }
 
     private _setDefinitions() {
         if (this._moduleDefinition.options) {
@@ -185,8 +185,16 @@ export class ModuleLoader {
                     refName: InjectUtil.getClassNameOrId(item.type)
                 })
             }
-            this._module.app.fireEvent(Events.ModuleExport, type, id);
-            this._module.app.parent && (this._module.app.parent.fireEvent(Events.ModuleExport, type, id));
+
+            let eventDto = {
+                type,
+                id,
+                module: this._module,
+                injector: app.injector
+            };
+
+            (this._module.app.eventModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
+            (this._module.app.parent.eventModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
 
         });
 
@@ -218,5 +226,13 @@ export class ModuleLoader {
                 refName: item.id
             })
         });
+    }
+
+    public async reset(){
+         await this.module.reset();
+    }
+
+    public async beforeReset(){
+         await this.module.beforeReset();
     }
 }

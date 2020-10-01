@@ -1,7 +1,14 @@
 import sinon = require('sinon');
 import sinonChai = require('sinon-chai');
 import chai = require('chai');
-import {App, createApp, Events} from "../../index";
+import {App, createApp} from "../../index";
+import {Event, IEvent} from "@appolo/events/index";
+import {
+    EventBeforeInjectRegister,
+    EventBeforeModuleInit, EventClassExport, EventInjectRegister,
+    EventModuleExport,
+    EventModuleInit
+} from "../../lib/interfaces/events";
 
 chai.use(sinonChai);
 let should = chai.should();
@@ -26,17 +33,30 @@ describe('events', function () {
 
         let spy = sinon.spy();
 
-        for (let key in Events) {
-            app.once(Events[key], spy);
-
-        }
+        app.eventModuleExport.once(spy);
+        app.eventBeforeModuleInit.once(spy);
+        app.eventModuleInit.once(spy);
+        app.eventBeforeModulesLoad.once(spy);
+        app.eventModulesLoaded.once(spy);
+        app.eventBeforeInjectorInit.once(spy);
+        app.eventInjectorInit.once(spy);
+        app.eventBeforeBootstrap.once(spy);
+        app.eventBootstrap.once(spy);
+        app.eventsBeforeInjectRegister.once(spy);
+        app.eventsEventClassExport.once(spy);
+        app.eventsInjectRegister.once(spy);
+        app.eventsBeforeReset.once(spy);
+        app.eventsReset.once(spy);
 
 
         await app.launch();
 
-        app.reset();
+        await app.reset();
+
+        app["resetTestEvent"].should.be.ok
+        app["resetTest"].should.be.ok
 
 
-        spy.should.callCount(Object.keys(Events).length)
+        spy.should.callCount(14)
     });
 });

@@ -1,5 +1,6 @@
-import {Events, IModuleOptions, Module, module} from '../../../../../index';
+import {IModuleOptions, Module, module} from '../../../../../index';
 import {Delay} from "./src/delay";
+import {Promises} from "@appolo/utils";
 import {Bootstrap} from "../../../src/bootstrap";
 import {IModuleParams} from "../../../../../lib/interfaces/IModule";
 
@@ -23,13 +24,25 @@ export class DelayModule extends Module<IOptions> {
     }
 
     public beforeLaunch() {
-        this._app.on(Events.ClassExport, (fn: Function, path: string) => {
-            if (fn === Bootstrap && !this._app.parent.injector.getInstance("exportedClassEvent")) {
+        let isExists = !!this._app.parent.discovery.findByType(Bootstrap)
+
+        this.app.parent.eventsInjectRegister.on(payload => {
+            if (payload.type ==  Bootstrap && isExists && !this._app.parent.injector.getInstance("exportedClassEvent")) {
 
                 this._app.parent.injector.addInstance("exportedClassEvent", true)
 
             }
         })
+
+        this.app.eventsBeforeReset.on(async ()=>{
+           await Promises.delay(1);
+            this.app.parent["resetTestEvent"] = true;
+        },this,{await:true})
+
+    }
+
+    public  beforeReset() {
+        this.app.parent["resetTest"] = true;
     }
 
 }

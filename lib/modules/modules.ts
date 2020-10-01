@@ -4,14 +4,16 @@ import   path = require('path');
 import {Helpers} from "../util/helpers";
 import {Injector} from "@appolo/inject";
 import {Module} from "./module";
+import {Event} from "@appolo/events";
 import {IOptions} from "../interfaces/IOptions";
 import {IModuleParams, IPlugin, ModuleArg} from "../interfaces/IModule";
 import {ModuleSymbol} from "../decoretors/moduleDecorators";
 import {App} from "../app";
-import {Events} from "../interfaces/events";
 import {ModuleLoader} from "./moduleLoader";
-import { Util as InjectUtil} from "@appolo/inject";
+import {Util as InjectUtil} from "@appolo/inject";
 import {Util} from "../util/util";
+import {IApp} from "../interfaces/IApp";
+import {EventBeforeModuleInit, EventModuleInit} from "../interfaces/events";
 
 
 export class ModuleManager {
@@ -37,12 +39,11 @@ export class ModuleManager {
     }
 
     private async _loadModule(module: ModuleLoader) {
-        this._injector.get<App>(App).fireEvent(Events.BeforeModuleInit, module);
+        (this._injector.get<IApp>(App).eventBeforeModuleInit as Event<EventBeforeModuleInit>).fireEvent({module: module.module});
 
         await module.initialize();
 
-        this._injector.get<App>(App).fireEvent(Events.ModuleInit, module);
-
+        (this._injector.get<App>(App).eventModuleInit as Event<EventModuleInit>).fireEvent({module: module.module});
     }
 
     private async _registerModule(moduleParams: IModuleParams, isParallel: boolean) {
@@ -64,7 +65,7 @@ export class ModuleManager {
 
         let moduleParams = modules.map<IModuleParams>((item: any) => {
             if (Classes.isClass(item)) {
-                return {module: item,options: {}, moduleOptions: {}}
+                return {module: item, options: {}, moduleOptions: {}}
             } else if (Functions.isFunction(item)) {
                 return {fn: item, options: {}, moduleOptions: {}}
             } else {
@@ -111,6 +112,14 @@ export class ModuleManager {
 
 
         await Util.loadPathWithArgs([allPath, environmentPath], this._injector)
+    }
+
+    public  reset(){
+        return Promise.all(this._modules.map(module=>module.reset()));
+    }
+
+    public  beforeReset(){
+        return Promise.all(this._modules.map(module=>module.beforeReset()));
     }
 
 
