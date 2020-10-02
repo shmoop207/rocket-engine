@@ -15,7 +15,7 @@ interface IOptions {
 export class DelayModule extends Module<IOptions> {
 
     public static for(options: IOptions, moduleOptions: IModuleOptions = {}): IModuleParams {
-        return {module: DelayModule, options, moduleOptions}
+        return {type: DelayModule, config:options, ...moduleOptions}
     }
 
     public get exports() {

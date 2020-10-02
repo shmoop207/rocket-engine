@@ -4,11 +4,11 @@ import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {Event, IEvent} from "@appolo/events";
 import {ModuleManager} from "./modules/modules";
-import {IClass, ModuleArg} from "./interfaces/IModule";
+import {IClass, IModuleOptions, ModuleArg} from "./interfaces/IModule";
 import {IApp} from "./interfaces/IApp";
+import {EventDispatcher} from "@appolo/events";
 import {PipelineManager} from "./pipelines/pipelineManager";
 import {Discovery} from "./discovery/discovery";
-import {Module} from "./modules/module";
 import {
     EventBeforeInjectRegister,
     EventBeforeModuleInit, EventClassExport, EventInjectRegister,
@@ -28,15 +28,14 @@ export class App implements IApp {
     protected _children: IApp[] = [];
     private _root: IApp;
     protected readonly _discovery: Discovery;
-
-
-
+    protected readonly _dispatcher: EventDispatcher;
 
     constructor(options?: IOptions) {
 
         this._launcher = new Launcher(this);
 
         this._discovery = new Discovery(this);
+        this._dispatcher = new EventDispatcher();
 
         this._options = this._launcher.loadOptions(options);
 
@@ -52,6 +51,10 @@ export class App implements IApp {
 
     public get discovery(): Discovery {
         return this._discovery;
+    }
+
+    public get dispatcher(): EventDispatcher {
+        return this._dispatcher
     }
 
     public static create(options: IOptions): App {
@@ -85,7 +88,12 @@ export class App implements IApp {
         return this._injector.register(id, type)
     }
 
-    public async module(...modules: ModuleArg[]): Promise<void> {
+    public async module(module: ModuleArg, config: { [index: string]: any } = {}, options: IModuleOptions = {}): Promise<void> {
+
+        await this._moduleManager.load([[module,config,options]]);
+    }
+
+    public async modules(...modules: (ModuleArg | [ModuleArg, { [index: string]: any }?, IModuleOptions?])[]): Promise<void> {
 
         await this._moduleManager.load(modules);
     }
@@ -144,19 +152,19 @@ export class App implements IApp {
     public readonly eventsBeforeReset: IEvent<void> = new Event();
     public readonly eventsReset: IEvent<void> = new Event();
 
-    public get eventInstanceOwnInitialized(){
+    public get eventInstanceOwnInitialized() {
         return this._injector.instanceOwnInitializedEvent;
     }
 
-    public get eventInstanceInitialized(){
+    public get eventInstanceInitialized() {
         return this._injector.instanceInitializedEvent;
     }
 
-    public get eventInstanceOwnCreated(){
+    public get eventInstanceOwnCreated() {
         return this._injector.instanceOwnCreatedEvent;
     }
 
-    public get eventInstanceCreated(){
+    public get eventInstanceCreated() {
         return this._injector.instanceCreatedEvent;
     }
 

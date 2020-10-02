@@ -3,7 +3,7 @@ import {Define, Injector} from "@appolo/inject";
 import {IEventDispatcher} from "@appolo/events";
 import {IExported} from "./IModule";
 import {Discovery} from "../discovery/discovery";
-import {Event, IEvent} from "@appolo/events/index";
+import {Event, EventDispatcher, IEvent} from "@appolo/events";
 import {
     EventBeforeInjectRegister,
     EventBeforeModuleInit,
@@ -11,11 +11,13 @@ import {
     EventModuleExport,
     EventModuleInit
 } from "./events";
-import {IDefinition} from "@appolo/inject/lib/IDefinition";
+import {IDefinition} from "@appolo/inject";
 
 export interface IApp {
-    env: IEnv
-    injector: Injector
+    readonly env: IEnv
+    readonly injector: Injector
+
+    readonly dispatcher: EventDispatcher
 
     readonly eventModuleExport: IEvent<EventModuleExport>;
     readonly eventBeforeModuleInit: IEvent<EventBeforeModuleInit>;
@@ -38,8 +40,8 @@ export interface IApp {
 
     reset();
 
-    parent: IApp
-    root: IApp
+    readonly parent: IApp
+    readonly root: IApp
 
     getParent<T extends IApp = IApp>(): T
 
@@ -49,6 +51,6 @@ export interface IApp {
 
     launch(): Promise<IApp>
 
-    discovery: Discovery
+    readonly discovery: Discovery
 
 }

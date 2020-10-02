@@ -15,18 +15,18 @@ const baseModuleClassModule_1 = require("./baseClass/baseModuleClassModule");
 module.exports = async function (env, app) {
     await app.module(logger_1.default);
     await app.module(logger2_1.default({ test: 'test2' }));
-    await app.module(logger3_1.default({ test: 'test3' }), logger4_1.default({ test: 'test4' }));
+    await app.modules(logger3_1.default({ test: 'test3' }), logger4_1.default({ test: 'test4' }));
     await app.module(logger5_1.default({ test: 'test5' }));
     await app.module(logger6_1.default({ test: 'test6' }));
     await app.module(logger7_1.default({ test: 'test7' }));
     await app.module(testModule_1.TestModule);
     await app.module(validateModule_1.ValidateModule);
     await app.module(baseModuleClassModule_1.BaseModuleClassModule);
-    await app.module(delayModule_1.DelayModule.for({ delay: 11, testModule: env.test }), delayModule_1.DelayModule.for({
-        delay: 1,
-        testModule: env.test,
-        id: "delay2"
-    }));
+    await app.modules(delayModule_1.DelayModule.for({ delay: 11, testModule: env.test }), [delayModule_1.DelayModule, {
+            delay: 1,
+            testModule: env.test,
+            id: "delay2"
+        }]);
     await app.module(dbModule_1.DbModule.for({ id: "dbMock" }));
     await app.module(nestedModule_1.NestedModule.for({
         delay: 1,

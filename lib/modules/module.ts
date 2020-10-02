@@ -1,4 +1,4 @@
-import {createApp, IApp} from "../../index"
+import {createApp, IApp, IModuleOptions, IModuleParams} from "../../index"
 import {Helpers} from "../util/helpers";
 import {initMethodAsync, singleton} from "@appolo/inject";
 import {Event} from "@appolo/events";
@@ -19,6 +19,9 @@ export class Module<T = any> {
         return this.Defaults
     }
 
+    public static for(config: {[index:string]:any}, options: IModuleOptions = {}): IModuleParams {
+        return {type: this, config, ...options}
+    }
 
     public get app(): IApp {
         return this._app;

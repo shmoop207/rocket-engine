@@ -20,13 +20,13 @@ export class ModuleLoader {
 
     constructor(protected _moduleParams: IModuleParams, protected _parenInjector: Injector) {
 
-        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _moduleParams.module);
+        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _moduleParams.type);
 
         if (!this._moduleDefinition) {
-            throw new Error(`failed to find moduleDefinition for ${_moduleParams.module}`)
+            throw new Error(`failed to find moduleDefinition for ${_moduleParams.type}`)
         }
 
-        this._moduleOptions = Objects.defaults({}, _moduleParams.moduleOptions, {
+        this._moduleOptions = Objects.defaults({}, _moduleParams, {
             immediate: this._moduleDefinition?.immediate,
             parallel: this._moduleDefinition?.parallel
         }, {immediate: false, parallel: false});
@@ -47,13 +47,13 @@ export class ModuleLoader {
 
         let app = this._createApp(this._parenInjector, this._moduleDefinition);
 
-        this._module = app.injector.get(this._moduleParams.module)
+        this._module = app.injector.get(this._moduleParams.type)
 
         this._setDefinitions();
 
         this._module.app = app
 
-        this._module.moduleOptions = Objects.defaults({}, this._moduleParams.options || {}, this._module.defaults);
+        this._module.moduleOptions = Objects.defaults({}, this._moduleParams.config || {}, this._module.defaults);
 
         this._module.app.injector.addObject("moduleOptions", this._module.moduleOptions, true);
         this._module.app.injector.addObject("discovery", app.discovery, true);
@@ -138,7 +138,7 @@ export class ModuleLoader {
 
         app.parent = parent.get<App>('app');
 
-        app.register(this._moduleParams.module)
+        app.register(this._moduleParams.type)
 
         return app;
     }

@@ -39,12 +39,19 @@ export interface IModuleCrt {
 
 export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
 
-export interface IModuleParams {
-    module?: IModuleCrt,
+interface IModuleParams1 extends IModuleOptions {
+    type: IModuleCrt,
     fn?: ModuleFunction,
-    options?: any,
-    moduleOptions: IModuleOptions
+    config?: any
 }
+
+interface IModuleParams2 extends IModuleOptions {
+    type?: IModuleCrt,
+    fn: ModuleFunction,
+    config?: any
+}
+
+export type IModuleParams = IModuleParams1 | IModuleParams2
 
 export type ModuleArg = ModuleFunction | IModuleParams | IModuleCrt
 

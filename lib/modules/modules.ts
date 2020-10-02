@@ -6,7 +6,7 @@ import {Injector} from "@appolo/inject";
 import {Module} from "./module";
 import {Event} from "@appolo/events";
 import {IOptions} from "../interfaces/IOptions";
-import {IModuleParams, IPlugin, ModuleArg} from "../interfaces/IModule";
+import {IModuleOptions, IModuleParams, IPlugin, ModuleArg} from "../interfaces/IModule";
 import {ModuleSymbol} from "../decoretors/moduleDecorators";
 import {App} from "../app";
 import {ModuleLoader} from "./moduleLoader";
@@ -48,11 +48,11 @@ export class ModuleManager {
 
     private async _registerModule(moduleParams: IModuleParams, isParallel: boolean) {
 
-        moduleParams.moduleOptions.parallel = isParallel;
+        moduleParams.parallel = isParallel;
 
         let loader = new ModuleLoader(moduleParams, this._injector);
 
-        if (moduleParams.moduleOptions.immediate) {
+        if (moduleParams.immediate) {
             loader.preInitialize();
             await this._loadModule(loader);
         } else {
@@ -61,20 +61,32 @@ export class ModuleManager {
     }
 
 
-    public async load(modules: ModuleArg[]): Promise<any> {
+    public async load(modules: (ModuleArg | [ModuleArg, { [index: string]: any }?, IModuleOptions?])[]): Promise<any> {
 
         let moduleParams = modules.map<IModuleParams>((item: any) => {
-            if (Classes.isClass(item)) {
-                return {module: item, options: {}, moduleOptions: {}}
-            } else if (Functions.isFunction(item)) {
-                return {fn: item, options: {}, moduleOptions: {}}
-            } else {
-                return {options: {}, moduleOptions: {}, ...item}
+
+            let dto:IModuleParams;
+
+            if (Array.isArray(item)) {
+                if (Classes.isClass(item[0])) {
+                    item = {type: item[0],config:item[1],...item[2]}
+                } else {
+                    item = item[0];
+                }
             }
+
+            if (Classes.isClass(item)) {
+                dto =  {type: item, config: {}}
+            } else if (Functions.isFunction(item)) {
+                dto =  {fn: item, config: {}}
+            } else {
+                dto =  {config: {}, ...item}
+            }
+
+            return dto;
         })
 
-
-        let [dynamicModules, staticModules] = Arrays.partition(moduleParams, module => !!module.module)
+        let [dynamicModules, staticModules] = Arrays.partition(moduleParams, module => !!module.type)
 
         await Promises.map(dynamicModules, item => this._registerModule(item, dynamicModules.length > 1));
 
@@ -114,12 +126,12 @@ export class ModuleManager {
         await Util.loadPathWithArgs([allPath, environmentPath], this._injector)
     }
 
-    public  reset(){
-        return Promise.all(this._modules.map(module=>module.reset()));
+    public reset() {
+        return Promise.all(this._modules.map(module => module.reset()));
     }
 
-    public  beforeReset(){
-        return Promise.all(this._modules.map(module=>module.beforeReset()));
+    public beforeReset() {
+        return Promise.all(this._modules.map(module => module.beforeReset()));
     }
 
 

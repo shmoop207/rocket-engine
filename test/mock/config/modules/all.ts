@@ -17,7 +17,7 @@ import {BaseModuleClassModule} from "./baseClass/baseModuleClassModule";
 export = async function (env: IEnv, app: App) {
     await app.module(logger);
     await app.module(logger2({test: 'test2'}));
-    await app.module(logger3({test: 'test3'}), logger4({test: 'test4'}));
+    await app.modules(logger3({test: 'test3'}), logger4({test: 'test4'}));
 
     await app.module(logger5({test: 'test5'}));
 
@@ -27,13 +27,15 @@ export = async function (env: IEnv, app: App) {
     await app.module(TestModule);
     await app.module(ValidateModule);
     await app.module(BaseModuleClassModule);
-    await app.module(
+    await app.modules(
         DelayModule.for({delay: 11, testModule: env.test}),
-        DelayModule.for({
+        [DelayModule,{
             delay: 1,
             testModule: env.test,
             id: "delay2"
-        }));
+        }]);
+
+
     await app.module(DbModule.for({id: "dbMock"}));
 
     await app.module(NestedModule.for({

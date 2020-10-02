@@ -12,8 +12,8 @@ export class DbModule extends Module {
 
     @injectLazy() dbManager: DbManager
 
-    public static for(options: { id: string }, moduleOptions: IModuleOptions = {}): IModuleParams {
-        return {module: DbModule, options, moduleOptions}
+    public static for(config: { id: string }, options: IModuleOptions = {}) {
+        return super.for(config,options)
     }
 
     public get exports() {
