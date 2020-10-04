@@ -18,6 +18,7 @@ import {PipelineManager} from "../pipelines/pipelineManager";
 import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/propertyDecorators";
 import {Util} from "@appolo/inject";
 import {EventBeforeInjectRegister, EventClassExport, EventInjectRegister} from "../interfaces/events";
+import {Module} from "../modules/module";
 
 export class Launcher {
 
@@ -81,6 +82,7 @@ export class Launcher {
 
         return env;
     }
+
 
     public loadInject(): Injector {
 

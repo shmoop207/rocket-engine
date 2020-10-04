@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chai = require("chai");
 const index_1 = require("../../index");
 const bootstrap_1 = require("../mock/src/bootstrap");
+const delayModule_1 = require("../mock/config/modules/delay/delayModule");
 let should = chai.should();
 describe('modules', function () {
     let app;
@@ -49,6 +50,15 @@ describe('modules', function () {
         let test = app.injector.getObject('test');
         should.exist(test);
         test.name.should.be.eq("working");
+    });
+    it("should get modules by index", function () {
+        app.getModuleAt(2).constructor.name.should.be.eq("BaseModuleClassModule");
+    });
+    it("should get modules by type", function () {
+        let modules = app.getModuleByType(delayModule_1.DelayModule);
+        modules.length.should.be.eq(2);
+        modules[0].constructor.name.should.be.eq("DelayModule");
+        modules[0].app.injector.should.be.ok;
     });
     it('should inject external async module', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);

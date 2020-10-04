@@ -4,7 +4,7 @@ import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {Event, IEvent} from "@appolo/events";
 import {ModuleManager} from "./modules/modules";
-import {IClass, IModuleOptions, ModuleArg} from "./interfaces/IModule";
+import {IClass, IModuleCrt, IModuleOptions, ModuleArg} from "./interfaces/IModule";
 import {IApp} from "./interfaces/IApp";
 import {EventDispatcher} from "@appolo/events";
 import {PipelineManager} from "./pipelines/pipelineManager";
@@ -15,6 +15,7 @@ import {
     EventModuleExport,
     EventModuleInit
 } from "./interfaces/events";
+import {Module} from "./modules/module";
 
 export class App implements IApp {
 
@@ -57,6 +58,14 @@ export class App implements IApp {
         return this._dispatcher
     }
 
+    public getModuleAt<T extends Module>(index: number): T {
+        return this._moduleManager.moduleAt(index);
+    }
+
+    public getModuleByType<T extends Module>(type: IModuleCrt): T[] {
+        return this._moduleManager.moduleByType(type);
+    }
+
     public static create(options: IOptions): App {
         return new App(options);
     };
@@ -90,7 +99,7 @@ export class App implements IApp {
 
     public async module(module: ModuleArg, config: { [index: string]: any } = {}, options: IModuleOptions = {}): Promise<void> {
 
-        await this._moduleManager.load([[module,config,options]]);
+        await this._moduleManager.load([[module, config, options]]);
     }
 
     public async modules(...modules: (ModuleArg | [ModuleArg, { [index: string]: any }?, IModuleOptions?])[]): Promise<void> {
@@ -129,6 +138,10 @@ export class App implements IApp {
 
     public get children(): IApp[] {
         return this._children;
+    }
+
+    public getChildAt(index: number): IApp {
+        return this._children[index];
     }
 
     public set parent(value: IApp) {

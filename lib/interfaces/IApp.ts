@@ -12,12 +12,14 @@ import {
     EventModuleInit
 } from "./events";
 import {IDefinition} from "@appolo/inject";
+import {Module} from "../modules/module";
 
 export interface IApp {
     readonly env: IEnv
     readonly injector: Injector
 
     readonly dispatcher: EventDispatcher
+
 
     readonly eventModuleExport: IEvent<EventModuleExport>;
     readonly eventBeforeModuleInit: IEvent<EventBeforeModuleInit>;
@@ -49,8 +51,14 @@ export interface IApp {
 
     children: IApp[]
 
+    getChildAt(index: number): IApp
+
     launch(): Promise<IApp>
 
     readonly discovery: Discovery
+
+    getModuleAt<T extends Module>(index: number): T
+
+    getModuleByType<T extends Module>(type: typeof Module): T[]
 
 }

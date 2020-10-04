@@ -6,7 +6,7 @@ import {Injector} from "@appolo/inject";
 import {Module} from "./module";
 import {Event} from "@appolo/events";
 import {IOptions} from "../interfaces/IOptions";
-import {IModuleOptions, IModuleParams, IPlugin, ModuleArg} from "../interfaces/IModule";
+import {IModuleCrt, IModuleOptions, IModuleParams, IPlugin, ModuleArg} from "../interfaces/IModule";
 import {ModuleSymbol} from "../decoretors/moduleDecorators";
 import {App} from "../app";
 import {ModuleLoader} from "./moduleLoader";
@@ -21,6 +21,18 @@ export class ModuleManager {
 
     constructor(private _options: IOptions, private _injector: Injector) {
         this._modules = [];
+    }
+
+    public moduleAt<T extends Module>(index: number): T {
+        let moduleLoader = this._modules[index];
+
+        return moduleLoader ? moduleLoader.module as T : null
+    }
+
+    public moduleByType<T extends Module>(type: IModuleCrt): T[] {
+        let modules = this._modules.filter(loader => loader.module.constructor.name === type.name).map(loader => loader.module)
+
+        return modules as T[]
     }
 
     public async loadDynamicModules() {
@@ -65,22 +77,22 @@ export class ModuleManager {
 
         let moduleParams = modules.map<IModuleParams>((item: any) => {
 
-            let dto:IModuleParams;
+            let dto: IModuleParams;
 
             if (Array.isArray(item)) {
                 if (Classes.isClass(item[0])) {
-                    item = {type: item[0],config:item[1],...item[2]}
+                    item = {type: item[0], config: item[1], ...item[2]}
                 } else {
                     item = item[0];
                 }
             }
 
             if (Classes.isClass(item)) {
-                dto =  {type: item, config: {}}
+                dto = {type: item, config: {}}
             } else if (Functions.isFunction(item)) {
-                dto =  {fn: item, config: {}}
+                dto = {fn: item, config: {}}
             } else {
-                dto =  {config: {}, ...item}
+                dto = {config: {}, ...item}
             }
 
             return dto;

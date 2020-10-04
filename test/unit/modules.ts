@@ -3,6 +3,7 @@ import chai = require('chai');
 import {App, createApp} from "../../index";
 import {Bootstrap} from "../mock/src/bootstrap";
 import {DbManager} from "../mock/config/modules/db/src/dbManager";
+import {DelayModule} from "../mock/config/modules/delay/delayModule";
 
 let should = chai.should();
 
@@ -75,6 +76,22 @@ describe('modules', function () {
         should.exist(test);
         (test as any).name.should.be.eq("working");
     });
+
+    it("should get modules by index",function () {
+        app.getModuleAt(2).constructor.name.should.be.eq("BaseModuleClassModule")
+    })
+
+
+    it("should get modules by type",function () {
+       let modules =  app.getModuleByType(DelayModule)
+
+        modules.length.should.be.eq(2)
+
+        modules[0].constructor.name.should.be.eq("DelayModule")
+
+        modules[0].app.injector.should.be.ok;
+    })
+
 
     it('should inject external async module', function () {
 
