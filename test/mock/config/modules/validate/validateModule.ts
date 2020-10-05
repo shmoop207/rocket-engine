@@ -9,7 +9,7 @@ export function validate(num: number) {
     }
 }
 
-@module({immediate: true})
+@module({})
 export class ValidateModule extends Module {
 
     get exports() {

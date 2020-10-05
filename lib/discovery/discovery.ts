@@ -18,11 +18,11 @@ export class Discovery {
     }
 
     public getRoot<T extends Discovery = Discovery>(): T {
-        return this._app.getRoot().discovery as T
+        return this._app.tree.getRoot().discovery as T
     }
 
     public getParent<T extends Discovery = Discovery>(): T {
-        return this._app.getParent().discovery as T
+        return this._app.tree.getParent().discovery as T
     }
 
     public get exported(): IExported[] {

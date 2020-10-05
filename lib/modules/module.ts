@@ -32,16 +32,16 @@ export class Module<T = any> {
     }
 
     public get parent(): IApp {
-        return this._app.parent;
+        return this._app.tree.parent;
     }
 
     public get root(): IApp {
-        return this._app.root
+        return this._app.tree.root
     }
 
     public get rootParent(): IApp {
 
-        return this._app.root
+        return this._app.tree.root
     }
 
     public get exports(): ModuleTypes {

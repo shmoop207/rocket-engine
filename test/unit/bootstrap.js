@@ -11,7 +11,7 @@ describe('bootstrap', function () {
         app = index_1.createApp({
             root: process.cwd() + '/test/mock'
         });
-        await app.module(testModule_1.Test2Module);
+        await app.modules.use(testModule_1.Test2Module);
         await app.launch();
     });
     afterEach(function () {

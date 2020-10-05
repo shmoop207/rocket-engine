@@ -3,19 +3,14 @@ import {Define, Injector} from "@appolo/inject";
 import {IOptions} from "./interfaces/IOptions";
 import {Launcher} from "./launcher/launcher";
 import {Event, IEvent} from "@appolo/events";
-import {ModuleManager} from "./modules/modules";
-import {IClass, IModuleCrt, IModuleOptions, ModuleArg} from "./interfaces/IModule";
+import {IClass} from "./interfaces/IModule";
 import {IApp} from "./interfaces/IApp";
 import {EventDispatcher} from "@appolo/events";
-import {PipelineManager} from "./pipelines/pipelineManager";
 import {Discovery} from "./discovery/discovery";
-import {
-    EventBeforeInjectRegister,
-    EventBeforeModuleInit, EventClassExport, EventInjectRegister,
-    EventModuleExport,
-    EventModuleInit
-} from "./interfaces/events";
-import {Module} from "./modules/module";
+
+import {Events} from "./events/events";
+import {Modules} from "./modules/modules";
+import {Tree} from "./tree/tree";
 
 export class App implements IApp {
 
@@ -23,11 +18,11 @@ export class App implements IApp {
     protected _injector: Injector;
     protected _options: IOptions;
     protected _launcher: Launcher;
-    protected _moduleManager: ModuleManager;
-    protected _pipelineManager: PipelineManager;
-    protected _parent: IApp;
-    protected _children: IApp[] = [];
-    private _root: IApp;
+    protected _events: Events;
+    protected _modules: Modules;
+    protected _tree :Tree;
+
+
     protected readonly _discovery: Discovery;
     protected readonly _dispatcher: EventDispatcher;
 
@@ -44,10 +39,33 @@ export class App implements IApp {
 
         this._injector = this._launcher.loadInject();
 
+        this._tree = new Tree(this);
+
+        this._events = new Events(this);
+
         this._injector.addObject("app", this);
 
-        this._moduleManager = this._launcher.createModuleManager();
-        this._pipelineManager = this._launcher.createPipelineManager();
+        let moduleManager = this._launcher.createModuleManager();
+        let pipelineManager = this._launcher.createPipelineManager();
+
+        this._modules = new Modules(this, moduleManager);
+
+        this._injector.addObject("modules", this._modules);
+        this._injector.addObject("discovery", this._discovery);
+        this._injector.addObject("dispatcher", this._dispatcher);
+
+    }
+
+    public get modules(): Modules {
+        return this._modules;
+    }
+
+    public get events(): Events {
+        return this._events;
+    }
+
+    public get tree():Tree{
+        return this._tree;
     }
 
     public get discovery(): Discovery {
@@ -58,13 +76,6 @@ export class App implements IApp {
         return this._dispatcher
     }
 
-    public getModuleAt<T extends Module>(index: number): T {
-        return this._moduleManager.moduleAt(index);
-    }
-
-    public getModuleByType<T extends Module>(type: IModuleCrt): T[] {
-        return this._moduleManager.moduleByType(type);
-    }
 
     public static create(options: IOptions): App {
         return new App(options);
@@ -97,93 +108,10 @@ export class App implements IApp {
         return this._injector.register(id, type)
     }
 
-    public async module(module: ModuleArg, config: { [index: string]: any } = {}, options: IModuleOptions = {}): Promise<void> {
-
-        await this._moduleManager.load([[module, config, options]]);
-    }
-
-    public async modules(...modules: (ModuleArg | [ModuleArg, { [index: string]: any }?, IModuleOptions?])[]): Promise<void> {
-
-        await this._moduleManager.load(modules);
-    }
-
-    public getParent<T extends IApp = IApp>(): T {
-        return this.parent as T;
-    }
-
-    public get parent(): IApp {
-        return this._parent;
-    }
-
-    public getRoot<T extends IApp = IApp>(): T {
-        return this.root as T;
-    }
-
-    public get root(): IApp {
-
-        if (this._root) {
-            return this._root;
-        }
-
-        let parent = this.parent;
-
-        while (parent.parent != null) {
-            parent = parent.parent;
-        }
-
-        this._root = parent;
-
-        return parent;
-    }
-
-    public get children(): IApp[] {
-        return this._children;
-    }
-
-    public getChildAt(index: number): IApp {
-        return this._children[index];
-    }
-
-    public set parent(value: IApp) {
-        this._parent = value;
-        value.children.push(this);
-
-    }
-
-    public readonly eventModuleExport: IEvent<EventModuleExport> = new Event();
-    public readonly eventBeforeModuleInit: IEvent<EventBeforeModuleInit> = new Event();
-    public readonly eventModuleInit: IEvent<EventModuleInit> = new Event();
-    public readonly eventBeforeModulesLoad: IEvent<void> = new Event();
-    public readonly eventModulesLoaded: IEvent<void> = new Event();
-    public readonly eventBeforeInjectorInit: IEvent<void> = new Event();
-    public readonly eventInjectorInit: IEvent<void> = new Event();
-    public readonly eventBeforeBootstrap: IEvent<void> = new Event();
-    public readonly eventBootstrap: IEvent<void> = new Event();
-    public readonly eventsBeforeInjectRegister: IEvent<EventBeforeInjectRegister> = new Event();
-    public readonly eventsEventClassExport: IEvent<EventClassExport> = new Event();
-    public readonly eventsInjectRegister: IEvent<EventInjectRegister> = new Event();
-    public readonly eventsBeforeReset: IEvent<void> = new Event();
-    public readonly eventsReset: IEvent<void> = new Event();
-
-    public get eventInstanceOwnInitialized() {
-        return this._injector.instanceOwnInitializedEvent;
-    }
-
-    public get eventInstanceInitialized() {
-        return this._injector.instanceInitializedEvent;
-    }
-
-    public get eventInstanceOwnCreated() {
-        return this._injector.instanceOwnCreatedEvent;
-    }
-
-    public get eventInstanceCreated() {
-        return this._injector.instanceCreatedEvent;
-    }
 
     public async reset() {
-        await (this.eventsBeforeReset as Event<void>).fireEventAsync();
-        this._children.forEach(app => app.reset());
+        await (this.events.beforeReset as Event<void>).fireEventAsync();
+        this._tree.children.forEach(app => app.reset());
 
         await this._launcher.reset();
 
@@ -191,13 +119,13 @@ export class App implements IApp {
 
         this._injector.reset();
 
-        await (this.eventsReset as Event<void>).fireEventAsync();
+        await (this.events.reset as Event<void>).fireEventAsync();
 
-        this._parent = null;
+        this._tree.parent = null;
 
         this._injector = null;
 
-        this._children.length = 0;
+        this._tree.children.length = 0;
     }
 
 }

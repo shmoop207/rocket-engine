@@ -4,10 +4,10 @@ import {define, singleton,inject,initMethod}  from '@appolo/inject';
 
 
 @module({})
-export class TestModule extends Module {
+export class TestLoadModule extends Module {
 
     get exports(){
-        return [Test]
+        return []
 
     }
 

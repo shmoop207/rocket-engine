@@ -18,17 +18,15 @@ export class ModuleLoader {
     protected _module: Module;
 
 
-    constructor(protected _moduleParams: IModuleParams, protected _parenInjector: Injector) {
+    constructor(protected _moduleParams: IModuleParams, protected _parenInjector: Injector, moduleOptions:IModuleOptions) {
 
-        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _moduleParams.type);
+        this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _moduleParams.type) || {};
 
         if (!this._moduleDefinition) {
             throw new Error(`failed to find moduleDefinition for ${_moduleParams.type}`)
         }
 
-        this._moduleOptions = Objects.defaults({}, _moduleParams, {
-            immediate: this._moduleDefinition?.immediate,
-            parallel: this._moduleDefinition?.parallel
+        this._moduleOptions = Objects.defaults({}, moduleOptions, {
         }, {immediate: false, parallel: false});
     }
 
@@ -136,29 +134,12 @@ export class ModuleLoader {
 
         app.injector.parent = parent;
 
-        app.parent = parent.get<App>('app');
+        app.tree.parent = parent.get<App>('app');
 
         app.register(this._moduleParams.type)
 
         return app;
     }
-
-    // private async _loadInnerModules(app: IApp, moduleDefinition: IModuleDefinition) {
-    //
-    //     if (!moduleDefinition.modules) {
-    //         return;
-    //     }
-    //
-    //     for (let module of moduleDefinition.modules) {
-    //         let moduleInstance = module instanceof Module ? module : new (module as typeof Module);
-    //
-    //         let moduleLoader = new ModuleLoader(moduleInstance, app.injector);
-    //
-    //         moduleLoader.preInitialize();
-    //
-    //         await moduleLoader.initialize();
-    //     }
-    // }
 
     private _handleExports(app: IApp) {
 
@@ -193,8 +174,8 @@ export class ModuleLoader {
                 injector: app.injector
             };
 
-            (this._module.app.eventModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
-            (this._module.app.parent.eventModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
+            (this._module.app.events.moduleExport as Event<EventModuleExport>).fireEvent(eventDto);
+            (this._module.app.tree.parent.events.moduleExport as Event<EventModuleExport>).fireEvent(eventDto);
 
         });
 
@@ -203,7 +184,7 @@ export class ModuleLoader {
 
     private _handleFileExport() {
         this._module.fileExports.forEach(fn => {
-            (this._module.app.parent as App).discovery.add({path: "", fn, define: InjectUtil.getClassDefinition(fn)})
+            (this._module.app.tree.parent as App).discovery.add({path: "", fn, define: InjectUtil.getClassDefinition(fn)})
         })
     }
 

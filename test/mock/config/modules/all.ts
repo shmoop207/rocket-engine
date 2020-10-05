@@ -13,32 +13,36 @@ import {DbModule} from "./db/dbModule";
 import {NestedModule} from "./nested/nestedModule";
 import {ValidateModule} from "./validate/validateModule";
 import {BaseModuleClassModule} from "./baseClass/baseModuleClassModule";
+import {TestLoadModule} from "./testLoad/testLoadModule";
+import {Modules} from "../../../../lib/modules/modules";
 
-export = async function (env: IEnv, app: App) {
-    await app.module(logger);
-    await app.module(logger2({test: 'test2'}));
-    await app.modules(logger3({test: 'test3'}), logger4({test: 'test4'}));
+export = async function (env: IEnv, app: App,modules:Modules) {
+    await modules.loadFn(logger);
+    await modules.loadFn(logger2({test: 'test2'}));
+    await modules.loadFn(logger3({test: 'test3'}), logger4({test: 'test4'}));
+    await modules.loadFn(logger5({test: 'test5'}));
+    await modules.loadFn(logger6({test: 'test6'}));
+    await app.modules.loadFn(logger7({test: 'test7'}));
 
-    await app.module(logger5({test: 'test5'}));
+    await app.modules.load(TestLoadModule);
 
-    await app.module(logger6({test: 'test6'}));
-    await app.module(logger7({test: 'test7'}));
+    if(env.testLoadModule){
+        app.modules.use(TestModule).use(ValidateModule).use(BaseModuleClassModule);
 
-    await app.module(TestModule);
-    await app.module(ValidateModule);
-    await app.module(BaseModuleClassModule);
-    await app.modules(
+    }
+
+    app.modules.use(
         DelayModule.for({delay: 11, testModule: env.test}),
-        [DelayModule,{
+        DelayModule.for({
             delay: 1,
             testModule: env.test,
             id: "delay2"
-        }]);
+        }));
 
 
-    await app.module(DbModule.for({id: "dbMock"}));
+    app.modules.use(DbModule.for({id: "dbMock"}));
 
-    await app.module(NestedModule.for({
+    app.modules.use(NestedModule.for({
         delay: 1,
         testModule: env.test,
     }));

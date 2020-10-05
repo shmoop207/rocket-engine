@@ -16,7 +16,7 @@ let ValidateModule = class ValidateModule extends index_1.Module {
     }
 };
 ValidateModule = tslib_1.__decorate([
-    index_1.module({ immediate: true })
+    index_1.module({})
 ], ValidateModule);
 exports.ValidateModule = ValidateModule;
 //# sourceMappingURL=validateModule.js.map

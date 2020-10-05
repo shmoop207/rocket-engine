@@ -40,7 +40,7 @@ export class DbModule extends Module {
 
     public afterLaunch() {
 
-        let isFound = this.app.parent.discovery.findByType(NestedProvider);
+        let isFound = this.app.tree.parent.discovery.findByType(NestedProvider);
 
         this.dbManager.isFoundExportedFile = !!isFound && !!this.dbManager.db;
     }

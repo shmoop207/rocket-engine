@@ -3,6 +3,6 @@ import {App} from "../../../../../../../lib/app";
 import {DbModule} from "../../../db/dbModule";
 
 export = async function (env: IEnv, app: App) {
-    await app.module( DbModule.for({id: "dbMock2"}));
+     app.modules.use( DbModule.for({id: "dbMock2"}));
 
 }

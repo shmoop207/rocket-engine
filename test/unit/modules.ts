@@ -78,12 +78,12 @@ describe('modules', function () {
     });
 
     it("should get modules by index",function () {
-        app.getModuleAt(2).constructor.name.should.be.eq("BaseModuleClassModule")
+        app.modules.moduleAt(2).constructor.name.should.be.eq("BaseModuleClassModule")
     })
 
 
     it("should get modules by type",function () {
-       let modules =  app.getModuleByType(DelayModule)
+       let modules =  app.modules.modulesByType(DelayModule)
 
         modules.length.should.be.eq(2)
 

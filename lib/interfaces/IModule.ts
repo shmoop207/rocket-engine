@@ -15,8 +15,8 @@ export interface IModuleDefinition {
     imports?: ModuleTypes
     modules?: ModuleArg[]
     root?: string
-    immediate?: boolean
-    parallel?: boolean
+    // immediate?: boolean
+    // parallel?: boolean
 
 }
 
@@ -39,19 +39,10 @@ export interface IModuleCrt {
 
 export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
 
-interface IModuleParams1 extends IModuleOptions {
+export interface IModuleParams {
     type: IModuleCrt,
-    fn?: ModuleFunction,
     config?: any
 }
 
-interface IModuleParams2 extends IModuleOptions {
-    type?: IModuleCrt,
-    fn: ModuleFunction,
-    config?: any
-}
-
-export type IModuleParams = IModuleParams1 | IModuleParams2
-
-export type ModuleArg = ModuleFunction | IModuleParams | IModuleCrt
+export type ModuleArg =   IModuleParams | IModuleCrt
 

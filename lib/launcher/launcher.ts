@@ -5,7 +5,7 @@ import {IBootstrap} from "../interfaces/IBootstrap";
 import {IEnv} from "../interfaces/IEnv";
 import {Event} from "@appolo/events";
 import {FilesLoader} from "../loader/filesLoader";
-import {ModuleManager} from "../modules/modules";
+import {ModulesManager} from "../modules/modulesManager";
 import {IClass, IExported, IModuleOptions} from "../interfaces/IModule";
 import {App} from "../app";
 import {BootstrapSymbol} from "../decoretors/bootstrapDecorator";
@@ -25,7 +25,7 @@ export class Launcher {
     protected _options: IOptions;
     protected _env: IEnv;
     protected _injector: Injector;
-    protected _moduleManager: ModuleManager;
+    protected _moduleManager: ModulesManager;
     protected _pipelineManager: PipelineManager;
     protected _app: App;
     private _isInitialized: boolean = false;
@@ -97,8 +97,8 @@ export class Launcher {
         return this._injector;
     }
 
-    public createModuleManager(): ModuleManager {
-        this._moduleManager = new ModuleManager(this._options, this._injector);
+    public createModuleManager(): ModulesManager {
+        this._moduleManager = new ModulesManager(this._options, this._injector);
         return this._moduleManager
     }
 
@@ -128,7 +128,7 @@ export class Launcher {
 
         this._handlePipeLines();
 
-        if (this._app.parent && !this._moduleOptions.immediate) {
+        if (this._app.tree.parent && !this._moduleOptions.immediate) {
             return;
         }
 
@@ -145,7 +145,7 @@ export class Launcher {
         if (this._isInitialized) {
             return;
         }
-        for (let app of this._app.children) {
+        for (let app of this._app.tree.children) {
             await (app as App).launcher.initStaticModules()
         }
         await this._moduleManager.loadStaticModules();
@@ -155,23 +155,23 @@ export class Launcher {
         if (this._isInitialized) {
             return;
         }
-        for (let app of this._app.children) {
+        for (let app of this._app.tree.children) {
             await (app as App).launcher.initDynamicModules();
 
         }
 
-        (this._app.eventBeforeModulesLoad as Event<void>).fireEvent();
+        await (this._app.events.beforeModulesLoad as Event<void>).fireEvent();
 
         await this._moduleManager.loadDynamicModules();
 
-        (this._app.eventModulesLoaded as Event<void>).fireEvent();
+        await (this._app.events.modulesLoaded as Event<void>).fireEvent();
     }
 
     protected async initAfterInjectDynamicModules() {
         if (this._isInitialized) {
             return;
         }
-        for (let app of this._app.children) {
+        for (let app of this._app.tree.children) {
             await (app as App).launcher.initAfterInjectDynamicModules();
 
         }
@@ -185,18 +185,18 @@ export class Launcher {
             return;
         }
 
-        this._injector.instanceOwnInitializedEvent.on(this._onInstanceCreated, this);
+        this._injector.events.instanceOwnInitialized.on(this._onInstanceCreated, this);
 
-        await Util.runRegroupByParallel<IApp>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initInjector());
+        await Util.runRegroupByParallel<IApp>(this._app.tree.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initInjector());
 
-        (this._app.eventBeforeInjectorInit as Event<void>).fireEvent();
+        await (this._app.events.beforeInjectorInit as Event<void>).fireEvent();
 
         await this._injector.initialize({
             immediate: this._moduleOptions.immediate,
             parallel: this._moduleOptions.parallel
         });
 
-        (this._app.eventInjectorInit as Event<void>).fireEvent();
+        await (this._app.events.injectorInit as Event<void>).fireEvent();
 
     }
 
@@ -209,14 +209,14 @@ export class Launcher {
             return;
         }
 
-        await (this._app.eventBeforeBootstrap as Event<void>).fireEventAsync();
+        await (this._app.events.beforeBootstrap as Event<void>).fireEventAsync();
 
-        await Util.runRegroupByParallel<IApp>(this._app.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initBootStrap());
+        await Util.runRegroupByParallel<IApp>(this._app.tree.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initBootStrap());
 
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 
         if (!bootstrapDef) {
-            await (this._app.eventBootstrap as Event<void>).fireEventAsync();
+            await (this._app.events.bootstrap as Event<void>).fireEventAsync();
 
             return Promise.resolve();
         }
@@ -226,7 +226,7 @@ export class Launcher {
 
         await bootstrap.run();
 
-        await (this._app.eventBootstrap as Event<void>).fireEventAsync();
+        await (this._app.events.bootstrap as Event<void>).fireEventAsync();
 
         this._isInitialized = true;
     }
@@ -238,7 +238,7 @@ export class Launcher {
             return;
         }
 
-        await Promises.map(this._app.children, app => (app as App).launcher._initFiles())
+        await Promises.map(this._app.tree.children, app => (app as App).launcher._initFiles())
 
         let loadPaths = (this._options.paths || []).concat(this._env.paths || []);
 
@@ -275,7 +275,7 @@ export class Launcher {
         let define: Define = null;
 
         if (hasDefine) {
-            (this._app.eventsBeforeInjectRegister as Event<EventBeforeInjectRegister>).fireEvent({type: fn, filePath});
+            (this._app.events.beforeInjectRegister as Event<EventBeforeInjectRegister>).fireEvent({type: fn, filePath});
             define = this._injector.register(fn as IClass, null, filePath);
             this._files.push(filePath);
         }
@@ -286,7 +286,7 @@ export class Launcher {
             define
         });
 
-        (this._app.eventsEventClassExport as Event<EventClassExport>).fireEvent({type: fn, filePath});
+        (this._app.events.classExport as Event<EventClassExport>).fireEvent({type: fn, filePath});
 
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
@@ -307,7 +307,7 @@ export class Launcher {
             if (item.define) {
                 this._pipelineManager.overrideKlassType(item.fn, item.define.definition);
                 this._pipelineManager.overrideKlassMethods(item.fn, item.define.definition);
-                (this._app.eventsInjectRegister as Event<EventInjectRegister>).fireEvent({
+                (this._app.events.injectRegister as Event<EventInjectRegister>).fireEvent({
                     type: item.fn,
                     filePath: item.path,
                     definition: item.define.definition

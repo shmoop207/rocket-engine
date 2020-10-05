@@ -52,10 +52,10 @@ describe('modules', function () {
         test.name.should.be.eq("working");
     });
     it("should get modules by index", function () {
-        app.getModuleAt(2).constructor.name.should.be.eq("BaseModuleClassModule");
+        app.modules.moduleAt(2).constructor.name.should.be.eq("BaseModuleClassModule");
     });
     it("should get modules by type", function () {
-        let modules = app.getModuleByType(delayModule_1.DelayModule);
+        let modules = app.modules.modulesByType(delayModule_1.DelayModule);
         modules.length.should.be.eq(2);
         modules[0].constructor.name.should.be.eq("DelayModule");
         modules[0].app.injector.should.be.ok;
