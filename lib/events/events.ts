@@ -9,8 +9,9 @@ import {
 import {IApp} from "../interfaces/IApp";
 
 export class Events {
-    constructor(private _app:IApp) {
+    constructor(protected _app: IApp) {
     }
+
     public readonly onModuleExport: IEvent<EventModuleExport> = new Event();
     public readonly beforeModuleInitialize: IEvent<EventBeforeModuleInit> = new Event();
     public readonly afterModuleInitialize: IEvent<EventModuleInit> = new Event();
