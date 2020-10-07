@@ -1,5 +1,5 @@
-import {IEnv} from "../../../../../../lib/interfaces/IEnv";
 import {define, singleton,inject,init}  from '@appolo/inject';
+import {IEnv} from "../../../env/IEnv";
 
 @define()
 @singleton()

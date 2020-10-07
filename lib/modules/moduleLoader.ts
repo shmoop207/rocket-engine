@@ -9,7 +9,7 @@ import {IModuleDefinition, IModuleOptions, IModuleParams} from "../interfaces/IM
 import {Util as InjectUtil} from "@appolo/inject";
 import {Event} from "@appolo/events";
 import {Util} from "../util/util";
-import {EventModuleExport} from "../interfaces/events";
+import {EventModuleExport} from "../interfaces/IEvents";
 
 export class ModuleLoader {
 

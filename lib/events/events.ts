@@ -1,14 +1,15 @@
 import {Event, IEvent} from "@appolo/events";
-import {Injector} from "@appolo/inject";
+
+import {IApp} from "../interfaces/IApp";
 import {
     EventBeforeInjectRegister,
     EventBeforeModuleInit, EventClassExport, EventInjectRegister,
     EventModuleExport,
-    EventModuleInit
-} from "../interfaces/events";
-import {IApp} from "../interfaces/IApp";
+    EventModuleInit,
+    IEvents
+} from "../interfaces/IEvents";
 
-export class Events {
+export class Events implements IEvents {
     constructor(protected _app: IApp) {
     }
 
@@ -45,4 +46,14 @@ export class Events {
     public get onInstanceCreated() {
         return this._app.injector.events.instanceCreated;
     }
+
+    public get beforeInjectInitMethods() {
+        return this._app.injector.events.beforeInitMethods;
+    }
+
+    public get beforeInjectBootstrapMethods() {
+        return this._app.injector.events.beforeBootstrapMethods;
+    }
 }
+
+

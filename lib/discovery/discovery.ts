@@ -5,8 +5,9 @@ import {Reflector, Arrays} from "@appolo/utils";
 import {Define} from "@appolo/inject";
 import {Util} from "@appolo/inject";
 import {InjectDefineSymbol} from "@appolo/inject/index";
+import {IDiscovery} from "../interfaces/IDiscovery";
 
-export class Discovery {
+export class Discovery implements IDiscovery {
 
     protected _app: IApp;
     protected _exported: IExported[];
@@ -43,7 +44,7 @@ export class Discovery {
 
     public findReflectData<T>(symbol: Symbol | string): IExported & { metaData: T } {
 
-        let item = Reflector.findReflectData<T,IExported>(symbol, this._exported)
+        let item = Reflector.findReflectData<T, IExported>(symbol, this._exported)
 
         if (item && item.define && this._app.injector.hasInstance(item.define.id)) {
             item.instance = this._app.injector.getInstance(item.define.id);
@@ -54,9 +55,9 @@ export class Discovery {
 
     public findAllReflectData<T>(symbol: Symbol | string): (IExported & { metaData: T })[] {
 
-        let items =  Reflector.findAllReflectData<T,IExported>(symbol, this._exported);
+        let items = Reflector.findAllReflectData<T, IExported>(symbol, this._exported);
 
-        items.forEach(item=>{
+        items.forEach(item => {
             if (item.define && this._app.injector.hasInstance(item.define.id)) {
                 item.instance = this._app.injector.getInstance(item.define.id);
             }
@@ -127,4 +128,7 @@ export class Discovery {
     public reset() {
         this._exported = [];
     }
+
+
 }
+

@@ -12,6 +12,6 @@ export default async function (env,inject) {
 
     inject.addObject('logger',logger);
 
-    await  Promises.delay( 100)
+    await  Promises.delay( 1)
 
 }

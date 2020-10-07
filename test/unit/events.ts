@@ -2,13 +2,7 @@ import sinon = require('sinon');
 import sinonChai = require('sinon-chai');
 import chai = require('chai');
 import {App, createApp} from "../../index";
-import {Event, IEvent} from "@appolo/events/index";
-import {
-    EventBeforeInjectRegister,
-    EventBeforeModuleInit, EventClassExport, EventInjectRegister,
-    EventModuleExport,
-    EventModuleInit
-} from "../../lib/interfaces/events";
+
 
 chai.use(sinonChai);
 let should = chai.should();

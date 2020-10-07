@@ -25,7 +25,7 @@ module.exports = async function (env, app, modules) {
     if (env.testLoadModule) {
         app.modules.use(testModule_1.TestModule).use(validateModule_1.ValidateModule).use(baseModuleClassModule_1.BaseModuleClassModule);
     }
-    app.modules.use(test3Module_1.Test3Module, delayModule_1.DelayModule.for({ delay: 11, testModule: env.test }), delayModule_1.DelayModule.for({
+    app.modules.use(test3Module_1.Test3Module, delayModule_1.DelayModule.for({ delay: 12, testModule: env.test }), delayModule_1.DelayModule.for({
         delay: 1,
         testModule: env.test,
         id: "delay2"

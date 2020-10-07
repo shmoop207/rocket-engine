@@ -17,8 +17,7 @@ import {Objects, Classes, Promises} from '@appolo/utils';
 import {PipelineManager} from "../pipelines/pipelineManager";
 import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/propertyDecorators";
 import {Util} from "@appolo/inject";
-import {EventBeforeInjectRegister, EventClassExport, EventInjectRegister} from "../interfaces/events";
-import {Module} from "../modules/module";
+import {EventBeforeInjectRegister, EventClassExport, EventInjectRegister} from "../interfaces/IEvents";
 
 export class Launcher {
 
@@ -158,37 +157,9 @@ export class Launcher {
 
         }
 
-
-
         await this._moduleManager.loadDynamicModules();
 
     }
-    //
-    // protected async beforeBootstrapDynamicModules() {
-    //     if (this._isInitialized) {
-    //         return;
-    //     }
-    //     for (let app of this._app.tree.children) {
-    //         await (app as App).launcher.beforeBootstrapDynamicModules();
-    //
-    //     }
-    //
-    //     await this._moduleManager.beforeBootstrap();
-    //
-    // }
-
-    // protected async afterInitializeDynamicModules() {
-    //     if (this._isInitialized) {
-    //         return;
-    //     }
-    //     for (let app of this._app.tree.children) {
-    //         await (app as App).launcher.afterInitializeDynamicModules();
-    //
-    //     }
-    //
-    //     //await this._moduleManager.afterAppInitialize();
-    //
-    // }
 
     protected async initInjector() {
         if (this._isInitialized) {

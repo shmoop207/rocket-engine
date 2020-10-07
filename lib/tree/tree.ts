@@ -1,8 +1,9 @@
 import {IApp} from "../interfaces/IApp";
 import {Util} from "../util/util";
 import {Arrays} from "@appolo/utils";
+import {ITree} from "../interfaces/ITree";
 
-export class Tree {
+export class Tree implements ITree {
 
 
     constructor(private _app: IApp) {
@@ -62,3 +63,4 @@ export class Tree {
 
     }
 }
+

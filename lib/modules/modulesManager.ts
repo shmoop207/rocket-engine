@@ -13,7 +13,7 @@ import {ModuleLoader} from "./moduleLoader";
 import {Util as InjectUtil} from "@appolo/inject";
 import {Util} from "../util/util";
 import {IApp} from "../interfaces/IApp";
-import {EventBeforeModuleInit, EventModuleInit} from "../interfaces/events";
+import {EventBeforeModuleInit, EventModuleInit} from "../interfaces/IEvents";
 
 
 export class ModulesManager {
@@ -41,17 +41,6 @@ export class ModulesManager {
 
     }
 
-    // public async beforeBootstrap() {
-    //
-    //
-    //     await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, loader => loader.module.afterAppLaunch());
-    // }
-    //
-    // public async afterAppInitialize() {
-    //
-    //
-    //     await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, loader => loader.module.afterAppInitialize());
-    // }
 
     private async _loadModule(module: ModuleLoader) {
         await (this._injector.get<IApp>(App).events.beforeModuleInitialize as Event<EventBeforeModuleInit>).fireEventAsync({module: module.module});

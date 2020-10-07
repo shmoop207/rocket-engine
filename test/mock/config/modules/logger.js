@@ -8,7 +8,7 @@ async function default_1(env, inject) {
         }
     };
     inject.addObject('logger', logger);
-    await utils_1.Promises.delay(100);
+    await utils_1.Promises.delay(1);
 }
 exports.default = default_1;
 //# sourceMappingURL=logger.js.map

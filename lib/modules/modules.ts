@@ -3,8 +3,9 @@ import {ModulesManager} from "./modulesManager";
 import {Module} from "./module";
 import {IModuleCrt, IModuleOptions, ModuleArg, ModuleFunction} from "../interfaces/IModule";
 import {Promises} from "@appolo/utils/index";
+import {IModules} from "../interfaces/IModules";
 
-export class Modules {
+export class Modules implements IModules {
     constructor(private _app: IApp, private _modulesManager: ModulesManager) {
     }
 
@@ -39,3 +40,4 @@ export class Modules {
         return modules;
     }
 }
+

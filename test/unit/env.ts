@@ -1,5 +1,6 @@
-import {App, createApp} from '../../index';
+import {App} from '../../index';
 import chai = require('chai')
+import {IEnv} from "../mock/config/env/IEnv";
 
 let should = chai.should();
 
@@ -21,9 +22,9 @@ describe('environments', function () {
         });
         await app.launch();
 
-        should.exist(app.env.test);
+        should.exist((app.env as IEnv).test);
 
-        app.env.test.should.be.equal("testDev");
+        (app.env as IEnv).test.should.be.equal("testDev");
         app.env.type.should.be.equal("development")
     });
 
@@ -35,9 +36,9 @@ describe('environments', function () {
             environment: 'production'
         }).launch();
 
-        should.exist(app.env.test);
+        should.exist((app.env as IEnv).test);
 
-        app.env.test.should.be.equal("testProd");
+        (app.env as IEnv).test.should.be.equal("testProd");
 
         app.env.type.should.be.equal("production")
 
@@ -51,14 +52,14 @@ describe('environments', function () {
             root: process.cwd() + '/test/mock'
         }).launch();
 
-        app.env.test.should.be.equal("testDev");
+        (app.env as IEnv).test.should.be.equal("testDev");
 
-        should.exist(app.env.deep);
+        should.exist((app.env as IEnv).deep);
 
-        app.env.deep.test.should.be.equal("working");
+        (app.env as IEnv).deep.test.should.be.equal("working");
 
-        app.env.deep.test2.should.be.equal("devWorking2");
-        app.env.deep.test3.should.be.equal("working3");
+        (app.env as IEnv).deep.test2.should.be.equal("devWorking2");
+        (app.env as IEnv).deep.test3.should.be.equal("working3");
 
     })
 

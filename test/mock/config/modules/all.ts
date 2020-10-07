@@ -6,16 +6,15 @@ import logger5 from './logger5';
 import logger6 from './logger6';
 import logger7 from './logger7';
 import {TestModule} from './test/testModule';
-import {IEnv} from "../../../../lib/interfaces/IEnv";
-import {App} from "../../../../lib/app";
 import {DelayModule} from "./delay/delayModule";
 import {DbModule} from "./db/dbModule";
 import {NestedModule} from "./nested/nestedModule";
 import {ValidateModule} from "./validate/validateModule";
 import {BaseModuleClassModule} from "./baseClass/baseModuleClassModule";
 import {TestLoadModule} from "./testLoad/testLoadModule";
-import {Modules} from "../../../../lib/modules/modules";
 import {Test3Module} from "./test3/test3Module";
+import {IEnv} from "../env/IEnv";
+import {App,Modules} from "../../../../index";
 
 export = async function (env: IEnv, app: App,modules:Modules) {
     await modules.loadFn(logger);
@@ -33,7 +32,7 @@ export = async function (env: IEnv, app: App,modules:Modules) {
     }
 
     app.modules.use(Test3Module,
-        DelayModule.for({delay: 11, testModule: env.test}),
+        DelayModule.for({delay: 12, testModule: env.test}),
         DelayModule.for({
             delay: 1,
             testModule: env.test,
