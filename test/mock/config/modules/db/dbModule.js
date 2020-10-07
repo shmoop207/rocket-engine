@@ -20,18 +20,18 @@ let DbModule = class DbModule extends index_1.Module {
     get imports() {
         return [{ id: "env", type: 'env2' }];
     }
-    afterInitialize() {
+    afterAppInitialize() {
     }
     async onInjectInitialize() {
         this.dbManager.onInitCalled = true;
     }
-    afterLaunch() {
+    async afterAppLaunch() {
         let isFound = this.app.tree.parent.discovery.findByType(nestedProvider_1.NestedProvider);
         this.dbManager.isFoundExportedFile = !!isFound && !!this.dbManager.db;
     }
 };
 tslib_1.__decorate([
-    inject_1.injectLazy(),
+    inject_1.lazy(),
     tslib_1.__metadata("design:type", dbManager_1.DbManager)
 ], DbModule.prototype, "dbManager", void 0);
 DbModule = tslib_1.__decorate([

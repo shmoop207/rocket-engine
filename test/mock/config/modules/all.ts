@@ -15,6 +15,7 @@ import {ValidateModule} from "./validate/validateModule";
 import {BaseModuleClassModule} from "./baseClass/baseModuleClassModule";
 import {TestLoadModule} from "./testLoad/testLoadModule";
 import {Modules} from "../../../../lib/modules/modules";
+import {Test3Module} from "./test3/test3Module";
 
 export = async function (env: IEnv, app: App,modules:Modules) {
     await modules.loadFn(logger);
@@ -31,7 +32,7 @@ export = async function (env: IEnv, app: App,modules:Modules) {
 
     }
 
-    app.modules.use(
+    app.modules.use(Test3Module,
         DelayModule.for({delay: 11, testModule: env.test}),
         DelayModule.for({
             delay: 1,

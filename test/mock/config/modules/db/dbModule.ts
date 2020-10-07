@@ -3,14 +3,14 @@ import {DbFactory} from "./src/dbFactory";
 import {DbManager} from "./src/dbManager";
 import {NestedProvider} from "../nested/src/nestedProvider";
 import {IModuleParams} from "../../../../../lib/interfaces/IModule";
-import {define, singleton,inject,initMethod,IFactory,factory,injectLazy}  from '@appolo/inject';
+import {define, singleton,inject,init,IFactory,factory,lazy}  from '@appolo/inject';
 
 
 @module()
 export class DbModule extends Module {
 
 
-    @injectLazy() dbManager: DbManager
+    @lazy() dbManager: DbManager
 
     public static for(config: { id: string }, options: IModuleOptions = {}) {
         return super.for(config,options)
@@ -28,7 +28,7 @@ export class DbModule extends Module {
         return [{id: "env", type: 'env2'}]
     }
 
-    public afterInitialize() {
+    public afterAppInitialize() {
 
 
 
@@ -38,7 +38,7 @@ export class DbModule extends Module {
         this.dbManager.onInitCalled = true;
     }
 
-    public afterLaunch() {
+    public async afterAppLaunch() {
 
         let isFound = this.app.tree.parent.discovery.findByType(NestedProvider);
 

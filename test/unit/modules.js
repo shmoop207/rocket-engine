@@ -4,6 +4,7 @@ const chai = require("chai");
 const index_1 = require("../../index");
 const bootstrap_1 = require("../mock/src/bootstrap");
 const delayModule_1 = require("../mock/config/modules/delay/delayModule");
+const test3Module_1 = require("../mock/config/modules/test3/test3Module");
 let should = chai.should();
 describe('modules', function () {
     let app;
@@ -82,6 +83,10 @@ describe('modules', function () {
         let dbManager = app.injector.getObject("dbMockDbManager");
         dbManager.isFoundExportedFile.should.be.ok;
         dbManager.onInitCalled.should.be.ok;
+    });
+    it('should call module functions by order', function () {
+        let module = app.modules.modulesByType(test3Module_1.Test3Module);
+        module[0].order.should.be.deep.equals(["beforeAppInitialize", "beforeModuleInitialize", "beforeModuleLaunch", "onInjectInitialize", "onInjectBootstrap", "afterModuleInitialize", "afterAppInitialize", "afterModuleLaunch", "afterAppLaunch"]);
     });
 });
 //# sourceMappingURL=modules.js.map

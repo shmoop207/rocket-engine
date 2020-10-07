@@ -33,21 +33,32 @@ export class ModulesManager {
             this._modules[i].preInitialize();
         }
 
+        await (this._injector.get<IApp>(App).events.beforeModulesLoad as Event<void>).fireEventAsync();
+
         await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => this._loadModule(module));
+
+        await (this._injector.get<IApp>(App).events.afterModulesLoaded as Event<void>).fireEventAsync();
+
     }
 
-    public async initAfterInjectDynamicModules() {
-
-
-        await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => module.afterLaunch());
-    }
+    // public async beforeBootstrap() {
+    //
+    //
+    //     await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, loader => loader.module.afterAppLaunch());
+    // }
+    //
+    // public async afterAppInitialize() {
+    //
+    //
+    //     await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, loader => loader.module.afterAppInitialize());
+    // }
 
     private async _loadModule(module: ModuleLoader) {
-        await (this._injector.get<IApp>(App).events.beforeModuleInit as Event<EventBeforeModuleInit>).fireEvent({module: module.module});
+        await (this._injector.get<IApp>(App).events.beforeModuleInitialize as Event<EventBeforeModuleInit>).fireEventAsync({module: module.module});
 
         await module.initialize();
 
-        await (this._injector.get<App>(App).events.moduleInit as Event<EventModuleInit>).fireEvent({module: module.module});
+        await (this._injector.get<App>(App).events.afterModuleInitialize as Event<EventModuleInit>).fireEventAsync({module: module.module});
     }
 
 

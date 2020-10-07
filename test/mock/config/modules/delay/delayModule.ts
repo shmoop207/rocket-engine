@@ -23,10 +23,10 @@ export class DelayModule extends Module<IOptions> {
 
     }
 
-    public beforeLaunch() {
+    public beforeModuleLaunch() {
         let isExists = !!this._app.tree.parent.discovery.findByType(Bootstrap)
 
-        this.app.tree.parent.events.injectRegister.on(payload => {
+        this.app.tree.parent.events.afterInjectRegister.on(payload => {
             if (payload.type ==  Bootstrap && isExists && !this._app.tree.parent.injector.getInstance("exportedClassEvent")) {
 
                 this._app.tree.parent.injector.addInstance("exportedClassEvent", true)

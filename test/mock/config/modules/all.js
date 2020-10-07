@@ -13,6 +13,7 @@ const nestedModule_1 = require("./nested/nestedModule");
 const validateModule_1 = require("./validate/validateModule");
 const baseModuleClassModule_1 = require("./baseClass/baseModuleClassModule");
 const testLoadModule_1 = require("./testLoad/testLoadModule");
+const test3Module_1 = require("./test3/test3Module");
 module.exports = async function (env, app, modules) {
     await modules.loadFn(logger_1.default);
     await modules.loadFn(logger2_1.default({ test: 'test2' }));
@@ -24,7 +25,7 @@ module.exports = async function (env, app, modules) {
     if (env.testLoadModule) {
         app.modules.use(testModule_1.TestModule).use(validateModule_1.ValidateModule).use(baseModuleClassModule_1.BaseModuleClassModule);
     }
-    app.modules.use(delayModule_1.DelayModule.for({ delay: 11, testModule: env.test }), delayModule_1.DelayModule.for({
+    app.modules.use(test3Module_1.Test3Module, delayModule_1.DelayModule.for({ delay: 11, testModule: env.test }), delayModule_1.DelayModule.for({
         delay: 1,
         testModule: env.test,
         id: "delay2"

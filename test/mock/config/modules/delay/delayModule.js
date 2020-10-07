@@ -14,9 +14,9 @@ let DelayModule = DelayModule_1 = class DelayModule extends index_1.Module {
     get exports() {
         return [{ id: this.moduleOptions.id || "delay", type: delay_1.Delay }];
     }
-    beforeLaunch() {
+    beforeModuleLaunch() {
         let isExists = !!this._app.tree.parent.discovery.findByType(bootstrap_1.Bootstrap);
-        this.app.tree.parent.events.injectRegister.on(payload => {
+        this.app.tree.parent.events.afterInjectRegister.on(payload => {
             if (payload.type == bootstrap_1.Bootstrap && isExists && !this._app.tree.parent.injector.getInstance("exportedClassEvent")) {
                 this._app.tree.parent.injector.addInstance("exportedClassEvent", true);
             }

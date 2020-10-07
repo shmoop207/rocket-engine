@@ -1,6 +1,6 @@
 import { module, Module} from '../../../../../index';
 import {Test} from "./src/test";
-import {define, singleton,inject,initMethod}  from '@appolo/inject';
+import {define, singleton,inject,init}  from '@appolo/inject';
 
 
 @module({})

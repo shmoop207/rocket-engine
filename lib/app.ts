@@ -119,7 +119,7 @@ export class App implements IApp {
 
         this._injector.reset();
 
-        await (this.events.reset as Event<void>).fireEventAsync();
+        await (this.events.afterReset as Event<void>).fireEventAsync();
 
         this._tree.parent = null;
 

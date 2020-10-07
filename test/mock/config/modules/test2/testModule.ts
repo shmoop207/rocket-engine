@@ -1,6 +1,6 @@
 import { module, Module} from '../../../../../index';
 import {Test2} from "./src/test";
-import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 
 
 @module({exports:[Test2]})

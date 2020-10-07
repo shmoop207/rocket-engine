@@ -40,7 +40,7 @@ export class Launcher {
         paths: ['src'],
         root: process.cwd(),
         environment: (process.env.NODE_ENV || 'development'),
-        bootStrapClassId: 'appolo-bootstrap'
+        bootStrapClassId: 'appolo-afterBootstrap'
     };
 
 
@@ -134,8 +134,6 @@ export class Launcher {
 
         await this.initInjector();
 
-        await this.initAfterInjectDynamicModules();
-
         await this.initBootStrap();
 
         this._isInitialized = true;
@@ -160,43 +158,56 @@ export class Launcher {
 
         }
 
-        await (this._app.events.beforeModulesLoad as Event<void>).fireEvent();
+
 
         await this._moduleManager.loadDynamicModules();
 
-        await (this._app.events.modulesLoaded as Event<void>).fireEvent();
     }
+    //
+    // protected async beforeBootstrapDynamicModules() {
+    //     if (this._isInitialized) {
+    //         return;
+    //     }
+    //     for (let app of this._app.tree.children) {
+    //         await (app as App).launcher.beforeBootstrapDynamicModules();
+    //
+    //     }
+    //
+    //     await this._moduleManager.beforeBootstrap();
+    //
+    // }
 
-    protected async initAfterInjectDynamicModules() {
-        if (this._isInitialized) {
-            return;
-        }
-        for (let app of this._app.tree.children) {
-            await (app as App).launcher.initAfterInjectDynamicModules();
-
-        }
-
-        await this._moduleManager.initAfterInjectDynamicModules();
-
-    }
+    // protected async afterInitializeDynamicModules() {
+    //     if (this._isInitialized) {
+    //         return;
+    //     }
+    //     for (let app of this._app.tree.children) {
+    //         await (app as App).launcher.afterInitializeDynamicModules();
+    //
+    //     }
+    //
+    //     //await this._moduleManager.afterAppInitialize();
+    //
+    // }
 
     protected async initInjector() {
         if (this._isInitialized) {
             return;
         }
 
-        this._injector.events.instanceOwnInitialized.on(this._onInstanceCreated, this);
+        this._injector.events.instanceOwnCreated.on(this._onInstanceCreated, this);
 
         await Util.runRegroupByParallel<IApp>(this._app.tree.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initInjector());
 
-        await (this._app.events.beforeInjectorInit as Event<void>).fireEvent();
+        await (this._app.events.beforeInjectorInitialize as Event<void>).fireEventAsync();
+
+        this._injector.events.afterInitialize.on(()=> (this._app.events.afterInjectorInitialize as Event<void>).fireEventAsync(),this,{await:true});
+
 
         await this._injector.initialize({
             immediate: this._moduleOptions.immediate,
             parallel: this._moduleOptions.parallel
         });
-
-        await (this._app.events.injectorInit as Event<void>).fireEvent();
 
     }
 
@@ -216,7 +227,7 @@ export class Launcher {
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 
         if (!bootstrapDef) {
-            await (this._app.events.bootstrap as Event<void>).fireEventAsync();
+            await (this._app.events.afterBootstrap as Event<void>).fireEventAsync();
 
             return Promise.resolve();
         }
@@ -226,9 +237,12 @@ export class Launcher {
 
         await bootstrap.run();
 
-        await (this._app.events.bootstrap as Event<void>).fireEventAsync();
+        await (this._app.events.afterBootstrap as Event<void>).fireEventAsync();
 
         this._isInitialized = true;
+
+        await (this._app.events.afterLaunch as Event<void>).fireEventAsync();
+
     }
 
 
@@ -286,7 +300,7 @@ export class Launcher {
             define
         });
 
-        (this._app.events.classExport as Event<EventClassExport>).fireEvent({type: fn, filePath});
+        (this._app.events.onClassExport as Event<EventClassExport>).fireEvent({type: fn, filePath});
 
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
@@ -307,7 +321,7 @@ export class Launcher {
             if (item.define) {
                 this._pipelineManager.overrideKlassType(item.fn, item.define.definition);
                 this._pipelineManager.overrideKlassMethods(item.fn, item.define.definition);
-                (this._app.events.injectRegister as Event<EventInjectRegister>).fireEvent({
+                (this._app.events.afterInjectRegister as Event<EventInjectRegister>).fireEvent({
                     type: item.fn,
                     filePath: item.path,
                     definition: item.define.definition

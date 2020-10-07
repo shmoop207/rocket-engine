@@ -1,12 +1,12 @@
 import {IEnv} from "../../../../../../lib/interfaces/IEnv";
-import {define, singleton,inject,initMethod}  from '@appolo/inject';
+import {define, singleton,inject,init}  from '@appolo/inject';
 
 @define()
 @singleton()
 export class Test {
 
     @inject() rootEnv:IEnv
-    @initMethod()
+    @init()
     initialize(){
         this.rootEnv.testModule = "testModule";
     }

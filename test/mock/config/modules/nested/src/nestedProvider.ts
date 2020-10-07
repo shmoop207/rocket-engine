@@ -1,5 +1,5 @@
 import {Promises} from '@appolo/utils';
-import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 
 @define()
 @singleton()

@@ -6,7 +6,7 @@ import {BeforeTest} from "./beforeTest";
 import {PipelineTest, PipelineTest2} from "./pipelineTest";
 import {validate} from "../config/modules/validate/validateModule";
 import {BaseController} from "../config/modules/baseClass/src/baseController";
-import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 
 @define()
 export class Controller extends BaseController {

@@ -1,10 +1,13 @@
 import {IApp} from "../interfaces/IApp";
+import {Util} from "../util/util";
+import {Arrays} from "@appolo/utils";
 
 export class Tree {
 
 
-    constructor(private _app:IApp) {
+    constructor(private _app: IApp) {
     }
+
     private _root: IApp;
     protected _parent: IApp;
     protected _children: IApp[] = [];
@@ -47,6 +50,13 @@ export class Tree {
     }
 
     public set parent(value: IApp) {
+
+        if (value == null) {
+            this._parent && Arrays.remove(this._parent.tree.children, this._app);
+            this._parent = null;
+            return;
+        }
+
         this._parent = value;
         value.tree.children.push(this._app);
 

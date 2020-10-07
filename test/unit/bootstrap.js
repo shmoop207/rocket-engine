@@ -17,7 +17,7 @@ describe('bootstrap', function () {
     afterEach(function () {
         app.reset();
     });
-    it('should have  call bootstrap initialize', function () {
+    it('should have  call afterBootstrap initialize', function () {
         let bootstrap = app.injector.getObject(bootstrap_1.Bootstrap);
         let exportedClassEvent = app.injector.getObject("exportedClassEvent");
         let nestedProvider = app.injector.getObject("nestedProvider");

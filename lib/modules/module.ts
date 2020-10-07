@@ -1,9 +1,11 @@
 import {createApp, IApp, IModuleOptions, IModuleParams} from "../../index"
 import {Helpers} from "../util/helpers";
-import {initMethodAsync, singleton} from "@appolo/inject";
+import {initAsync, singleton,bootstrapAsync} from "@appolo/inject";
 import {Event} from "@appolo/events";
 import {IClass, ModuleTypes} from "../interfaces/IModule";
+import milliseconds = require("mocha/lib/ms");
 
+let i=0;
 @singleton()
 export class Module<T = any> {
 
@@ -76,32 +78,52 @@ export class Module<T = any> {
         this._moduleOptions = value;
     }
 
-    public beforeInitialize() {
+    public beforeAppInitialize():any {
 
     }
 
-    public beforeLaunch() {
+    public beforeModuleInitialize():any {
 
     }
 
-    public afterInitialize() {
+    public beforeModuleLaunch() {
 
     }
 
-    public afterLaunch() {
 
-    }
 
-    @initMethodAsync()
+    @initAsync()
     public onInjectInitialize() {
 
     }
 
-    public reset() {
+    @bootstrapAsync()
+    public onInjectBootstrap() {
 
     }
 
+
+
+    public afterModuleInitialize() {
+
+    }
+
+    public afterModuleLaunch() {
+
+    }
+
+    public afterAppInitialize():any {
+
+    }
+
+    public afterAppLaunch():any {
+    }
+
     public beforeReset() {
+
+    }
+
+    public reset() {
 
     }
 

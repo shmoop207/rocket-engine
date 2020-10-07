@@ -1,7 +1,7 @@
 import {} from "../../../index";
 import {IPipelineContext} from "../../../lib/pipelines/IPipeline";
 import {PipelineContext} from "../../../lib/pipelines/pipelineContext";
-import {define, singleton,inject,initMethod}  from '@appolo/inject';
+import {define, singleton,inject,init}  from '@appolo/inject';
 
 @define()
 export class PipelineTest {

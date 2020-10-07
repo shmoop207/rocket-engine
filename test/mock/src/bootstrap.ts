@@ -3,7 +3,7 @@ import {bootstrap,  IBootstrap,} from '../../../index';
 import {Manager} from "./manager";
 import {Delay} from "../config/modules/delay/src/delay";
 import {DbManager} from "../config/modules/db/src/dbManager";
-import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 
 @define()
 @singleton()

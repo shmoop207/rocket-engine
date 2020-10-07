@@ -33,20 +33,20 @@ describe('events', function () {
 
         let spy = sinon.spy();
 
-        app.events.moduleExport.once(spy);
-        app.events.beforeModuleInit.once(spy);
-        app.events.moduleInit.once(spy);
+        app.events.onModuleExport.once(spy);
+        app.events.beforeModuleInitialize.once(spy);
+        app.events.afterModuleInitialize.once(spy);
         app.events.beforeModulesLoad.once(spy);
-        app.events.modulesLoaded.once(spy);
-        app.events.beforeInjectorInit.once(spy);
-        app.events.injectorInit.once(spy);
+        app.events.afterModulesLoaded.once(spy);
+        app.events.beforeInjectorInitialize.once(spy);
+        app.events.afterInjectorInitialize.once(spy);
         app.events.beforeBootstrap.once(spy);
-        app.events.bootstrap.once(spy);
+        app.events.afterBootstrap.once(spy);
         app.events.beforeInjectRegister.once(spy);
-        app.events.classExport.once(spy);
-        app.events.injectRegister.once(spy);
+        app.events.onClassExport.once(spy);
+        app.events.afterInjectRegister.once(spy);
         app.events.beforeReset.once(spy);
-        app.events.reset.once(spy);
+        app.events.afterReset.once(spy);
 
 
         await app.launch();

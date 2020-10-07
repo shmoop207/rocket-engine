@@ -2,7 +2,7 @@ import {Promises} from '@appolo/utils';
 import {} from '../../../../../../index';
 import {IEnv} from "../../../../../../lib/interfaces/IEnv";
 import {Test} from "../../test/src/test";
-import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 
 
 @define()

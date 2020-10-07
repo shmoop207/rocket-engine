@@ -25,7 +25,7 @@ describe('bootstrap', function () {
     });
 
 
-    it('should have  call bootstrap initialize', function () {
+    it('should have  call afterBootstrap initialize', function () {
 
         let bootstrap = app.injector.getObject<Bootstrap>(Bootstrap);
         let exportedClassEvent = app.injector.getObject<boolean>("exportedClassEvent");

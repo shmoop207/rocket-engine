@@ -1,6 +1,6 @@
 import { module, Module, pipeline, Util} from '../../../../../index';
 import {ValidatePipeLine} from "./src/validate";
-import {define, singleton,inject,initMethod,IFactory,factory}  from '@appolo/inject';
+import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 
 
 export function validate(num: number) {

@@ -26,6 +26,7 @@ export class ModuleLoader {
             throw new Error(`failed to find moduleDefinition for ${_moduleParams.type}`)
         }
 
+
         this._moduleOptions = Objects.defaults({}, moduleOptions, {
         }, {immediate: false, parallel: false});
     }
@@ -65,22 +66,17 @@ export class ModuleLoader {
 
         try {
 
-
-            await this._module.beforeInitialize();
-
-            // await this._loadInnerModules(this._module.app, this._moduleDefinition);
+            await this._module.beforeModuleInitialize();
 
             this._handleExports(this._module.app);
 
             this._handleImports(this._module.app);
 
-            await this._module.beforeLaunch();
-
-            //this._fireClassExportEvents();
+            await this._module.beforeModuleLaunch();
 
             await this._module.app.launch();
 
-            await this._module.afterInitialize();
+            //await this._module.afterModuleInitialize();
 
 
         } catch (e) {
@@ -90,26 +86,7 @@ export class ModuleLoader {
         }
     }
 
-    public async afterLaunch(): Promise<void> {
-        await this._module.afterLaunch();
-    }
 
-
-    // private _fireClassExportEvents() {
-    //     if (!this._module.app.hasListener(Events.ClassExport) && !this._module.app.hasListener(Events.InjectRegister)) {
-    //         return;
-    //     }
-    //
-    //     this._module.app.parent.discovery.exported.forEach(item => {
-    //
-    //         if (Reflect.hasMetadata(InjectDefineSymbol, item.fn)) {
-    //
-    //             this._module.app.fireEvent(Events.InjectRegister, item.fn, item.path);
-    //         }
-    //
-    //         this._module.app.fireEvent(Events.ClassExport, item.fn, item.path);
-    //     })
-    // }
 
     private _setDefinitions() {
         if (this._moduleDefinition.options) {
@@ -136,7 +113,16 @@ export class ModuleLoader {
 
         app.tree.parent = parent.get<App>('app');
 
-        app.register(this._moduleParams.type)
+        app.register(this._moduleParams.type);
+
+        app.tree.root.events.beforeModulesLoad.on(()=>this._module.beforeAppInitialize(),this,{await:true})
+
+        app.events.afterInjectorInitialize.on(()=>this._module.afterModuleInitialize(),this,{await:true});
+        app.events.afterBootstrap.on(()=>this._module.afterModuleLaunch(),this,{await:true})
+
+        app.tree.root.events.afterInjectorInitialize.on(()=>this._module.afterAppInitialize(),this,{await:true});
+        app.tree.root.events.afterBootstrap.on(()=>this._module.afterAppLaunch(),this,{await:true})
+
 
         return app;
     }
@@ -174,8 +160,8 @@ export class ModuleLoader {
                 injector: app.injector
             };
 
-            (this._module.app.events.moduleExport as Event<EventModuleExport>).fireEvent(eventDto);
-            (this._module.app.tree.parent.events.moduleExport as Event<EventModuleExport>).fireEvent(eventDto);
+            (this._module.app.events.onModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
+            (this._module.app.tree.parent.events.onModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
 
         });
 

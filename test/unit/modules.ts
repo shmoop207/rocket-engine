@@ -4,6 +4,7 @@ import {App, createApp} from "../../index";
 import {Bootstrap} from "../mock/src/bootstrap";
 import {DbManager} from "../mock/config/modules/db/src/dbManager";
 import {DelayModule} from "../mock/config/modules/delay/delayModule";
+import {Test3Module} from "../mock/config/modules/test3/test3Module";
 
 let should = chai.should();
 
@@ -127,6 +128,14 @@ describe('modules', function () {
         let dbManager = app.injector.getObject<DbManager>("dbMockDbManager");
         dbManager.isFoundExportedFile.should.be.ok;
         dbManager.onInitCalled.should.be.ok;
+
+    });
+
+    it('should call module functions by order', function () {
+
+        let module = app.modules.modulesByType<Test3Module>(Test3Module);
+
+        module[0].order.should.be.deep.equals(["beforeAppInitialize","beforeModuleInitialize","beforeModuleLaunch","onInjectInitialize","onInjectBootstrap","afterModuleInitialize","afterAppInitialize","afterModuleLaunch","afterAppLaunch"])
 
     });
 
