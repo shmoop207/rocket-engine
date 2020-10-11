@@ -3,5 +3,5 @@ import {IEnv} from "../../../../../../../lib/interfaces/IEnv";
 import {ValidateModule} from "../../../validate/validateModule";
 
 export = async function (env: IEnv, app: App) {
-    await app.modules.use(ValidateModule);
+    await app.module.use(ValidateModule);
 }

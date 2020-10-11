@@ -53,10 +53,10 @@ describe('modules', function () {
         test.name.should.be.eq("working");
     });
     it("should get modules by index", function () {
-        app.modules.moduleAt(2).constructor.name.should.be.eq("BaseModuleClassModule");
+        app.module.moduleAt(2).constructor.name.should.be.eq("BaseModuleClassModule");
     });
     it("should get modules by type", function () {
-        let modules = app.modules.modulesByType(delayModule_1.DelayModule);
+        let modules = app.module.modulesByType(delayModule_1.DelayModule);
         modules.length.should.be.eq(2);
         modules[0].constructor.name.should.be.eq("DelayModule");
         modules[0].app.injector.should.be.ok;
@@ -85,7 +85,7 @@ describe('modules', function () {
         dbManager.onInitCalled.should.be.ok;
     });
     it('should call module functions by order', function () {
-        let module = app.modules.modulesByType(test3Module_1.Test3Module);
+        let module = app.module.modulesByType(test3Module_1.Test3Module);
         module[0].order.should.be.deep.equals(["beforeAppInitialize", "beforeModuleInitialize", "beforeModuleLaunch", "onInjectInitialize", "onInjectBootstrap", "afterModuleInitialize", "afterAppInitialize", "afterModuleLaunch", "afterAppLaunch"]);
     });
 });

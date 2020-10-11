@@ -22,16 +22,16 @@ export = async function (env: IEnv, app: App,modules:Modules) {
     await modules.loadFn(logger3({test: 'test3'}), logger4({test: 'test4'}));
     await modules.loadFn(logger5({test: 'test5'}));
     await modules.loadFn(logger6({test: 'test6'}));
-    await app.modules.loadFn(logger7({test: 'test7'}));
+    await app.module.loadFn(logger7({test: 'test7'}));
 
-    await app.modules.load(TestLoadModule);
+    await app.module.load(TestLoadModule);
 
     if(env.testLoadModule){
-        app.modules.use(TestModule).use(ValidateModule).use(BaseModuleClassModule);
+        app.module.use(TestModule).use(ValidateModule).use(BaseModuleClassModule);
 
     }
 
-    app.modules.use(Test3Module,
+    app.module.use(Test3Module,
         DelayModule.for({delay: 12, testModule: env.test}),
         DelayModule.for({
             delay: 1,
@@ -40,9 +40,9 @@ export = async function (env: IEnv, app: App,modules:Modules) {
         }));
 
 
-    app.modules.use(DbModule.for({id: "dbMock"}));
+    app.module.use(DbModule.for({id: "dbMock"}));
 
-    app.modules.use(NestedModule.for({
+    app.module.use(NestedModule.for({
         delay: 1,
         testModule: env.test,
     }));

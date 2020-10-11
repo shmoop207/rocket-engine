@@ -27,20 +27,20 @@ describe('events', function () {
 
         let spy = sinon.spy();
 
-        app.events.onModuleExport.once(spy);
-        app.events.beforeModuleInitialize.once(spy);
-        app.events.afterModuleInitialize.once(spy);
-        app.events.beforeModulesLoad.once(spy);
-        app.events.afterModulesLoaded.once(spy);
-        app.events.beforeInjectorInitialize.once(spy);
-        app.events.afterInjectorInitialize.once(spy);
-        app.events.beforeBootstrap.once(spy);
-        app.events.afterBootstrap.once(spy);
-        app.events.beforeInjectRegister.once(spy);
-        app.events.onClassExport.once(spy);
-        app.events.afterInjectRegister.once(spy);
-        app.events.beforeReset.once(spy);
-        app.events.afterReset.once(spy);
+        app.event.onModuleExport.once(spy);
+        app.event.beforeModuleInitialize.once(spy);
+        app.event.afterModuleInitialize.once(spy);
+        app.event.beforeModulesLoad.once(spy);
+        app.event.afterModulesLoaded.once(spy);
+        app.event.beforeInjectorInitialize.once(spy);
+        app.event.afterInjectorInitialize.once(spy);
+        app.event.beforeBootstrap.once(spy);
+        app.event.afterBootstrap.once(spy);
+        app.event.beforeInjectRegister.once(spy);
+        app.event.onClassExport.once(spy);
+        app.event.afterInjectRegister.once(spy);
+        app.event.beforeReset.once(spy);
+        app.event.afterReset.once(spy);
 
 
         await app.launch();

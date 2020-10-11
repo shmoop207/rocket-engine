@@ -26,7 +26,7 @@ export class DelayModule extends Module<IOptions> {
     public beforeModuleLaunch() {
         let isExists = !!this._app.tree.parent.discovery.findByType(Bootstrap)
 
-        this.app.tree.parent.events.afterInjectRegister.on(payload => {
+        this.app.tree.parent.event.afterInjectRegister.on(payload => {
             if (payload.type ==  Bootstrap && isExists && !this._app.tree.parent.injector.getInstance("exportedClassEvent")) {
 
                 this._app.tree.parent.injector.addInstance("exportedClassEvent", true)
@@ -34,7 +34,7 @@ export class DelayModule extends Module<IOptions> {
             }
         })
 
-        this.app.events.beforeReset.on(async ()=>{
+        this.app.event.beforeReset.on(async ()=>{
            await Promises.delay(1);
             this.app.tree.parent["resetTestEvent"] = true;
         },this,{await:true})

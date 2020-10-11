@@ -170,9 +170,9 @@ export class Launcher {
 
         await Util.runRegroupByParallel<IApp>(this._app.tree.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initInjector());
 
-        await (this._app.events.beforeInjectorInitialize as Event<void>).fireEventAsync();
+        await (this._app.event.beforeInjectorInitialize as Event<void>).fireEventAsync();
 
-        this._injector.events.afterInitialize.on(()=> (this._app.events.afterInjectorInitialize as Event<void>).fireEventAsync(),this,{await:true});
+        this._injector.events.afterInitialize.on(()=> (this._app.event.afterInjectorInitialize as Event<void>).fireEventAsync(),this,{await:true});
 
 
         await this._injector.initialize({
@@ -191,14 +191,14 @@ export class Launcher {
             return;
         }
 
-        await (this._app.events.beforeBootstrap as Event<void>).fireEventAsync();
+        await (this._app.event.beforeBootstrap as Event<void>).fireEventAsync();
 
         await Util.runRegroupByParallel<IApp>(this._app.tree.children, app => (Reflect.getMetadata(AppModuleOptionsSymbol, app) || {}).parallel, app => (app as App).launcher.initBootStrap());
 
         let bootstrapDef = this._injector.getDefinition(this._options.bootStrapClassId);
 
         if (!bootstrapDef) {
-            await (this._app.events.afterBootstrap as Event<void>).fireEventAsync();
+            await (this._app.event.afterBootstrap as Event<void>).fireEventAsync();
 
             return Promise.resolve();
         }
@@ -208,11 +208,11 @@ export class Launcher {
 
         await bootstrap.run();
 
-        await (this._app.events.afterBootstrap as Event<void>).fireEventAsync();
+        await (this._app.event.afterBootstrap as Event<void>).fireEventAsync();
 
         this._isInitialized = true;
 
-        await (this._app.events.afterLaunch as Event<void>).fireEventAsync();
+        await (this._app.event.afterLaunch as Event<void>).fireEventAsync();
 
     }
 
@@ -260,7 +260,7 @@ export class Launcher {
         let define: Define = null;
 
         if (hasDefine) {
-            (this._app.events.beforeInjectRegister as Event<EventBeforeInjectRegister>).fireEvent({type: fn, filePath});
+            (this._app.event.beforeInjectRegister as Event<EventBeforeInjectRegister>).fireEvent({type: fn, filePath});
             define = this._injector.register(fn as IClass, null, filePath);
             this._files.push(filePath);
         }
@@ -271,7 +271,7 @@ export class Launcher {
             define
         });
 
-        (this._app.events.onClassExport as Event<EventClassExport>).fireEvent({type: fn, filePath});
+        (this._app.event.onClassExport as Event<EventClassExport>).fireEvent({type: fn, filePath});
 
 
         if (Reflect.hasMetadata(BootstrapSymbol, fn)) {
@@ -292,7 +292,7 @@ export class Launcher {
             if (item.define) {
                 this._pipelineManager.overrideKlassType(item.fn, item.define.definition);
                 this._pipelineManager.overrideKlassMethods(item.fn, item.define.definition);
-                (this._app.events.afterInjectRegister as Event<EventInjectRegister>).fireEvent({
+                (this._app.event.afterInjectRegister as Event<EventInjectRegister>).fireEvent({
                     type: item.fn,
                     filePath: item.path,
                     definition: item.define.definition

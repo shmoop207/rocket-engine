@@ -12,6 +12,6 @@ export interface ITree {
 
     readonly children: IApp[]
 
-    getChildAt(index: number): IApp
+    childAt(index: number): IApp
 
 }

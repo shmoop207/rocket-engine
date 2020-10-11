@@ -115,13 +115,13 @@ export class ModuleLoader {
 
         app.register(this._moduleParams.type);
 
-        app.tree.root.events.beforeModulesLoad.on(()=>this._module.beforeAppInitialize(),this,{await:true})
+        app.tree.root.event.beforeModulesLoad.on(()=>this._module.beforeAppInitialize(),this,{await:true})
 
-        app.events.afterInjectorInitialize.on(()=>this._module.afterModuleInitialize(),this,{await:true});
-        app.events.afterBootstrap.on(()=>this._module.afterModuleLaunch(),this,{await:true})
+        app.event.afterInjectorInitialize.on(()=>this._module.afterModuleInitialize(),this,{await:true});
+        app.event.afterBootstrap.on(()=>this._module.afterModuleLaunch(),this,{await:true})
 
-        app.tree.root.events.afterInjectorInitialize.on(()=>this._module.afterAppInitialize(),this,{await:true});
-        app.tree.root.events.afterBootstrap.on(()=>this._module.afterAppLaunch(),this,{await:true})
+        app.tree.root.event.afterInjectorInitialize.on(()=>this._module.afterAppInitialize(),this,{await:true});
+        app.tree.root.event.afterBootstrap.on(()=>this._module.afterAppLaunch(),this,{await:true})
 
 
         return app;
@@ -160,8 +160,8 @@ export class ModuleLoader {
                 injector: app.injector
             };
 
-            (this._module.app.events.onModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
-            (this._module.app.tree.parent.events.onModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
+            (this._module.app.event.onModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
+            (this._module.app.tree.parent.event.onModuleExport as Event<EventModuleExport>).fireEvent(eventDto);
 
         });
 

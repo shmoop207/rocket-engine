@@ -56,11 +56,11 @@ export class App implements IApp {
 
     }
 
-    public get modules(): Modules {
+    public get module(): Modules {
         return this._modules;
     }
 
-    public get events(): Events {
+    public get event(): Events {
         return this._events;
     }
 
@@ -110,7 +110,7 @@ export class App implements IApp {
 
 
     public async reset() {
-        await (this.events.beforeReset as Event<void>).fireEventAsync();
+        await (this.event.beforeReset as Event<void>).fireEventAsync();
         this._tree.children.forEach(app => app.reset());
 
         await this._launcher.reset();
@@ -119,7 +119,7 @@ export class App implements IApp {
 
         this._injector.reset();
 
-        await (this.events.afterReset as Event<void>).fireEventAsync();
+        await (this.event.afterReset as Event<void>).fireEventAsync();
 
         this._tree.parent = null;
 

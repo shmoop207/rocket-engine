@@ -33,21 +33,21 @@ export class ModulesManager {
             this._modules[i].preInitialize();
         }
 
-        await (this._injector.get<IApp>(App).events.beforeModulesLoad as Event<void>).fireEventAsync();
+        await (this._injector.get<IApp>(App).event.beforeModulesLoad as Event<void>).fireEventAsync();
 
         await InjectUtil.runRegroupByParallel<ModuleLoader>(this._modules, loader => loader.moduleOptions.parallel, module => this._loadModule(module));
 
-        await (this._injector.get<IApp>(App).events.afterModulesLoaded as Event<void>).fireEventAsync();
+        await (this._injector.get<IApp>(App).event.afterModulesLoaded as Event<void>).fireEventAsync();
 
     }
 
 
     private async _loadModule(module: ModuleLoader) {
-        await (this._injector.get<IApp>(App).events.beforeModuleInitialize as Event<EventBeforeModuleInit>).fireEventAsync({module: module.module});
+        await (this._injector.get<IApp>(App).event.beforeModuleInitialize as Event<EventBeforeModuleInit>).fireEventAsync({module: module.module});
 
         await module.initialize();
 
-        await (this._injector.get<App>(App).events.afterModuleInitialize as Event<EventModuleInit>).fireEventAsync({module: module.module});
+        await (this._injector.get<App>(App).event.afterModuleInitialize as Event<EventModuleInit>).fireEventAsync({module: module.module});
     }
 
 

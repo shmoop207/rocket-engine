@@ -12,9 +12,9 @@ export interface IApp {
     readonly env: IEnv
     readonly injector: Injector
     readonly dispatcher: EventDispatcher
-    readonly events: IEvents
+    readonly event: IEvents
     readonly discovery: IDiscovery;
-    readonly modules: IModules;
+    readonly module: IModules;
     readonly tree: ITree;
 
     reset();

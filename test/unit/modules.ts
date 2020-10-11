@@ -80,12 +80,12 @@ describe('modules', function () {
     });
 
     it("should get modules by index",function () {
-        app.modules.moduleAt(2).constructor.name.should.be.eq("BaseModuleClassModule")
+        app.module.moduleAt(2).constructor.name.should.be.eq("BaseModuleClassModule")
     })
 
 
     it("should get modules by type",function () {
-       let modules =  app.modules.modulesByType(DelayModule)
+       let modules =  app.module.modulesByType(DelayModule)
 
         modules.length.should.be.eq(2)
 
@@ -134,7 +134,7 @@ describe('modules', function () {
 
     it('should call module functions by order', function () {
 
-        let module = app.modules.modulesByType<Test3Module>(Test3Module);
+        let module = app.module.modulesByType<Test3Module>(Test3Module);
 
         module[0].order.should.be.deep.equals(["beforeAppInitialize","beforeModuleInitialize","beforeModuleLaunch","onInjectInitialize","onInjectBootstrap","afterModuleInitialize","afterAppInitialize","afterModuleLaunch","afterAppLaunch"])
 

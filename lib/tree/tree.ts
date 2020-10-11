@@ -46,7 +46,7 @@ export class Tree implements ITree {
         return this._children;
     }
 
-    public getChildAt(index: number): IApp {
+    public childAt(index: number): IApp {
         return this._children[index];
     }
 

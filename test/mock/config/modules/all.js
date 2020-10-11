@@ -20,18 +20,18 @@ module.exports = async function (env, app, modules) {
     await modules.loadFn(logger3_1.default({ test: 'test3' }), logger4_1.default({ test: 'test4' }));
     await modules.loadFn(logger5_1.default({ test: 'test5' }));
     await modules.loadFn(logger6_1.default({ test: 'test6' }));
-    await app.modules.loadFn(logger7_1.default({ test: 'test7' }));
-    await app.modules.load(testLoadModule_1.TestLoadModule);
+    await app.module.loadFn(logger7_1.default({ test: 'test7' }));
+    await app.module.load(testLoadModule_1.TestLoadModule);
     if (env.testLoadModule) {
-        app.modules.use(testModule_1.TestModule).use(validateModule_1.ValidateModule).use(baseModuleClassModule_1.BaseModuleClassModule);
+        app.module.use(testModule_1.TestModule).use(validateModule_1.ValidateModule).use(baseModuleClassModule_1.BaseModuleClassModule);
     }
-    app.modules.use(test3Module_1.Test3Module, delayModule_1.DelayModule.for({ delay: 12, testModule: env.test }), delayModule_1.DelayModule.for({
+    app.module.use(test3Module_1.Test3Module, delayModule_1.DelayModule.for({ delay: 12, testModule: env.test }), delayModule_1.DelayModule.for({
         delay: 1,
         testModule: env.test,
         id: "delay2"
     }));
-    app.modules.use(dbModule_1.DbModule.for({ id: "dbMock" }));
-    app.modules.use(nestedModule_1.NestedModule.for({
+    app.module.use(dbModule_1.DbModule.for({ id: "dbMock" }));
+    app.module.use(nestedModule_1.NestedModule.for({
         delay: 1,
         testModule: env.test,
     }));

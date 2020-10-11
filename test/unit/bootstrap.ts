@@ -14,7 +14,7 @@ describe('bootstrap', function () {
             root: process.cwd() + '/test/mock'
         });
 
-        await app.modules.use(Test2Module);
+        await app.module.use(Test2Module);
 
         await app.launch();
     });
