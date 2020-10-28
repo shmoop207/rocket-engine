@@ -2,7 +2,7 @@ import {createApp, IApp, IModuleOptions, IModuleParams} from "../../index"
 import {Helpers} from "../util/helpers";
 import {initAsync, singleton,bootstrapAsync} from "@appolo/inject";
 import {Event} from "@appolo/events";
-import {IClass, ModuleTypes} from "../interfaces/IModule";
+import {IClass, ModuleTypes} from "./interfaces/IModule";
 import milliseconds = require("mocha/lib/ms");
 
 let i=0;

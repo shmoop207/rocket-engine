@@ -1,12 +1,12 @@
-import {IEnv} from "./IEnv";
+import {IEnv} from "../interfaces/IEnv";
 import {Define, Injector} from "@appolo/inject";
 
 import {Event, EventDispatcher, IEvent} from "@appolo/events";
 
-import {IEvents} from "./IEvents";
-import {IDiscovery} from "./IDiscovery";
-import {IModules} from "./IModules";
-import {ITree} from "./ITree";
+import {IEvents} from "../events/IEvents";
+import {IDiscovery} from "../discovery/IDiscovery";
+import {IModules} from "../modules/interfaces/IModules";
+import {ITree} from "../tree/ITree";
 
 export interface IApp {
     readonly env: IEnv

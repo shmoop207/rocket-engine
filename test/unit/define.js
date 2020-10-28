@@ -7,7 +7,6 @@ let should = require('chai').should();
 const index_1 = require("../../index");
 const manager2_1 = require("../mock/src/manager2");
 const manager3_1 = require("../mock/src/manager/manager3");
-const manager_1 = require("../mock/src/manager");
 describe('define', function () {
     let app;
     beforeEach(async () => {
@@ -57,45 +56,6 @@ describe('define', function () {
         ], Test2);
         let test = new Test2();
         test.on.should.be.ok;
-    });
-    it('should call pipeline decorator', async function () {
-        let controller = app.injector.getObject(controller_1.Controller);
-        let result = await controller.pipelineTest([]);
-        result.should.be.deep.equals([2, 3, 1]);
-    });
-    it('should call pipeline decorator in order params', async function () {
-        let controller = app.injector.getObject(controller_1.Controller);
-        let result = await controller.pipelineTest2([]);
-        result.should.be.deep.equals([3, 2, 1]);
-    });
-    it('should call pipeline validate', async function () {
-        let controller = app.injector.getObject(controller_1.Controller);
-        let result = await controller.validateTest(6);
-        result.should.be.eq(0);
-        result = await controller.validateTest(5);
-        result.should.be.eq(5);
-    });
-    it('should call pipeline on create', async function () {
-        let manager = app.injector.getObject(manager_1.Manager);
-        manager.onCreateTest.should.be.ok;
-    });
-    it('should call pipeline validate arguments', async function () {
-        let controller = app.injector.getObject(controller_1.Controller);
-        let result = await controller.validateTest2(5, 5);
-        result.should.be.eq(10);
-        result = await controller.validateTest2(6, 7);
-        result.should.be.eq(0);
-        result = await controller.validateTest2(5, 7);
-        result.should.be.eq(5);
-    });
-    it('should call base class pipeline validate arguments', async function () {
-        let controller = app.injector.getObject(controller_1.Controller);
-        let result = await controller.validateBase(5, 5);
-        result.should.be.eq(10);
-        result = await controller.validateBase(6, 7);
-        result.should.be.eq(0);
-        result = await controller.validateBase(5, 7);
-        result.should.be.eq(5);
     });
 });
 //# sourceMappingURL=define.js.map

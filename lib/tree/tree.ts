@@ -1,7 +1,7 @@
-import {IApp} from "../interfaces/IApp";
+import {IApp} from "../app/IApp";
 import {Util} from "../util/util";
 import {Arrays} from "@appolo/utils";
-import {ITree} from "../interfaces/ITree";
+import {ITree} from "./ITree";
 
 export class Tree implements ITree {
 

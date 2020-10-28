@@ -1,16 +1,16 @@
-import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunner, Next} from "./IPipeline";
+import {IPipelineContext, IMetadata, IPipeline, IPipelineMetadata, IPipeLineRunner, Next} from "./interfaces/IPipeline";
 import {
     PipeInstanceCreateSymbol,
     PipeKlassRegisterSymbol,
     PipeSetSymbol,
     PipeSymbol
-} from "../decoretors/pipelineDecorators";
+} from "./decoreators/pipelineDecorators";
 import {runPipes} from "./pipelineRunner";
 import {Helpers} from "../util/helpers";
 import {Reflector, Objects} from "@appolo/utils";
-import {App} from "../app";
+import {App} from "../app/app";
 import {Injector} from "@appolo/inject";
-import {PipelineContext} from "./pipelineContext";
+import {PipelineContext} from "./context/pipelineContext";
 import {IDefinition} from "@appolo/inject";
 import {ILogger} from "../interfaces/ILogger";
 import {Util as InjectUtil} from "@appolo/inject";
@@ -67,7 +67,7 @@ export class PipelineManager {
 
             let pipesCompiled = runPipes(pipelines);
 
-            return pipesCompiled({definition, args: null, instance, type: fn, action: null, argsTypes: []})
+            return pipesCompiled({definition,injector:this._injector, args: null, instance, type: fn, action: null, argsTypes: []})
         } catch (e) {
             Util.logger(this._app.injector).error("failed to override klass")
         }
@@ -98,10 +98,12 @@ export class PipelineManager {
         let argsTypes = Reflect.getMetadata("design:paramtypes", fn.prototype, action) || [];
 
         let pipesCompiled = runPipes(pipelines);
+        let injector = this._injector;
 
         fn.prototype[action] = async function () {
             let result = await pipesCompiled({
                 definition,
+                injector:injector,
                 args: arguments,
                 instance: this,
                 type: fn,

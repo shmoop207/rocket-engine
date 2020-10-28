@@ -2,7 +2,7 @@ import { IClass, IModuleOptions, Module, module} from '../../../../../index';
 import {Bootstrap} from "../../../src/bootstrap";
 import {NestedProvider} from "./src/nestedProvider";
 import {DbManager} from "../db/src/dbManager";
-import {IModuleParams} from "../../../../../lib/interfaces/IModule";
+import {IModuleParams} from "../../../../../lib/modules/interfaces/IModule";
 
 interface IOptions {
     delay: number,

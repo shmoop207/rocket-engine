@@ -3,7 +3,7 @@ import fs = require('fs');
 import {Injector} from "@appolo/inject";
 import {ILogger} from "../interfaces/ILogger";
 import { Classes, Reflector, Functions} from '@appolo/utils';
-import {IExported} from "../interfaces/IModule";
+import {IExported} from "../modules/interfaces/IModule";
 import {Define} from "@appolo/inject";
 import {Util as InjectUtil} from "@appolo/inject";
 

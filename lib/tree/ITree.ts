@@ -1,4 +1,4 @@
-import {IApp} from "./IApp";
+import {IApp} from "../app/IApp";
 
 export interface ITree {
     getParent<T extends IApp = IApp>(): T

@@ -1,13 +1,20 @@
-import {IPipelineContext} from "./IPipeline";
+import {IPipelineContext} from "../interfaces/IPipeline";
+import {Injector, IDefinition} from "@appolo/inject";
 
 export class PipelineContext<T = any> {
 
-    constructor(private _context: IPipelineContext, private _index: number, private _metaData: any, private _options: any) {
+    private readonly _isArgument: boolean
 
+    constructor(private _context: IPipelineContext, private _index: number, private _metaData: any, private _options: any) {
+        this._isArgument = !isNaN(_index)
     }
 
     public get metaData(): T {
         return this._metaData;
+    }
+
+    public set metaData(value: T) {
+        this._metaData = value;
     }
 
     public get options(): any {
@@ -15,7 +22,7 @@ export class PipelineContext<T = any> {
     }
 
     public get index(): number {
-        return this._index;
+        return this._index || 0;
     }
 
     public get arguments(): IArguments {
@@ -43,7 +50,7 @@ export class PipelineContext<T = any> {
     }
 
     public get isArgument(): boolean {
-        return !isNaN(this._index);
+        return this._isArgument;
     }
 
     public setArgumentAt(index: number, value: any) {
@@ -58,6 +65,8 @@ export class PipelineContext<T = any> {
         if (this.isArgument) {
             return this.arguments[this._index];
         }
+
+        return this.arguments[0];
     }
 
     public get values(): { index: number, value: any, type: any }[] {
@@ -70,5 +79,13 @@ export class PipelineContext<T = any> {
         }
 
         return Array.from(this.arguments).map((value, index) => ({index, value, type: this.argumentsTypes[index]}))
+    }
+
+    public get injector(): Injector {
+        return this._context.injector;
+    }
+
+    public get definition(): IDefinition {
+        return this._context.definition;
     }
 }

@@ -1,12 +1,13 @@
 import { module, Module, pipeline, Util} from '../../../../../index';
 import {ValidatePipeLine} from "./src/validate";
 import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
+import {pipelineDecorator} from "../../../../../lib/pipelines/decoreators/pipelineDecorators";
 
 
 export function validate(num: number) {
-    return function (fn: any, propertyName: string,index?:number| PropertyDescriptor) {
-        pipeline(ValidatePipeLine,{validateNum:num})(fn, propertyName,index)
-    }
+
+    return pipelineDecorator(ValidatePipeLine,{validateNum:num});
+
 }
 
 @module({})

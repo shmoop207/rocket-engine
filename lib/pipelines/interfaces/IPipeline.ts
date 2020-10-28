@@ -1,5 +1,5 @@
-import {PipelineContext} from "./pipelineContext";
-import {IDefinition} from "@appolo/inject";
+import {PipelineContext} from "../context/pipelineContext";
+import {IDefinition,Injector} from "@appolo/inject";
 
 export interface IMetadata {
     [index: string]: IPipelineMetadata[]
@@ -38,4 +38,5 @@ export interface IPipelineContext<T = any> {
     metaData?: T
     index?: number
     options?: any
+    injector:Injector
 }

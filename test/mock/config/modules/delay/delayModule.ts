@@ -2,7 +2,7 @@ import {IModuleOptions, Module, module} from '../../../../../index';
 import {Delay} from "./src/delay";
 import {Promises} from "@appolo/utils";
 import {Bootstrap} from "../../../src/bootstrap";
-import {IModuleParams} from "../../../../../lib/interfaces/IModule";
+import {IModuleParams} from "../../../../../lib/modules/interfaces/IModule";
 
 interface IOptions {
     delay: number,

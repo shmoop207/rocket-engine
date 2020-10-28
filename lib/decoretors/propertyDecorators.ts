@@ -1,5 +1,5 @@
-import {IClass} from "../interfaces/IModule";
-import {App} from "../app";
+import {IClass} from "../modules/interfaces/IModule";
+import {App} from "../app/app";
 import {Classes} from '@appolo/utils';
 import {Util} from "@appolo/inject";
 

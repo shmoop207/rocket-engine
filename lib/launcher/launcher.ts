@@ -1,23 +1,23 @@
 "use strict";
 import {createContainer, Define, InjectDefineSymbol, Injector, IDefinition} from "@appolo/inject";
 import {IOptions} from "../interfaces/IOptions";
-import {IBootstrap} from "../interfaces/IBootstrap";
+import {IBootstrap} from "../bootstrap/IBootstrap";
 import {IEnv} from "../interfaces/IEnv";
 import {Event} from "@appolo/events";
 import {FilesLoader} from "../loader/filesLoader";
 import {ModulesManager} from "../modules/modulesManager";
-import {IClass, IExported, IModuleOptions} from "../interfaces/IModule";
-import {App} from "../app";
-import {BootstrapSymbol} from "../decoretors/bootstrapDecorator";
-import {AppModuleOptionsSymbol} from "../decoretors/moduleDecorators";
-import {IApp} from "../interfaces/IApp";
+import {IClass, IExported, IModuleOptions} from "../modules/interfaces/IModule";
+import {App} from "../app/app";
+import {BootstrapSymbol} from "../bootstrap/bootstrapDecorator";
+import {AppModuleOptionsSymbol} from "../modules/decoreators/moduleDecorators";
+import {IApp} from "../app/IApp";
 import   path = require('path');
 import   fs = require('fs');
 import {Objects, Classes, Promises} from '@appolo/utils';
 import {PipelineManager} from "../pipelines/pipelineManager";
 import {handleAfterDecorator, handleBeforeDecorator} from "../decoretors/propertyDecorators";
 import {Util} from "@appolo/inject";
-import {EventBeforeInjectRegister, EventClassExport, EventInjectRegister} from "../interfaces/IEvents";
+import {EventBeforeInjectRegister, EventClassExport, EventInjectRegister} from "../events/IEvents";
 
 export class Launcher {
 

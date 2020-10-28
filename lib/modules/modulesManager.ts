@@ -6,14 +6,14 @@ import {Injector} from "@appolo/inject";
 import {Module} from "./module";
 import {Event} from "@appolo/events";
 import {IOptions} from "../interfaces/IOptions";
-import {IModuleCrt, IModuleOptions, IModuleParams, IPlugin, ModuleArg, ModuleFunction} from "../interfaces/IModule";
-import {ModuleSymbol} from "../decoretors/moduleDecorators";
-import {App} from "../app";
+import {IModuleCrt, IModuleOptions, IModuleParams, IPlugin, ModuleArg, ModuleFunction} from "./interfaces/IModule";
+import {ModuleSymbol} from "./decoreators/moduleDecorators";
+import {App} from "../app/app";
 import {ModuleLoader} from "./moduleLoader";
 import {Util as InjectUtil} from "@appolo/inject";
 import {Util} from "../util/util";
-import {IApp} from "../interfaces/IApp";
-import {EventBeforeModuleInit, EventModuleInit} from "../interfaces/IEvents";
+import {IApp} from "../app/IApp";
+import {EventBeforeModuleInit, EventModuleInit} from "../events/IEvents";
 
 
 export class ModulesManager {

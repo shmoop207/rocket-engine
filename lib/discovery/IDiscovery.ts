@@ -1,6 +1,6 @@
-import {IExported} from "./IModule";
+import {IExported} from "../modules/interfaces/IModule";
 import {Define} from "@appolo/inject/index";
-import {Discovery} from "../discovery/discovery";
+import {Discovery} from "./discovery";
 
 export interface IDiscovery extends Discovery {
     getRoot<T extends Discovery = Discovery>(): T

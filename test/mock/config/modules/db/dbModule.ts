@@ -2,7 +2,7 @@ import {IModuleOptions, module, Module} from '../../../../../index';
 import {DbFactory} from "./src/dbFactory";
 import {DbManager} from "./src/dbManager";
 import {NestedProvider} from "../nested/src/nestedProvider";
-import {IModuleParams} from "../../../../../lib/interfaces/IModule";
+import {IModuleParams} from "../../../../../lib/modules/interfaces/IModule";
 import {define, singleton,inject,init,IFactory,factory,lazy}  from '@appolo/inject';
 
 

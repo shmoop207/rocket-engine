@@ -1,6 +1,6 @@
 import path = require('path');
 import {IModuleDefinition} from "../interfaces/IModule";
-import {Helpers} from "../util/helpers";
+import {Helpers} from "../../util/helpers";
 import {define,singleton,lazy,factory} from "@appolo/inject";
 import {initAsync} from "@appolo/inject/index";
 

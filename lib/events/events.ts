@@ -1,13 +1,13 @@
 import {Event, IEvent} from "@appolo/events";
 
-import {IApp} from "../interfaces/IApp";
+import {IApp} from "../app/IApp";
 import {
     EventBeforeInjectRegister,
     EventBeforeModuleInit, EventClassExport, EventInjectRegister,
     EventModuleExport,
     EventModuleInit,
     IEvents
-} from "../interfaces/IEvents";
+} from "./IEvents";
 
 export class Events implements IEvents {
     constructor(protected _app: IApp) {

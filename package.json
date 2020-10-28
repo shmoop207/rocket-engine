@@ -37,7 +37,7 @@
   "dependencies": {
     "@appolo/events": "^8.0.1",
     "@appolo/inject": "^8.0.10",
-    "@appolo/utils": "^8.0.0",
+    "@appolo/utils": "^8.0.2",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

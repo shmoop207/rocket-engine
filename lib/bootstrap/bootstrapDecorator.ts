@@ -1,6 +1,6 @@
-import {IClass} from "../interfaces/IModule";
+import {IClass} from "../modules/interfaces/IModule";
 import {Helpers} from "../util/helpers";
-import {App} from "../app";
+import {App} from "../app/app";
 
 export const BootstrapSymbol = "__bootstrap__";
 

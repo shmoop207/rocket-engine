@@ -1,4 +1,4 @@
-import {Module} from "../modules/module";
+import {Module} from "../module";
 import {Define} from "@appolo/inject";
 
 export interface IClass {

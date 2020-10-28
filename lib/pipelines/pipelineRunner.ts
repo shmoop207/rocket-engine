@@ -1,5 +1,5 @@
-import {IPipelineContext, IPipelineFn, IPipelineMetadata} from "./IPipeline";
-import {PipelineContext} from "./pipelineContext";
+import {IPipelineContext, IPipelineFn, IPipelineMetadata} from "./interfaces/IPipeline";
+import {PipelineContext} from "./context/pipelineContext";
 
 export function runPipes(pipes: IPipelineMetadata[]) {
 

@@ -1,11 +1,11 @@
-import {IExported} from "../interfaces/IModule";
-import {IApp} from "../interfaces/IApp";
-import {App} from "../app";
+import {IExported} from "../modules/interfaces/IModule";
+import {IApp} from "../app/IApp";
+import {App} from "../app/app";
 import {Reflector, Arrays} from "@appolo/utils";
 import {Define} from "@appolo/inject";
 import {Util} from "@appolo/inject";
 import {InjectDefineSymbol} from "@appolo/inject/index";
-import {IDiscovery} from "../interfaces/IDiscovery";
+import {IDiscovery} from "./IDiscovery";
 
 export class Discovery implements IDiscovery {
 

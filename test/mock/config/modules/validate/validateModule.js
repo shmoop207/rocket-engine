@@ -4,10 +4,9 @@ exports.ValidateModule = exports.validate = void 0;
 const tslib_1 = require("tslib");
 const index_1 = require("../../../../../index");
 const validate_1 = require("./src/validate");
+const pipelineDecorators_1 = require("../../../../../lib/pipelines/decoreators/pipelineDecorators");
 function validate(num) {
-    return function (fn, propertyName, index) {
-        index_1.pipeline(validate_1.ValidatePipeLine, { validateNum: num })(fn, propertyName, index);
-    };
+    return pipelineDecorators_1.pipelineDecorator(validate_1.ValidatePipeLine, { validateNum: num });
 }
 exports.validate = validate;
 let ValidateModule = class ValidateModule extends index_1.Module {

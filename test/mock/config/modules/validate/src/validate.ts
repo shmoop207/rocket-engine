@@ -1,6 +1,6 @@
 import {IEnv} from "../../../../../../lib/interfaces/IEnv";
-import {IPipelineContext} from "../../../../../../lib/pipelines/IPipeline";
-import {PipelineContext} from "../../../../../../lib/pipelines/pipelineContext";
+import {IPipelineContext} from "../../../../../../lib/pipelines/interfaces/IPipeline";
+import {PipelineContext} from "../../../../../../lib/pipelines/context/pipelineContext";
 import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 
 @define()
@@ -8,7 +8,7 @@ import {define, singleton,inject,init,IFactory,factory}  from '@appolo/inject';
 export class ValidatePipeLine {
 
 
-    run(context: PipelineContext<{ validateNum: number }>, next) {
+     run(context: PipelineContext<{ validateNum: number }>, next) {
 
         context.values.forEach(item => {
             if (item.value > context.metaData.validateNum) {

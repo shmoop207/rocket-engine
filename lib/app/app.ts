@@ -1,16 +1,16 @@
-import {IEnv} from "./interfaces/IEnv";
+import {IEnv} from "../interfaces/IEnv";
 import {Define, Injector} from "@appolo/inject";
-import {IOptions} from "./interfaces/IOptions";
-import {Launcher} from "./launcher/launcher";
+import {IOptions} from "../interfaces/IOptions";
+import {Launcher} from "../launcher/launcher";
 import {Event, IEvent} from "@appolo/events";
-import {IClass} from "./interfaces/IModule";
-import {IApp} from "./interfaces/IApp";
+import {IClass} from "../modules/interfaces/IModule";
+import {IApp} from "./IApp";
 import {EventDispatcher} from "@appolo/events";
-import {Discovery} from "./discovery/discovery";
+import {Discovery} from "../discovery/discovery";
 
-import {Events} from "./events/events";
-import {Modules} from "./modules/modules";
-import {Tree} from "./tree/tree";
+import {Events} from "../events/events";
+import {Modules} from "../modules/modules";
+import {Tree} from "../tree/tree";
 
 export class App implements IApp {
 

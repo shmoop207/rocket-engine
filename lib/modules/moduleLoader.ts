@@ -1,15 +1,15 @@
 import {Module} from "./module";
-import {App} from "../app";
+import {App} from "../app/app";
 import {Injector, InjectDefineSymbol} from "@appolo/inject";
 import {IEnv} from "../interfaces/IEnv";
 import {createApp, IApp, IClass} from "../../index";
-import {AppModuleOptionsSymbol, ModuleSymbol} from "../decoretors/moduleDecorators";
+import {AppModuleOptionsSymbol, ModuleSymbol} from "./decoreators/moduleDecorators";
 import {Promises, Arrays, Objects} from '@appolo/utils';
-import {IModuleDefinition, IModuleOptions, IModuleParams} from "../interfaces/IModule";
+import {IModuleDefinition, IModuleOptions, IModuleParams} from "./interfaces/IModule";
 import {Util as InjectUtil} from "@appolo/inject";
 import {Event} from "@appolo/events";
 import {Util} from "../util/util";
-import {EventModuleExport} from "../interfaces/IEvents";
+import {EventModuleExport} from "../events/IEvents";
 
 export class ModuleLoader {
 

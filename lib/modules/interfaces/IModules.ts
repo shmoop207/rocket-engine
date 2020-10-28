@@ -1,4 +1,4 @@
-import {Module} from "../modules/module";
+import {Module} from "../module";
 import {IModuleCrt, ModuleArg, ModuleFunction} from "./IModule";
 
 export interface IModules {
