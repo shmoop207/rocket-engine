@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.pipeMultiValue = exports.PipeMultiValue = exports.interceptorMultiValue = exports.InterceptorMultiValue = exports.interceptorTimeout = exports.InterceptorTimeout = exports.guardSum = exports.GuardTest = exports.PipelineTestOnCreate = exports.PipelineTest2 = exports.PipelineTest = void 0;
+exports.catchError = exports.ExceptionPipeLine = exports.pipeMultiValue = exports.PipeMultiValue = exports.interceptorMultiValue = exports.InterceptorMultiValue = exports.interceptorTimeout = exports.InterceptorTimeout = exports.guardSum = exports.GuardTest = exports.PipelineTestOnCreate = exports.PipelineTest2 = exports.PipelineTest = void 0;
 const tslib_1 = require("tslib");
 const index_1 = require("../../../index");
 const inject_1 = require("@appolo/inject");
@@ -90,4 +90,21 @@ function pipeMultiValue(multi) {
     return index_1.pipe(PipeMultiValue, { multi });
 }
 exports.pipeMultiValue = pipeMultiValue;
+let ExceptionPipeLine = class ExceptionPipeLine {
+    async catch(e, context) {
+        return {
+            statusCode: 500,
+            timestamp: new Date().toISOString(),
+            message: e.message
+        };
+    }
+};
+ExceptionPipeLine = tslib_1.__decorate([
+    inject_1.define()
+], ExceptionPipeLine);
+exports.ExceptionPipeLine = ExceptionPipeLine;
+function catchError() {
+    return index_1.exception(ExceptionPipeLine, {});
+}
+exports.catchError = catchError;
 //# sourceMappingURL=pipelineTest.js.map

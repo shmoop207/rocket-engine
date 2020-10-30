@@ -78,6 +78,14 @@ describe('Pipeline', function () {
         result.should.be.eq(4)
     });
 
+    it('should call exception decorator', async function () {
+        let manager = app.injector.getObject<Manager>(Manager);
+
+        let result =  await manager.testCatchError(1,2)
+
+        result.message.should.be.eq("some error")
+    });
+
 
     it('should call pipe decorator on all class Methods', async function () {
         let manager = app.injector.getObject<Manager4>(Manager4);

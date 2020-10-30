@@ -2,6 +2,7 @@ import {IClass} from "../modules/interfaces/IModule";
 import {App} from "../app/app";
 import {Classes} from '@appolo/utils';
 import {Util} from "@appolo/inject";
+import {Discovery} from "../discovery/discovery";
 
 
 export const BeforeSymbol = "__before__";
@@ -118,6 +119,10 @@ function extendBefore(old: Function, app: App, item: IActionsItem) {
         return old.apply(this, args)
     }
 
+}
+
+export function setMetadata(name: string | Symbol, value: any) {
+    return Discovery.decorateReflectMetadata(name, value)
 }
 
 

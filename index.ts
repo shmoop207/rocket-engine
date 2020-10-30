@@ -12,10 +12,15 @@ export {intercept} from "./lib/pipelines/interceptors/decorators/interceptorDeco
 export {IPipe} from "./lib/pipelines/pipes/interfaces/IPipe";
 export {pipe} from "./lib/pipelines/pipes/decorators/pipeDecorator";
 
+export {exception} from "./lib/pipelines/exceptions/decorators/exceptionDecorator";
+export {IException} from "./lib/pipelines/exceptions/interfaces/IException";
+
 export {bootstrap} from "./lib/bootstrap/bootstrapDecorator"
-export {before,after} from "./lib/decoretors/propertyDecorators"
+export {before, after, setMetadata} from "./lib/decoretors/propertyDecorators"
 export {module} from "./lib/modules/decoreators/moduleDecorators"
-export {pipeline,pipelineInstance,pipelineType,pipelineDecorator} from "./lib/pipelines/decoreators/pipelineDecorators"
+export {
+    pipeline, pipelineInstance, pipelineType, pipelineDecorator
+} from "./lib/pipelines/decoreators/pipelineDecorators"
 
 export {Util} from "./lib/util/util";
 export {Launcher} from './lib/launcher/launcher';
@@ -39,7 +44,6 @@ export {ITree} from './lib/tree/ITree';
 export {IClass, IModuleOptions, IModuleParams, ModuleArg} from './lib/modules/interfaces/IModule';
 export {IPipeline, IPipelineFn} from './lib/pipelines/interfaces/IPipeline';
 export {PipelineContext} from './lib/pipelines/context/pipelineContext';
-
 
 
 export let createApp = function (options?: IOptions): App {

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createApp = exports.PipelineContext = exports.Events = exports.Modules = exports.Module = exports.App = exports.FilesLoader = exports.Discovery = exports.Launcher = exports.Util = exports.pipelineDecorator = exports.pipelineType = exports.pipelineInstance = exports.pipeline = exports.module = exports.after = exports.before = exports.bootstrap = exports.pipe = exports.intercept = exports.guard = void 0;
+exports.createApp = exports.PipelineContext = exports.Events = exports.Modules = exports.Module = exports.App = exports.FilesLoader = exports.Discovery = exports.Launcher = exports.Util = exports.pipelineDecorator = exports.pipelineType = exports.pipelineInstance = exports.pipeline = exports.module = exports.setMetadata = exports.after = exports.before = exports.bootstrap = exports.exception = exports.pipe = exports.intercept = exports.guard = void 0;
 require("reflect-metadata");
 const app_1 = require("./lib/app/app");
 var guardDecorator_1 = require("./lib/pipelines/guards/decorators/guardDecorator");
@@ -9,11 +9,14 @@ var interceptorDecorator_1 = require("./lib/pipelines/interceptors/decorators/in
 Object.defineProperty(exports, "intercept", { enumerable: true, get: function () { return interceptorDecorator_1.intercept; } });
 var pipeDecorator_1 = require("./lib/pipelines/pipes/decorators/pipeDecorator");
 Object.defineProperty(exports, "pipe", { enumerable: true, get: function () { return pipeDecorator_1.pipe; } });
+var exceptionDecorator_1 = require("./lib/pipelines/exceptions/decorators/exceptionDecorator");
+Object.defineProperty(exports, "exception", { enumerable: true, get: function () { return exceptionDecorator_1.exception; } });
 var bootstrapDecorator_1 = require("./lib/bootstrap/bootstrapDecorator");
 Object.defineProperty(exports, "bootstrap", { enumerable: true, get: function () { return bootstrapDecorator_1.bootstrap; } });
 var propertyDecorators_1 = require("./lib/decoretors/propertyDecorators");
 Object.defineProperty(exports, "before", { enumerable: true, get: function () { return propertyDecorators_1.before; } });
 Object.defineProperty(exports, "after", { enumerable: true, get: function () { return propertyDecorators_1.after; } });
+Object.defineProperty(exports, "setMetadata", { enumerable: true, get: function () { return propertyDecorators_1.setMetadata; } });
 var moduleDecorators_1 = require("./lib/modules/decoreators/moduleDecorators");
 Object.defineProperty(exports, "module", { enumerable: true, get: function () { return moduleDecorators_1.module; } });
 var pipelineDecorators_1 = require("./lib/pipelines/decoreators/pipelineDecorators");

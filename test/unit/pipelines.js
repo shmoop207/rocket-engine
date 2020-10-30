@@ -44,6 +44,11 @@ describe('Pipeline', function () {
         let result = await manager.testPipeMultiValue(1, 2);
         result.should.be.eq(4);
     });
+    it('should call exception decorator', async function () {
+        let manager = app.injector.getObject(manager_1.Manager);
+        let result = await manager.testCatchError(1, 2);
+        result.message.should.be.eq("some error");
+    });
     it('should call pipe decorator on all class Methods', async function () {
         let manager = app.injector.getObject(manager4_1.default);
         let result = await manager.run(1);

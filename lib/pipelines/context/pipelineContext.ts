@@ -1,5 +1,6 @@
 import {IPipelineContext} from "../interfaces/IPipeline";
 import {Injector, IDefinition} from "@appolo/inject";
+import    http = require('http');
 
 export class PipelineContext<T = any> {
 
@@ -59,6 +60,21 @@ export class PipelineContext<T = any> {
 
     public getArgumentAt(index: number): any {
         return this.arguments[index]
+    }
+
+    public getArgumentByType<T>(ctor: { new(...args: any[]): T }): T {
+        return Array.from(this.arguments).find(item => item.value instanceof ctor)
+    }
+
+    public getRequest<T extends http.IncomingMessage>(): T {
+        let result = this.getArgumentByType(http.IncomingMessage);
+        return result as T
+    }
+
+    public getResponse<T extends http.ServerResponse>(): T {
+        let result = this.getArgumentByType(http.ServerResponse);
+        return result as T
+
     }
 
     public get value(): any {

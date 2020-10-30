@@ -1,4 +1,14 @@
-import {guard, IGuard, IInterceptor, intercept, IPipe, pipe, pipelineDecorator} from "../../../index";
+import {
+    exception,
+    guard,
+    IException,
+    IGuard,
+    IInterceptor,
+    intercept,
+    IPipe,
+    pipe,
+    pipelineDecorator
+} from "../../../index";
 import {IPipelineContext} from "../../../lib/pipelines/interfaces/IPipeline";
 import {PipelineContext} from "../../../lib/pipelines/context/pipelineContext";
 import {define, singleton, inject, init} from '@appolo/inject';
@@ -95,3 +105,20 @@ export function pipeMultiValue(multi: number) {
     return pipe(PipeMultiValue, {multi});
 }
 
+@define()
+export class ExceptionPipeLine implements IException {
+
+    public async catch(e: Error, context: PipelineContext): Promise<any> {
+
+        return {
+            statusCode: 500,
+            timestamp: new Date().toISOString(),
+            message: e.message
+        }
+    }
+}
+
+export function catchError() {
+
+    return exception(ExceptionPipeLine, {});
+}

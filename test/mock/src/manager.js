@@ -28,6 +28,9 @@ let Manager = class Manager extends events_1.EventDispatcher {
     async testPipeMultiValue(value1, value2) {
         return value1 + value2;
     }
+    async testCatchError(value1, value2) {
+        throw new Error("some error");
+    }
 };
 tslib_1.__decorate([
     pipelineTest_1.guardSum(5),
@@ -53,6 +56,12 @@ tslib_1.__decorate([
     tslib_1.__metadata("design:paramtypes", [Number, Number]),
     tslib_1.__metadata("design:returntype", Promise)
 ], Manager.prototype, "testPipeMultiValue", null);
+tslib_1.__decorate([
+    pipelineTest_1.catchError(),
+    tslib_1.__metadata("design:type", Function),
+    tslib_1.__metadata("design:paramtypes", [Number, Number]),
+    tslib_1.__metadata("design:returntype", Promise)
+], Manager.prototype, "testCatchError", null);
 Manager = tslib_1.__decorate([
     inject_1.define(),
     inject_1.singleton(),
