@@ -1,4 +1,4 @@
-import {IModuleOptions, Module, module} from '../../../../../index';
+import { Module, module} from '../../../../../index';
 import {Delay} from "./src/delay";
 import {Promises} from "@appolo/utils";
 import {Bootstrap} from "../../../src/bootstrap";
@@ -14,8 +14,8 @@ interface IOptions {
 @module({exports: []})
 export class DelayModule extends Module<IOptions> {
 
-    public static for(options: IOptions, moduleOptions: IModuleOptions = {}): IModuleParams {
-        return {type: DelayModule, config:options, ...moduleOptions}
+    public static for(options: IOptions): IModuleParams {
+        return {type: DelayModule, config:options}
     }
 
     public get exports() {

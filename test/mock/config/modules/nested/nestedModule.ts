@@ -1,4 +1,4 @@
-import { IClass, IModuleOptions, Module, module} from '../../../../../index';
+import { IClass, Module, module} from '../../../../../index';
 import {Bootstrap} from "../../../src/bootstrap";
 import {NestedProvider} from "./src/nestedProvider";
 import {DbManager} from "../db/src/dbManager";
@@ -14,8 +14,8 @@ interface IOptions {
 @module()
 export class NestedModule extends Module<IOptions> {
 
-    public static for(options: IOptions, moduleOptions: IModuleOptions = {}): IModuleParams {
-        return {type: NestedModule, config:options, ...moduleOptions}
+    public static for(options: IOptions): IModuleParams {
+        return {type: NestedModule, config:options}
     }
 
     public get exports() {

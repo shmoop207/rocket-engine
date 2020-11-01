@@ -1,4 +1,4 @@
-import {IModuleOptions, module, Module} from '../../../../../index';
+import { module, Module} from '../../../../../index';
 import {DbFactory} from "./src/dbFactory";
 import {DbManager} from "./src/dbManager";
 import {NestedProvider} from "../nested/src/nestedProvider";
@@ -12,8 +12,8 @@ export class DbModule extends Module {
 
     @lazy() dbManager: DbManager
 
-    public static for(config: { id: string }, options: IModuleOptions = {}) {
-        return super.for(config,options)
+    public static for(config: { id: string }) {
+        return super.for(config)
     }
 
     public get exports() {

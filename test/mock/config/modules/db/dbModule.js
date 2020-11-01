@@ -8,8 +8,8 @@ const dbManager_1 = require("./src/dbManager");
 const nestedProvider_1 = require("../nested/src/nestedProvider");
 const inject_1 = require("@appolo/inject");
 let DbModule = class DbModule extends index_1.Module {
-    static for(config, options = {}) {
-        return super.for(config, options);
+    static for(config) {
+        return super.for(config);
     }
     get exports() {
         return [{ id: this.moduleOptions.id, type: dbFactory_1.DbFactory }, {

@@ -19,7 +19,7 @@ import {guardPipeline} from "../../../lib/pipelines/guards/pipeline/guardPipelin
 export class PipelineTest {
 
     async run(context: PipelineContext, next) {
-        context.getArgumentAt(0).push(2);
+        context.getArgumentAt<number[]>(0).push(2);
         return next()
     }
 }
@@ -28,7 +28,7 @@ export class PipelineTest {
 export class PipelineTest2 {
 
     async run(context: PipelineContext, next) {
-        context.getArgumentAt(0).push(3);
+        context.getArgumentAt<number[]>(0).push(3);
         return next()
     }
 }

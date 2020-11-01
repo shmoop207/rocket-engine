@@ -41,7 +41,7 @@ export {IEvents} from './lib/events/IEvents';
 export {IDiscovery} from './lib/discovery/IDiscovery';
 export {IModules} from './lib/modules/interfaces/IModules';
 export {ITree} from './lib/tree/ITree';
-export {IClass, IModuleOptions, IModuleParams, ModuleArg} from './lib/modules/interfaces/IModule';
+export {IClass, IModuleParams, ModuleArg} from './lib/modules/interfaces/IModule';
 export {IPipeline, IPipelineFn} from './lib/pipelines/interfaces/IPipeline';
 export {PipelineContext} from './lib/pipelines/context/pipelineContext';
 

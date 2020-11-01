@@ -8,8 +8,8 @@ const delay_1 = require("./src/delay");
 const utils_1 = require("@appolo/utils");
 const bootstrap_1 = require("../../../src/bootstrap");
 let DelayModule = DelayModule_1 = class DelayModule extends index_1.Module {
-    static for(options, moduleOptions = {}) {
-        return Object.assign({ type: DelayModule_1, config: options }, moduleOptions);
+    static for(options) {
+        return { type: DelayModule_1, config: options };
     }
     get exports() {
         return [{ id: this.moduleOptions.id || "delay", type: delay_1.Delay }];

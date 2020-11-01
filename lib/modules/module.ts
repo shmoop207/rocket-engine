@@ -1,9 +1,7 @@
-import {createApp, IApp, IModuleOptions, IModuleParams} from "../../index"
+import {createApp, IApp, IModuleParams} from "../../index"
 import {Helpers} from "../util/helpers";
 import {initAsync, singleton,bootstrapAsync} from "@appolo/inject";
-import {Event} from "@appolo/events";
 import {IClass, ModuleTypes} from "./interfaces/IModule";
-import milliseconds = require("mocha/lib/ms");
 
 let i=0;
 @singleton()
@@ -21,8 +19,8 @@ export class Module<T = any> {
         return this.Defaults
     }
 
-    public static for(config: {[index:string]:any}, options: IModuleOptions = {}): IModuleParams {
-        return {type: this, config, ...options}
+    public static for(config: {[index:string]:any}): IModuleParams {
+        return {type: this, config}
     }
 
     public get app(): IApp {
