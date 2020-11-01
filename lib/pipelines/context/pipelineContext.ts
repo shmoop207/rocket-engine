@@ -54,11 +54,11 @@ export class PipelineContext<T = any> {
         return this._isArgument;
     }
 
-    public setArgumentAt(index: number, value: any) {
+    public setArgumentAt<T>(index: number, value: T) {
         this.arguments[index] = value;
     }
 
-    public getArgumentAt(index: number): any {
+    public getArgumentAt<T>(index: number): T {
         return this.arguments[index]
     }
 
