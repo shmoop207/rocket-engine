@@ -19,8 +19,8 @@ export class Module<T = any> {
         return this.Defaults
     }
 
-    public static for(config: {[index:string]:any}): IModuleParams {
-        return {type: this, config}
+    public static for(options: {[index:string]:any}): IModuleParams {
+        return {type: this, options}
     }
 
     public get app(): IApp {

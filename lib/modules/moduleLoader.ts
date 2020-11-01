@@ -52,7 +52,7 @@ export class ModuleLoader {
 
         this._module.app = app
 
-        this._module.moduleOptions = Objects.defaults({}, this._moduleParams.config || {}, this._module.defaults);
+        this._module.moduleOptions = Objects.defaults({}, this._moduleParams.options || {}, this._module.defaults);
 
         this._module.app.injector.addObject("moduleOptions", this._module.moduleOptions, true);
         this._module.app.injector.addObject("discovery", app.discovery, true);

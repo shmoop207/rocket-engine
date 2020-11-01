@@ -41,7 +41,7 @@ export type ModuleFunction = ((...args: any[]) => void | Promise<any>)
 
 export interface IModuleParams {
     type: IModuleCrt,
-    config?: any
+    options?: any
 }
 
 export type ModuleArg =   IModuleParams | IModuleCrt

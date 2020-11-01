@@ -12,8 +12,8 @@ export class DbModule extends Module {
 
     @lazy() dbManager: DbManager
 
-    public static for(config: { id: string }) {
-        return super.for(config)
+    public static for(options: { id: string }) {
+        return super.for(options)
     }
 
     public get exports() {

@@ -7,7 +7,7 @@ const index_1 = require("../../../../../index");
 const nestedProvider_1 = require("./src/nestedProvider");
 let NestedModule = NestedModule_1 = class NestedModule extends index_1.Module {
     static for(options) {
-        return { type: NestedModule_1, config: options };
+        return { type: NestedModule_1, options };
     }
     get exports() {
         return [{ id: this.moduleOptions.id || "nestedProvider", type: nestedProvider_1.NestedProvider }, {

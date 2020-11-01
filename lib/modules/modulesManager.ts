@@ -57,9 +57,9 @@ export class ModulesManager {
             let dto: IModuleParams;
 
             if (Classes.isClass(item)) {
-                dto = {type: item, config: {}}
+                dto = {type: item, options: {}}
             } else {
-                dto = {config: {}, ...item}
+                dto = {options: {}, ...item}
             }
 
             return dto;

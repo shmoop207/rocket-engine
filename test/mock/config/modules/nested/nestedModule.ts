@@ -15,7 +15,7 @@ interface IOptions {
 export class NestedModule extends Module<IOptions> {
 
     public static for(options: IOptions): IModuleParams {
-        return {type: NestedModule, config:options}
+        return {type: NestedModule, options}
     }
 
     public get exports() {
