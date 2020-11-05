@@ -47,6 +47,22 @@ export class Events implements IEvents {
         return this._app.injector.events.instanceCreated;
     }
 
+    public get beforeInjectInitDefinitions() {
+        return this._app.injector.events.beforeInitDefinitions;
+    }
+
+    public get beforeInjectInitFactories() {
+        return this._app.injector.events.beforeInitFactories;
+    }
+
+    public get beforeInjectInitInstances() {
+        return this._app.injector.events.beforeInitInstances;
+    }
+
+    public get beforeInjectInitProperties() {
+        return this._app.injector.events.beforeInitProperties;
+    }
+
     public get beforeInjectInitMethods() {
         return this._app.injector.events.beforeInitMethods;
     }

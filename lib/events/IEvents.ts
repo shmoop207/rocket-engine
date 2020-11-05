@@ -1,6 +1,6 @@
 import {IEvent} from "@appolo/events/index";
 
-import {InjectEvent} from "@appolo/inject/lib/events";
+import {InjectEvent} from "@appolo/inject/lib/events/events";
 import {Module} from "../modules/module";
 import {IDefinition, Injector} from "@appolo/inject/index";
 
@@ -37,6 +37,11 @@ export interface IEvents {
     readonly onOwnInstanceCreated: IEvent<InjectEvent>
     readonly onInstanceCreated: IEvent<InjectEvent>
 
+
+    readonly beforeInjectInitDefinitions: IEvent<void>
+    readonly beforeInjectInitFactories: IEvent<void>
+    readonly beforeInjectInitInstances: IEvent<void>
+    readonly beforeInjectInitProperties: IEvent<void>
     readonly beforeInjectInitMethods: IEvent<void>
     readonly beforeInjectBootstrapMethods: IEvent<void>
 
