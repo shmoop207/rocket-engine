@@ -63,7 +63,7 @@ export class PipelineContext<T = any> {
     }
 
     public getArgumentByType<T>(ctor: { new(...args: any[]): T }): T {
-        return Array.from(this.arguments).find(item => item.value instanceof ctor)
+        return Array.from(this.arguments).find(item => item instanceof ctor)
     }
 
     public getRequest<T extends http.IncomingMessage>(): T {
