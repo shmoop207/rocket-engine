@@ -18,7 +18,7 @@ export class ModuleLoader {
     protected _module: Module;
 
 
-    constructor(protected _moduleParams: IModuleParams, protected _parenInjector: Injector, moduleOptions:IModuleOptions) {
+    constructor(protected _moduleParams: IModuleParams, protected _parenInjector: Injector, moduleOptions: IModuleOptions) {
 
         this._moduleDefinition = Reflect.getMetadata(ModuleSymbol, _moduleParams.type) || {};
 
@@ -27,8 +27,7 @@ export class ModuleLoader {
         }
 
 
-        this._moduleOptions = Objects.defaults({}, moduleOptions, {
-        }, {immediate: false, parallel: false});
+        this._moduleOptions = Objects.defaults({}, moduleOptions, {}, {immediate: false, parallel: false});
     }
 
     public get module(): Module {
@@ -57,7 +56,7 @@ export class ModuleLoader {
         this._module.app.injector.addObject("moduleOptions", this._module.moduleOptions, true);
         this._module.app.injector.addObject("discovery", app.discovery, true);
 
-        this._handleFileExport();
+        this._handleFileExport(this._module.app.injector);
 
     }
 
@@ -87,7 +86,6 @@ export class ModuleLoader {
     }
 
 
-
     private _setDefinitions() {
         if (this._moduleDefinition.options) {
             Object.assign(this._module.moduleOptions, this._moduleDefinition.options)
@@ -115,13 +113,13 @@ export class ModuleLoader {
 
         app.register(this._moduleParams.type);
 
-        app.tree.root.event.beforeModulesLoad.on(()=>this._module.beforeAppInitialize(),this,{await:true})
+        app.tree.root.event.beforeModulesLoad.on(() => this._module.beforeAppInitialize(), this, {await: true})
 
-        app.event.afterInjectorInitialize.on(()=>this._module.afterModuleInitialize(),this,{await:true});
-        app.event.afterBootstrap.on(()=>this._module.afterModuleLaunch(),this,{await:true})
+        app.event.afterInjectorInitialize.on(() => this._module.afterModuleInitialize(), this, {await: true});
+        app.event.afterBootstrap.on(() => this._module.afterModuleLaunch(), this, {await: true})
 
-        app.tree.root.event.afterInjectorInitialize.on(()=>this._module.afterAppInitialize(),this,{await:true});
-        app.tree.root.event.afterBootstrap.on(()=>this._module.afterAppLaunch(),this,{await:true})
+        app.tree.root.event.afterInjectorInitialize.on(() => this._module.afterAppInitialize(), this, {await: true});
+        app.tree.root.event.afterBootstrap.on(() => this._module.afterAppLaunch(), this, {await: true})
 
 
         return app;
@@ -168,9 +166,17 @@ export class ModuleLoader {
 
     }
 
-    private _handleFileExport() {
+    private _handleFileExport(injector: Injector) {
         this._module.fileExports.forEach(fn => {
-            (this._module.app.tree.parent as App).discovery.add({path: "", fn, define: InjectUtil.getClassDefinition(fn)})
+
+            let define = InjectUtil.getClassDefinition(fn);
+
+            if (define) {
+                define = define.clone();
+                define.injector(injector)
+            }
+
+            (this._module.app.tree.parent as App).discovery.add({path: "", fn, define: define})
         })
     }
 
@@ -195,11 +201,11 @@ export class ModuleLoader {
         });
     }
 
-    public async reset(){
-         await this.module.reset();
+    public async reset() {
+        await this.module.reset();
     }
 
-    public async beforeReset(){
-         await this.module.beforeReset();
+    public async beforeReset() {
+        await this.module.beforeReset();
     }
 }
