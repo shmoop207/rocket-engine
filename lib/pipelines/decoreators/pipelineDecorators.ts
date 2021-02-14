@@ -1,9 +1,7 @@
 import {IMetadata, IPipelineCtr, IPipelineFn, IPipelineMetadata} from "../interfaces/IPipeline";
 import {Reflector} from "@appolo/utils";
 import {Classes} from "@appolo/utils";
-import {ValidatePipeLine} from "../../../test/mock/config/modules/validate/src/validate";
-import {IGuardCrt} from "../guards/interfaces/IGuard";
-import {guardPipeline} from "../guards/pipeline/guardPipeline";
+
 
 export const PipeSymbol = "__PipeSymbol__";
 export const PipeSetSymbol = "__PipeSetSymbol__";
